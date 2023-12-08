@@ -160,6 +160,175 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": true
                 }
             ]
+        },
+        {
+            ""name"": ""Platformer"",
+            ""id"": ""4c91869a-58f4-4fe9-a36a-1abd1fa0e156"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""c4dd71e8-5f20-401b-8c0b-726b2584a6e3"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Jump"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""7c5365c2-de28-4e57-801e-b500d7d0046b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""301ebf75-a037-4e1e-a15c-01d761eb3c04"",
+                    ""path"": ""<Gamepad>/leftStick"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""D-Pad"",
+                    ""id"": ""cafb397c-fcb4-428c-806b-366b8efdc67e"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""da62b96e-13cf-4cf3-ba33-ba6efeec03d2"",
+                    ""path"": ""<Gamepad>/dpad/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""13c8bfa6-db2b-4eab-88c3-8613fac2bc20"",
+                    ""path"": ""<Gamepad>/dpad/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""b1c5c71a-70a3-4642-b0e6-8444616e9ad4"",
+                    ""path"": ""<Gamepad>/dpad/left"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""4791da74-9d92-4bc0-b64a-1bfda2887359"",
+                    ""path"": ""<Gamepad>/dpad/right"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""Keyboard"",
+                    ""id"": ""ae00f559-88b6-465e-88a3-fe78c6495c58"",
+                    ""path"": ""2DVector"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""e2d7eb17-df65-4a4c-a1bc-6a0b8b403e29"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""91bfae9c-81ce-4f9d-b3d7-49781002eaca"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""3fb9ebf6-4af9-4f97-96b2-f222fbb5fb13"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""19b00812-df6e-481c-ae61-34939faae2ce"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b7fc4bd-6cbc-4864-a338-02ef4703de1f"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ee6ba62e-0ac8-49ce-9392-318dc231d814"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -195,6 +364,10 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
         // TopDown
         m_TopDown = asset.FindActionMap("TopDown", throwIfNotFound: true);
         m_TopDown_Move = m_TopDown.FindAction("Move", throwIfNotFound: true);
+        // Platformer
+        m_Platformer = asset.FindActionMap("Platformer", throwIfNotFound: true);
+        m_Platformer_Move = m_Platformer.FindAction("Move", throwIfNotFound: true);
+        m_Platformer_Jump = m_Platformer.FindAction("Jump", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -298,6 +471,60 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
         }
     }
     public TopDownActions @TopDown => new TopDownActions(this);
+
+    // Platformer
+    private readonly InputActionMap m_Platformer;
+    private List<IPlatformerActions> m_PlatformerActionsCallbackInterfaces = new List<IPlatformerActions>();
+    private readonly InputAction m_Platformer_Move;
+    private readonly InputAction m_Platformer_Jump;
+    public struct PlatformerActions
+    {
+        private @GameplayInputs m_Wrapper;
+        public PlatformerActions(@GameplayInputs wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_Platformer_Move;
+        public InputAction @Jump => m_Wrapper.m_Platformer_Jump;
+        public InputActionMap Get() { return m_Wrapper.m_Platformer; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlatformerActions set) { return set.Get(); }
+        public void AddCallbacks(IPlatformerActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlatformerActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlatformerActionsCallbackInterfaces.Add(instance);
+            @Move.started += instance.OnMove;
+            @Move.performed += instance.OnMove;
+            @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
+        }
+
+        private void UnregisterCallbacks(IPlatformerActions instance)
+        {
+            @Move.started -= instance.OnMove;
+            @Move.performed -= instance.OnMove;
+            @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
+        }
+
+        public void RemoveCallbacks(IPlatformerActions instance)
+        {
+            if (m_Wrapper.m_PlatformerActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlatformerActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlatformerActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlatformerActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlatformerActions @Platformer => new PlatformerActions(this);
     private int m_GamepadSchemeIndex = -1;
     public InputControlScheme GamepadScheme
     {
@@ -319,5 +546,10 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
     public interface ITopDownActions
     {
         void OnMove(InputAction.CallbackContext context);
+    }
+    public interface IPlatformerActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
     }
 }
