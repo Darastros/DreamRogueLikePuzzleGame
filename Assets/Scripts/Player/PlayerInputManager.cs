@@ -5,7 +5,6 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    [RequireComponent(typeof(IMovementController))]
     public class PlayerInputManager : MonoBehaviour
     {
         private IMovementController m_movementController;
@@ -23,6 +22,11 @@ namespace Player
         public void OnMoveInput(InputAction.CallbackContext _ctx)
         {
             m_movementController.Move(_ctx.ReadValue<Vector2>());
+        }
+        
+        public void OnJumpImput(InputAction.CallbackContext _ctx)
+        {
+            m_movementController.Jump(_ctx.performed);
         }
     }
 }
