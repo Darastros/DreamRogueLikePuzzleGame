@@ -26,7 +26,10 @@ namespace Player
         
         public void OnJumpImput(InputAction.CallbackContext _ctx)
         {
-            m_movementController.Jump(_ctx.performed);
+            if (_ctx.performed)
+            {
+                m_movementController.Jump(_ctx.ReadValueAsButton());
+            }
         }
     }
 }
