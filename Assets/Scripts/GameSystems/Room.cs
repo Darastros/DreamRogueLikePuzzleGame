@@ -22,22 +22,22 @@ namespace GameSystems
             
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South))
             {
-                m_neighborsCoordinates.Add(Vector2Int.down);
+                m_neighborsCoordinates.Add(Coordinate+ Vector2Int.down);
             }
             
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North))
             {
-                m_neighborsCoordinates.Add(Vector2Int.up);
+                m_neighborsCoordinates.Add(Coordinate + Vector2Int.up);
             }
             
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
             {
-                m_neighborsCoordinates.Add(Vector2Int.right);
+                m_neighborsCoordinates.Add(Coordinate + Vector2Int.right);
             }
             
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
             {
-                m_neighborsCoordinates.Add(Vector2Int.left);
+                m_neighborsCoordinates.Add(Coordinate + Vector2Int.left);
             }
             
             Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}");
