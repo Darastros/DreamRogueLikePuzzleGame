@@ -133,7 +133,7 @@ namespace GameSystems
             }
                 
             m_currentRoom = _newRoom;
-            
+
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             if (m_currentRoom.m_runtimeGameScene != null)
@@ -372,6 +372,43 @@ namespace GameSystems
                 Debug.DebugBreak();
             Debug.Assert(_forbiddenEntrances != RoomEntrance.Everything,
                 $"This room can't have doors?! => {_forbiddenEntrances}");
+        }
+        
+        bool IsThereAPathLeadingTo(Vector2Int targetCoordinates, Room startingRoom)
+        {
+            var visitedRooms = new HashSet<Room>(); 
+            var roomsToVisit = new Stack<Room>();
+
+            roomsToVisit.Push(startingRoom);
+            void AddAllUnvisitedNeighborsToVisitStack(Room currentRoom)
+            {
+                foreach (var neighborCoordinate in currentRoom.m_neighborsCoordinates)
+                {
+                    if (m_runtimeRooms.TryGetValue(neighborCoordinate, out Room neighborRoom) && !visitedRooms.Contains(neighborRoom))
+                    {
+                        roomsToVisit.Push(neighborRoom);
+                    }
+                }
+            }
+
+            // Initial population from the starting room
+            AddAllUnvisitedNeighborsToVisitStack(startingRoom);
+    
+            while (roomsToVisit.TryPop(out Room currentRoom))
+            {
+                // Mark room as visited when it's popped (ensures it won't be visited again)
+                visitedRooms.Add(currentRoom);
+
+                if (currentRoom.Coordinate == targetCoordinates)
+                {
+                    return true;
+                }
+
+                // Visit all unvisited neighbor rooms
+                AddAllUnvisitedNeighborsToVisitStack(currentRoom);
+            }
+
+            return false;
         }
     }
 }
