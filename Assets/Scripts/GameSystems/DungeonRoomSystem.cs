@@ -1,12 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using MovementControllers;
 using Player;
 using ScriptableObjects;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
@@ -31,7 +27,7 @@ namespace GameSystems
         public static DungeonRoomSystem Instance { get; private set; }
 
         //Events
-        private EventDispatcher m_eventDispatcher = new();
+        private readonly EventDispatcher m_eventDispatcher = new();
         public EventDispatcher GetEventDispatcher() => m_eventDispatcher;
 
         //Settings
@@ -45,15 +41,15 @@ namespace GameSystems
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
 
         // Directions
-        private static Vector2Int South = Vector2Int.down;
-        private static Vector2Int North = Vector2Int.up;
-        private static Vector2Int East = Vector2Int.right;
-        private static Vector2Int West = Vector2Int.left;
+        private static readonly Vector2Int South = Vector2Int.down;
+        private static readonly Vector2Int North = Vector2Int.up;
+        private static readonly Vector2Int East = Vector2Int.right;
+        private static readonly Vector2Int West = Vector2Int.left;
 
-        private static Vector2Int SouthEast = South + East;
-        private static Vector2Int SouthWest = South + West;
-        private static Vector2Int NorthEast = North + East;
-        private static Vector2Int NorthWest = North + West;
+        private static readonly Vector2Int SouthEast = South + East;
+        private static readonly Vector2Int SouthWest = South + West;
+        private static readonly Vector2Int NorthEast = North + East;
+        private static readonly Vector2Int NorthWest = North + West;
 
         private void Awake()
         {
@@ -165,7 +161,7 @@ namespace GameSystems
             }
         }
 
-        private bool ValidateCurrentRoom()
+        private void ValidateCurrentRoom()
         {
             bool mustHaveNorth = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North);
             bool mustHaveSouth = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South);
@@ -195,7 +191,7 @@ namespace GameSystems
                         haveWest = true;
                         break;
                     default:
-                        Debug.Assert(false, $"Data not setuped correctly {m_currentRoom.m_roomDescriptor}");
+                        Debug.Assert(false, $"Data not configured correctly {m_currentRoom.m_roomDescriptor}");
                         break;
                 }
             }
@@ -203,8 +199,7 @@ namespace GameSystems
             bool res = mustHaveNorth == haveNorth && mustHaveEast == haveEast && mustHaveSouth == haveSouth &&
                        mustHaveWest == haveWest;
             if(!res)
-                Debug.LogError( $"DATA ERROR - Missmatch between Room Description and runtime room {m_currentRoom.m_roomDescriptor}" );
-            return res;
+                Debug.LogError( $"DATA ERROR - Mismatch between Room Description and runtime room {m_currentRoom.m_roomDescriptor}" );
         }
 
         private void OnDestroy()
@@ -239,11 +234,11 @@ namespace GameSystems
             return _room.m_entrances.HasFlag(_neededEntrances) && (_room.m_entrances & _forbiddenEntrances) == RoomEntrance.None; 
         }
 
-        bool CheckIfRoomHasNeededEntrance(Vector2Int _coordinate, RoomEntrance _neededEntrance)
+        private bool CheckIfRoomHasNeededEntrance(Vector2Int _coordinate, RoomEntrance _neededEntrance)
         {
-            if (m_runtimeRooms.TryGetValue(_coordinate, out Room _room))
+            if (m_runtimeRooms.TryGetValue(_coordinate, out Room room))
             {
-                return _room.m_roomDescriptor.m_entrances.HasFlag(_neededEntrance);
+                return room.m_roomDescriptor.m_entrances.HasFlag(_neededEntrance);
             }
 
             return true;
@@ -252,10 +247,10 @@ namespace GameSystems
         [ContextMenu("DebugLogRecomputeCurrentConstraint")]
         private void DebugLogRecomputeCurrentConstraint()
         {
-            GetNeededEntranceConstraints(out RoomEntrance _neededEntance, out RoomEntrance _forbiddenEntrances,
+            GetNeededEntranceConstraints(out RoomEntrance neededEntrance, out RoomEntrance forbiddenEntrances,
                 m_currentRoom.Coordinate.x, m_currentRoom.Coordinate.y);
 
-            Debug.Log($"Needed Entrances {_neededEntance} - ForbiddenEntrances {_forbiddenEntrances}");
+            Debug.Log($"Needed Entrances {neededEntrance} - ForbiddenEntrances {forbiddenEntrances}");
             Debug.Log($"Current Entrances {m_currentRoom.m_roomDescriptor.m_entrances}");
         }
         
@@ -266,16 +261,16 @@ namespace GameSystems
             _neededRoomEntrance = RoomEntrance.None;
             _forbiddenEntrances = RoomEntrance.None;
 
-            if (m_runtimeRooms.TryGetValue(coordinate, out Room _room))
+            if (m_runtimeRooms.TryGetValue(coordinate, out Room room))
             {
                 Debug.LogWarning(
                     "Retrieving Entrances Constraints for an existing room, are you sure you want to do that?...");
             }
 
             // North
-            if (m_runtimeRooms.TryGetValue(coordinate + North, out _room))
+            if (m_runtimeRooms.TryGetValue(coordinate + North, out room))
             {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South))
+                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South))
                 {
                     _neededRoomEntrance |= RoomEntrance.North;
                 }
@@ -291,9 +286,9 @@ namespace GameSystems
 
 
             // South
-            if (m_runtimeRooms.TryGetValue(coordinate + South, out _room)) // If room instantiated next to the coordinate
+            if (m_runtimeRooms.TryGetValue(coordinate + South, out room)) // If room instantiated next to the coordinate
             {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
+                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
                 {
                     _neededRoomEntrance |= RoomEntrance.South;
                 }
@@ -308,9 +303,9 @@ namespace GameSystems
             }
 
             // East
-            if (m_runtimeRooms.TryGetValue(coordinate + East, out _room))
+            if (m_runtimeRooms.TryGetValue(coordinate + East, out room))
             {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
+                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
                 {
                     _neededRoomEntrance |= RoomEntrance.East;
                 }
@@ -325,9 +320,9 @@ namespace GameSystems
             }
 
             // West
-            if (m_runtimeRooms.TryGetValue(coordinate + West, out _room))
+            if (m_runtimeRooms.TryGetValue(coordinate + West, out room))
             {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
+                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
                 {
                     _neededRoomEntrance |= RoomEntrance.West;
                 }
