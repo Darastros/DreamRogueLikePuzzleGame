@@ -7,8 +7,11 @@ namespace CardGame
     public class CardGameController : MonoBehaviour
     {
         [SerializeField] private CardDetector m_detector;
-        [SerializeField] private int m_maxCardsInHand = 5;
+        [SerializeField] private int m_maxCardsInHand = 3;
+        [SerializeField] private List<Recipe> m_recipes;
         [SerializeField] private List<Card> m_hand;
+        
+        private List<long> m_masks;
         
         public delegate void GetCard(Card _card);
         public static GetCard OnGettingCard;
@@ -19,6 +22,11 @@ namespace CardGame
 
         public delegate void Result(CraftCardResult _result);
         public static Result OnCraftSuccess;
+
+        void Awake()
+        {
+            m_masks = new(){0b100010001, 0b100001010, 0b010100001, 0b001100010, 0b001010100, 0b010001100};
+        }
         
         void OnEnable()
         {
@@ -69,7 +77,11 @@ namespace CardGame
             {
                 Debug.Log("Try Craft");
                 var result = FindCraftPlan();
-                if(result) OnCraftSuccess?.Invoke(result);
+                if(result)
+                {
+                    Debug.Log("Craft : " + result.name);
+                    OnCraftSuccess?.Invoke(result);
+                }
                 else OnFailCraft?.Invoke();
                 
                 m_hand = new List<Card>();
@@ -78,6 +90,22 @@ namespace CardGame
 
         public CraftCardResult FindCraftPlan()
         {
+            foreach (var recipe in m_recipes)
+            {
+                long result = 0;
+                for (int y = 0; y < m_maxCardsInHand; ++y)
+                {
+                    for (int x = 0; x < m_maxCardsInHand; ++x)
+                    {
+                        if((m_hand[x].Type & recipe.conditions[y]) == m_hand[x].Type) result += 1 << y * m_maxCardsInHand + x;
+                    }
+                }
+                foreach (long mask in m_masks)
+                {
+                    if((mask & result) == mask)
+                        return recipe.result;
+                }
+            }
             return null;
         }
     }

@@ -10,6 +10,7 @@ namespace UI
     {
         [SerializeField] private GameObject m_cardObject;
         private List<CardUI> m_cards;
+        private Animator m_animator;
         private void OnEnable()
         {
             m_cards = new List<CardUI>();
