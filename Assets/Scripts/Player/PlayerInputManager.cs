@@ -8,7 +8,6 @@ namespace Player
     public class PlayerInputManager : MonoBehaviour
     {
         private IMovementController m_movementController;
-
         private void OnEnable()
         {
             TryGetComponent(out m_movementController);
