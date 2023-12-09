@@ -291,9 +291,9 @@ namespace GameSystems
 
 
             // South
-            if (m_runtimeRooms.TryGetValue(coordinate + South, out _room))
+            if (m_runtimeRooms.TryGetValue(coordinate + South, out _room)) // If room instantiated next to the coordinate
             {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North))
+                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
                 {
                     _neededRoomEntrance |= RoomEntrance.South;
                 }
@@ -302,7 +302,7 @@ namespace GameSystems
                     _forbiddenEntrances |= RoomEntrance.South;
                 }
             }
-            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + South)))
+            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + South))) // If room not yet instantiated (door but not open) next to the coordinate but supposed to be there
             {
                 _neededRoomEntrance |= RoomEntrance.South;
             }
