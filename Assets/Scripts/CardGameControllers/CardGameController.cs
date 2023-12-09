@@ -51,5 +51,14 @@ namespace CardGame
             m_hand.Add(_card);
             if(m_hand.Count > m_maxCardsInHand) m_hand.RemoveAt(0);
         }
+
+        public void Craft()
+        {
+            if (m_hand.Count == m_maxCardsInHand)
+            {
+                Debug.Log("Try Craft");
+                m_hand = new List<Card>();
+            }
+        }
     }
 }
