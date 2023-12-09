@@ -8,29 +8,29 @@ namespace Player
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        private IMovementController m_movementController;
+        private MovementManager m_movementManager;
         private CardGameController m_cardGameController;
         private void OnEnable()
         {
-            TryGetComponent(out m_movementController);
+            TryGetComponent(out m_movementManager);
             TryGetComponent(out m_cardGameController);
         }
 
         private void OnDisable()
         {
-            m_movementController = null;
+            m_movementManager = null;
         }
 
         public void OnMoveInput(InputAction.CallbackContext _ctx)
         {
-            m_movementController.Move(_ctx.ReadValue<Vector2>());
+            m_movementManager.Move(_ctx.ReadValue<Vector2>());
         }
         
         public void OnJumpImput(InputAction.CallbackContext _ctx)
         {
             if (_ctx.performed)
             {
-                m_movementController.Jump(_ctx.ReadValueAsButton());
+                m_movementManager.Jump(_ctx.ReadValueAsButton());
             }
         }
         

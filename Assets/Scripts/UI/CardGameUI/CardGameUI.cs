@@ -45,6 +45,7 @@ namespace UI
         
         private void CraftSuccess(CraftCardResult _result)
         {
+            m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {
                 card.CraftSuccess();
@@ -52,6 +53,7 @@ namespace UI
         }
         private void CraftFailed()
         {
+            m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {
                 card.CraftFailed();
@@ -59,6 +61,7 @@ namespace UI
         }
         private void ResetHand()
         {
+            m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {
                 card.Reset();
