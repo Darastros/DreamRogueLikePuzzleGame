@@ -15,11 +15,17 @@ namespace UI
         {
             m_cards = new List<CardUI>();
             CardGameController.OnGettingCard += AddCard;
+            CardGameController.OnCraftSuccess += CraftSuccess;
+            CardGameController.OnCraftFailed += CraftFailed;
+            CardGameController.OnReset += ResetHand;
         }
 
         private void OnDisable()
         {
             CardGameController.OnGettingCard -= AddCard;
+            CardGameController.OnCraftSuccess -= CraftSuccess;
+            CardGameController.OnCraftFailed -= CraftFailed;
+            CardGameController.OnReset -= ResetHand;
             
         }
 
@@ -35,6 +41,28 @@ namespace UI
             var cardUI = cardObject.GetComponent<CardUI>();
             cardUI.InitDataCard(_card);
             m_cards.Add(cardUI);
+        }
+        
+        private void CraftSuccess(CraftCardResult _result)
+        {
+            foreach (var card in m_cards)
+            {
+                card.CraftSuccess();
+            }
+        }
+        private void CraftFailed()
+        {
+            foreach (var card in m_cards)
+            {
+                card.CraftFailed();
+            }
+        }
+        private void ResetHand()
+        {
+            foreach (var card in m_cards)
+            {
+                card.Reset();
+            }
         }
     }
 }

@@ -18,7 +18,7 @@ namespace CardGame
 
         public delegate void Reset();
         public static Reset OnReset;
-        public static Reset OnFailCraft;
+        public static Reset OnCraftFailed;
 
         public delegate void Result(CraftCardResult _result);
         public static Result OnCraftSuccess;
@@ -53,19 +53,19 @@ namespace CardGame
         
         private void EnterCard(CardObject _card)
         {
-            Debug.Log("Enter " + _card.Type);
+            //Debug.Log("Enter " + _card.Type);
             _card.StartAbsorb(AbsorbCard);
         }
         
         private void ExitCard(CardObject _card)
         {
-            Debug.Log("Exit " + _card.Type);
+            //Debug.Log("Exit " + _card.Type);
             _card.StopAbsorb();
         }
         
         void AbsorbCard(Card _card)
         {
-            Debug.Log("Absorb card " + _card.Type);
+            //Debug.Log("Absorb card " + _card.Type);
             OnGettingCard?.Invoke(_card);
             m_hand.Add(_card);
             if(m_hand.Count > m_maxCardsInHand) m_hand.RemoveAt(0);
@@ -75,14 +75,15 @@ namespace CardGame
         {
             if (m_hand.Count == m_maxCardsInHand)
             {
-                Debug.Log("Try Craft");
+                //Debug.Log("Try Craft");
                 var result = FindCraftPlan();
                 if(result)
                 {
-                    Debug.Log("Craft : " + result.name);
+                    //Debug.Log("Craft : " + result.name);
                     OnCraftSuccess?.Invoke(result);
+                    result.Spawn(transform.position);
                 }
-                else OnFailCraft?.Invoke();
+                else OnCraftFailed?.Invoke();
                 
                 m_hand = new List<Card>();
             }

@@ -12,5 +12,10 @@ namespace CardGame
         [SerializeField] private Sprite m_sprite;
         [SerializeField] private bool m_worldItem = false;
         [SerializeField] private GameObject m_object;
+
+        public void Spawn(Vector3 _position)
+        {
+            GameObject.Instantiate(m_object, _position, Quaternion.identity);
+        }
     }
 }

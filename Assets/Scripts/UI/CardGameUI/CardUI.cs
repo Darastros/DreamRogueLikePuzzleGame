@@ -29,10 +29,26 @@ namespace UI
             m_animator.SetInteger("cardPos", m_posInHand);
         }
         
+        public void CraftSuccess()
+        {
+            m_animator.SetTrigger("Success");
+        }
+        public void CraftFailed()
+        {
+            m_animator.SetTrigger("Fail");
+        }
+
+        public void Reset()
+        {
+            m_animator.SetTrigger("Reset");
+        }
+        
         public void Destroy()
         {
             Destroy(gameObject);
         }
+
+       
     }
 
 }
