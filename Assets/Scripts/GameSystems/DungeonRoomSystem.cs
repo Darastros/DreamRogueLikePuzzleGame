@@ -138,7 +138,7 @@ namespace GameSystems
                 
             m_currentRoom = _newRoom;
             
-            var player = GameObject.FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>();
+            var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             if (m_currentRoom.m_runtimeGameScene != null)
             {
@@ -149,6 +149,10 @@ namespace GameSystems
                 m_currentRoom.m_runtimeGameScene = Instantiate(m_currentRoom.m_roomDescriptor.m_prefab);
             }
 
+            #if UNITY_EDITOR
+            ValidateCurrentRoom();
+            #endif
+            
             //TODO: Clean this shit
             Door[] doors = m_currentRoom.m_runtimeGameScene.GetComponentsInChildren<Door>();
             foreach (var door in doors)
@@ -159,6 +163,48 @@ namespace GameSystems
                     break;
                 }
             }
+        }
+
+        private bool ValidateCurrentRoom()
+        {
+            bool mustHaveNorth = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North);
+            bool mustHaveSouth = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South);
+            bool mustHaveEast = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East);
+            bool mustHaveWest = m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West);
+
+            bool haveNorth = false;
+            bool haveSouth = false;
+            bool haveEast = false;
+            bool haveWest = false;
+            
+            Door[] doors = m_currentRoom.m_runtimeGameScene.GetComponentsInChildren<Door>();
+            foreach (Door door in doors)
+            {
+                switch (door.whichEntrance)
+                {
+                    case RoomEntrance.North:
+                        haveNorth = true;
+                        break;
+                    case RoomEntrance.South:
+                        haveSouth = true;
+                        break;
+                    case RoomEntrance.East:
+                        haveEast = true;
+                        break;
+                    case RoomEntrance.West:
+                        haveWest = true;
+                        break;
+                    default:
+                        Debug.Assert(false, $"Data not setuped correctly {m_currentRoom.m_roomDescriptor}");
+                        break;
+                }
+            }
+
+            bool res = mustHaveNorth == haveNorth && mustHaveEast == haveEast && mustHaveSouth == haveSouth &&
+                       mustHaveWest == haveWest;
+            if(!res)
+                Debug.LogError( $"DATA ERROR - Missmatch between Room Description and runtime room {m_currentRoom.m_roomDescriptor}" );
+            return res;
         }
 
         private void OnDestroy()
@@ -190,7 +236,7 @@ namespace GameSystems
             RoomEntrance _forbiddenEntrances)
         {
 
-            return _room.m_entrances.HasFlag(_neededEntrances) && !_forbiddenEntrances.HasFlag(_room.m_entrances); 
+            return _room.m_entrances.HasFlag(_neededEntrances) && (_room.m_entrances & _forbiddenEntrances) == RoomEntrance.None; 
         }
 
         private void ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref RoomEntrance _constraint,

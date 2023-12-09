@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using GameSystems;
 using UnityEngine;
@@ -47,5 +48,10 @@ public static class ExtensionMethods
             RoomEntrance.West => Vector2Int.left,
             _ => Vector2Int.zero
         };
+    }
+    
+    public static IEnumerable<Enum> GetFlags(this Enum e)
+    {
+        return Enum.GetValues(e.GetType()).Cast<Enum>().Where(e.HasFlag);
     }
 }
