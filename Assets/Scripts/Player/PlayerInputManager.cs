@@ -8,19 +8,9 @@ namespace Player
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        private MovementManager m_movementManager;
-        private CardGameController m_cardGameController;
-        private void OnEnable()
-        {
-            TryGetComponent(out m_movementManager);
-            TryGetComponent(out m_cardGameController);
-        }
-
-        private void OnDisable()
-        {
-            m_movementManager = null;
-        }
-
+        [SerializeField] private MovementManager m_movementManager;
+        [SerializeField] private CardGameController m_cardGameController;
+        
         public void OnMoveInput(InputAction.CallbackContext _ctx)
         {
             m_movementManager.Move(_ctx.ReadValue<Vector2>());
