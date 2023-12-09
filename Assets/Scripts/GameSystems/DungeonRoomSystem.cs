@@ -47,7 +47,7 @@ namespace GameSystems
             return null;
         }
         
-        private void ApplyNeededEntranceContraintIfRoomAtCoordinate(ref RoomEntrance _constraint, Vector2Int _coordinate, RoomEntrance _constraintToAdd)
+        private void ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref RoomEntrance _constraint, Vector2Int _coordinate, RoomEntrance _constraintToAdd)
         {
             if (m_runtimeRooms.TryGetValue(_coordinate, out Room _room))
             {
@@ -79,16 +79,16 @@ namespace GameSystems
             }
           
             // North
-            ApplyNeededEntranceContraintIfRoomAtCoordinate(ref _neededEntance, coordinate + North, RoomEntrance.North);
+            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + North, RoomEntrance.North);
             
             // South
-            ApplyNeededEntranceContraintIfRoomAtCoordinate(ref _neededEntance, coordinate + South, RoomEntrance.South);
+            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + South, RoomEntrance.South);
             
             // East
-            ApplyNeededEntranceContraintIfRoomAtCoordinate(ref _neededEntance, coordinate + East, RoomEntrance.East);
+            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + East, RoomEntrance.East);
             
             // West
-            ApplyNeededEntranceContraintIfRoomAtCoordinate(ref _neededEntance, coordinate + West, RoomEntrance.West);
+            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + West, RoomEntrance.West);
 
             
             // Check if room can appear at position
