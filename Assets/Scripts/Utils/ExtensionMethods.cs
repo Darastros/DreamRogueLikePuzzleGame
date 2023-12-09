@@ -1,8 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using GameSystems;
+using UnityEngine;
 
-public static class Utils
+public static class ExtensionMethods
 {
     public static T GetRandomElem<T>(this ICollection<T> _collection)
     {
@@ -33,6 +34,18 @@ public static class Utils
             RoomEntrance.East => RoomEntrance.West,
             RoomEntrance.West => RoomEntrance.East,
             _ => RoomEntrance.Invalid
+        };
+    }
+    
+    public static Vector2Int GetOffset(this RoomEntrance _entrance)
+    {
+        return _entrance switch
+        {
+            RoomEntrance.North => Vector2Int.up,
+            RoomEntrance.South => Vector2Int.down,
+            RoomEntrance.East => Vector2Int.right,
+            RoomEntrance.West => Vector2Int.left,
+            _ => Vector2Int.zero
         };
     }
 }
