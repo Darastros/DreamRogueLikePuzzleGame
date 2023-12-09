@@ -32,6 +32,7 @@ namespace CardGame
         {
             ListenEvent();
             m_hand = new List<Card>();
+            Deactivate();
         }
 
         void OnDisable()
@@ -43,12 +44,28 @@ namespace CardGame
         {
             m_detector.OnCardObjectEnter += EnterCard;
             m_detector.OnCardObjectExit += ExitCard;
+            GameManager.OnActivateCardGame += Activate;
+            GameManager.OnDeactivateCardGame += Deactivate;
         }
-        
+
         private void UnListenEvent()
         {
             m_detector.OnCardObjectEnter -= EnterCard;
             m_detector.OnCardObjectExit -= ExitCard;
+            GameManager.OnActivateCardGame -= Activate;
+            GameManager.OnDeactivateCardGame -= Deactivate;
+        }
+        
+        private void Activate()
+        {
+            m_detector.gameObject.SetActive(true);
+        }
+
+        private void Deactivate()
+        {
+            m_detector.gameObject.SetActive(false);
+            OnReset?.Invoke();
+            m_hand = new List<Card>();
         }
         
         private void EnterCard(CardObject _card)
