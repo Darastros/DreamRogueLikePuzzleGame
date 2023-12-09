@@ -224,6 +224,65 @@ namespace GameSystems
                 neededEntrances, forbiddenEntrances);
             return null;
         }
+        
+        [ContextMenu("Destroy room north")]
+        public void DebugDestroyRoomNorth()
+        {
+            // check if the current room has a north entrance
+            if (m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
+            {   
+                // get the coordinate of the room to the north from the current room
+                Vector2Int northRoomCoordinate = m_currentRoom.Coordinate + North;
+                
+                // then destroy the room in the north
+                DestroyRoom(northRoomCoordinate);
+            }
+            else 
+            {
+                Debug.Log("The current room does not have a north entrance.");
+            }
+        }
+    
+        
+        private void DestroyRoom(Vector2Int _roomCoordinate)
+        {
+            if(m_runtimeRooms.Remove(_roomCoordinate, out Room room))
+            {
+                room.RemoveRuntimeObject();
+                Debug.Log($"Removed room at coordinate {_roomCoordinate}");
+                foreach (Vector2Int valueNeighborsCoordinate in room.m_neighborsCoordinates)
+                {
+                    if(m_runtimeRooms.TryGetValue(valueNeighborsCoordinate, out Room neighbours))
+                    {
+                        if (!IsThereAPathLeadingTo(Vector2Int.zero, neighbours))
+                        {
+                            PropagateDestroy(neighbours.Coordinate);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                Debug.LogError($"Trying to remove a non-existing room at {_roomCoordinate}");
+            }
+        }
+
+        private void PropagateDestroy(Vector2Int _roomCoordinate)
+        {
+            if (_roomCoordinate.x == Int32.MaxValue && _roomCoordinate.y == Int32.MinValue) return;
+            if (m_runtimeRooms.Remove(_roomCoordinate, out Room room))
+            {
+                room.RemoveRuntimeObject();
+                Debug.Log($"Removed room at coordinate {_roomCoordinate}");
+                foreach (Vector2Int valueNeighborsCoordinate in room.m_neighborsCoordinates)
+                {
+                    if (m_runtimeRooms.TryGetValue(valueNeighborsCoordinate, out Room neighbours))
+                    {
+                         PropagateDestroy(neighbours.Coordinate);
+                    }
+                }
+            }
+        }
 
         private bool DoesRoomMeetRequirement(
             RoomDescriptor _room,

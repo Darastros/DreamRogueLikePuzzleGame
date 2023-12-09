@@ -44,6 +44,11 @@ namespace GameSystems
             Debug.Assert(IsValid(), "Invalid room");
         }
 
+        public void RemoveRuntimeObject()
+        {
+            Object.Destroy(m_runtimeGameScene);
+        }
+
         public bool IsValid()
         {
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.Invalid) ||

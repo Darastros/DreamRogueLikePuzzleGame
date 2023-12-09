@@ -2043,7 +2043,7 @@ MonoBehaviour:
   m_collider2D: {fileID: 1687480334}
   PlayerLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 0
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
@@ -2107,7 +2107,7 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 1
+  m_LinearDrag: 10
   m_AngularDrag: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
