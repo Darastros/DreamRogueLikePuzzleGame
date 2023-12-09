@@ -1,21 +1,32 @@
 ﻿using System;
 using System.Collections.Generic;
+using ScriptableObjects;
 using Unity.VisualScripting;
 using UnityEngine;
+using Utils;
+using EventDispatcher = Utils.EventDispatcher;
 
 namespace GameSystems
 {
-    public class DungeonRoomSystem : MonoBehaviour
+    public class DungeonRoomSystem : MonoBehaviour, IEventListener
     {
+        public static DungeonRoomSystem Instance { get; private set; }
+        
+        //Events
+        private EventDispatcher m_eventDispatcher = new EventDispatcher();
+        public EventDispatcher GetEventDispatcher() => m_eventDispatcher;
+
+        //Settings
         public List<RoomDescriptor> roomPool;
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
         
+        
+        // Runtime variables
         private Room m_currentRoom;
-        
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
-        
-        
+
+        // Directions
         private static Vector2Int South = Vector2Int.down;
         private static Vector2Int North = Vector2Int.up;
         private static Vector2Int East = Vector2Int.right;
@@ -26,13 +37,51 @@ namespace GameSystems
         private static Vector2Int NorthEast = North + East ;
         private static Vector2Int NorthWest = North + West ;
 
-        
+        private void Awake()
+        {
+            if (Instance != null && Instance != this)
+            {
+                Destroy(this);
+                return;
+            }
+            Instance = this;
+        }
         private void Start()
         {
-            m_currentRoom = new Room(0, 0, startRoom.GetRandomElem());
-            m_runtimeRooms.Add(m_currentRoom.Coordinate, m_currentRoom);
+            if (startRoom.Count > 0)
+            {
+                m_currentRoom = new Room(0, 0, startRoom.GetRandomElem());
+                m_runtimeRooms.Add(m_currentRoom.Coordinate, m_currentRoom);
+            }
+            m_eventDispatcher.RegisterEvent<OnPlayerOpenDoor>(this, OnPlayerWalkDoor);
         }
 
+        Vector2Int GetRoomCoordinate(RoomEntrance _entrance)
+        {
+            return m_currentRoom.Coordinate + _entrance.GetOffset();
+        }
+        
+        private void OnPlayerWalkDoor(OnPlayerOpenDoor _obj)
+        {
+            Vector2Int where = GetRoomCoordinate(_obj.entrance);
+            Room newRoom = GenerateRoom(where.x, where.y);
+            if (newRoom != null)
+            {
+                m_runtimeRooms.Add(newRoom.Coordinate, newRoom);
+                OnNewRoomGenerated(newRoom);
+            }
+        }
+
+        private void OnNewRoomGenerated(Room _newRoom)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void OnDestroy()
+        {
+            m_eventDispatcher.UnregisterAllEvents(this);
+        }
+        
         private Room GenerateRoom(int _x, int _y)
         {
             GetNeededEntranceConstraints(out var neededEntrances, out var forbiddenEntrances, _x, _y);
