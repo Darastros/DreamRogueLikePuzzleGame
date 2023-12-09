@@ -239,18 +239,6 @@ namespace GameSystems
             return _room.m_entrances.HasFlag(_neededEntrances) && (_room.m_entrances & _forbiddenEntrances) == RoomEntrance.None; 
         }
 
-        private void ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref RoomEntrance _constraint,
-            Vector2Int _coordinate, RoomEntrance _constraintToAdd)
-        {
-            if (m_runtimeRooms.TryGetValue(_coordinate, out Room _room))
-            {
-                if (_room.m_roomDescriptor.m_entrances.HasFlag(_constraintToAdd.GetOpposite()))
-                {
-                    _constraint |= _constraintToAdd;
-                }
-            }
-        }
-
         bool CheckIfRoomHasNeededEntrance(Vector2Int _coordinate, RoomEntrance _neededEntrance)
         {
             if (m_runtimeRooms.TryGetValue(_coordinate, out Room _room))
@@ -261,11 +249,21 @@ namespace GameSystems
             return true;
         }
 
-        private void GetNeededEntranceConstraints(out RoomEntrance _neededEntance, out RoomEntrance _forbiddenEntrances,
+        [ContextMenu("DebugLogRecomputeCurrentConstraint")]
+        private void DebugLogRecomputeCurrentConstraint()
+        {
+            GetNeededEntranceConstraints(out RoomEntrance _neededEntance, out RoomEntrance _forbiddenEntrances,
+                m_currentRoom.Coordinate.x, m_currentRoom.Coordinate.y);
+
+            Debug.Log($"Needed Entrances {_neededEntance} - ForbiddenEntrances {_forbiddenEntrances}");
+            Debug.Log($"Current Entrances {m_currentRoom.m_roomDescriptor.m_entrances}");
+        }
+        
+        private void GetNeededEntranceConstraints(out RoomEntrance _neededRoomEntrance, out RoomEntrance _forbiddenEntrances,
             int _x, int _y)
         {
             Vector2Int coordinate = new(_x, _y);
-            _neededEntance = RoomEntrance.None;
+            _neededRoomEntrance = RoomEntrance.None;
             _forbiddenEntrances = RoomEntrance.None;
 
             if (m_runtimeRooms.TryGetValue(coordinate, out Room _room))
@@ -275,16 +273,73 @@ namespace GameSystems
             }
 
             // North
-            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + North, RoomEntrance.North);
+            if (m_runtimeRooms.TryGetValue(coordinate + North, out _room))
+            {
+                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South))
+                {
+                    _neededRoomEntrance |= RoomEntrance.North;
+                }
+                else
+                {
+                    _forbiddenEntrances |= RoomEntrance.North;
+                }
+            }
+            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + North)))
+            {
+                _neededRoomEntrance |= RoomEntrance.North;
+            }
+
 
             // South
-            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + South, RoomEntrance.South);
+            if (m_runtimeRooms.TryGetValue(coordinate + South, out _room))
+            {
+                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North))
+                {
+                    _neededRoomEntrance |= RoomEntrance.South;
+                }
+                else
+                {
+                    _forbiddenEntrances |= RoomEntrance.South;
+                }
+            }
+            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + South)))
+            {
+                _neededRoomEntrance |= RoomEntrance.South;
+            }
 
             // East
-            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + East, RoomEntrance.East);
+            if (m_runtimeRooms.TryGetValue(coordinate + East, out _room))
+            {
+                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
+                {
+                    _neededRoomEntrance |= RoomEntrance.East;
+                }
+                else
+                {
+                    _forbiddenEntrances |= RoomEntrance.East;
+                }
+            }
+            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + East)))
+            {
+                _neededRoomEntrance |= RoomEntrance.East;
+            }
 
             // West
-            ApplyNeededEntranceConstraintIfRoomAtCoordinate(ref _neededEntance, coordinate + West, RoomEntrance.West);
+            if (m_runtimeRooms.TryGetValue(coordinate + West, out _room))
+            {
+                if (_room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
+                {
+                    _neededRoomEntrance |= RoomEntrance.West;
+                }
+                else
+                {
+                    _forbiddenEntrances |= RoomEntrance.West;
+                }
+            }
+            else if(m_runtimeRooms.Values.Any(_r => _r.m_neighborsCoordinates.Contains(coordinate + West)))
+            {
+                _neededRoomEntrance |= RoomEntrance.West;
+            }
 
 
             // Check if room can appear at position
@@ -297,7 +352,7 @@ namespace GameSystems
 
             //Can appear north
             if (!CheckIfRoomHasNeededEntrance(coordinate + NorthEast, RoomEntrance.West) ||
-                !CheckIfRoomHasNeededEntrance(NorthWest + coordinate, RoomEntrance.East))
+                !CheckIfRoomHasNeededEntrance(coordinate + NorthWest, RoomEntrance.East))
             {
                 _forbiddenEntrances |= RoomEntrance.North;
             }
@@ -316,12 +371,13 @@ namespace GameSystems
                 _forbiddenEntrances |= RoomEntrance.West;
             }
 
-            Debug.Assert(_neededEntance != RoomEntrance.None && _neededEntance != RoomEntrance.Invalid,
-                $"Cannot find room around the targeted position, should never happen => {_neededEntance}");
-            if(_neededEntance != RoomEntrance.None && _neededEntance != RoomEntrance.Invalid)
+            Debug.Assert(_neededRoomEntrance != RoomEntrance.None && _neededRoomEntrance != RoomEntrance.Invalid,
+                $"Cannot find room around the targeted position, should never happen => {_neededRoomEntrance}");
+            if(_neededRoomEntrance != RoomEntrance.None && _neededRoomEntrance != RoomEntrance.Invalid)
                 Debug.DebugBreak();
             Debug.Assert(_forbiddenEntrances != RoomEntrance.Everything,
                 $"This room can't have doors?! => {_forbiddenEntrances}");
         }
     }
 }
+

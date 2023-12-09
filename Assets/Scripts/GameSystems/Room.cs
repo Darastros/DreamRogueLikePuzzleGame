@@ -1,4 +1,5 @@
-﻿using ScriptableObjects;
+﻿using System.Collections.Generic;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace GameSystems
@@ -8,6 +9,7 @@ namespace GameSystems
         public Vector2Int Coordinate { get; }
         public readonly RoomDescriptor m_roomDescriptor;
         public GameObject m_runtimeGameScene = null;
+        public HashSet<Vector2Int> m_neighborsCoordinates = new();
 
         public Room(int _x, int _y, RoomDescriptor _roomDescriptor) : this(new Vector2Int(_x, _y), _roomDescriptor)
         {
@@ -17,6 +19,26 @@ namespace GameSystems
         {
             Coordinate = _coordinate;
             m_roomDescriptor = _roomDescriptor;
+            
+            if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.South))
+            {
+                m_neighborsCoordinates.Add(Vector2Int.down);
+            }
+            
+            if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North))
+            {
+                m_neighborsCoordinates.Add(Vector2Int.up);
+            }
+            
+            if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
+            {
+                m_neighborsCoordinates.Add(Vector2Int.right);
+            }
+            
+            if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
+            {
+                m_neighborsCoordinates.Add(Vector2Int.left);
+            }
             
             Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}");
             Debug.Assert(IsValid(), "Invalid room");
