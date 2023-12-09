@@ -13,7 +13,8 @@ namespace GameSystems
         [SerializeField] private Collider2D m_collider2D;
 
         public RoomEntrance whichEntrance;
-
+        public Transform teleportPos;
+        
         private void OnEnable()
         {
             if(m_collider2D == null)
