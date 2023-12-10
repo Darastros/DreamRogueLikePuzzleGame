@@ -95,7 +95,7 @@ public class PlayerDataManager : MonoBehaviour
     
     #region KeyPart
 
-    public delegate void ActivateKeyPartEventDelegate(string _part);
+    public delegate void ActivateKeyPartEventDelegate(GameRuleType _part);
     public static ActivateKeyPartEventDelegate OnActivateKeyPart;
     private bool m_RPGGameKeyPart = false;
     private bool m_platformerGameKeyPart = false;
@@ -107,7 +107,7 @@ public class PlayerDataManager : MonoBehaviour
         set
         {
             if (!value || instance.m_RPGGameKeyPart) return;
-            OnActivateKeyPart?.Invoke("RPG");
+            OnActivateKeyPart?.Invoke(GameRuleType.RPG);
             instance.m_RPGGameKeyPart = value;
         }
     }
@@ -117,7 +117,7 @@ public class PlayerDataManager : MonoBehaviour
         set
         {
             if (!value || instance.m_platformerGameKeyPart) return;
-            OnActivateKeyPart?.Invoke("Platformer");
+            OnActivateKeyPart?.Invoke(GameRuleType.Platformer);
             instance.m_platformerGameKeyPart = value;
         }
     }
@@ -127,7 +127,7 @@ public class PlayerDataManager : MonoBehaviour
         set
         {
             if (!value || instance.m_cardGameKeyPart) return;
-            OnActivateKeyPart?.Invoke("Card");
+            OnActivateKeyPart?.Invoke(GameRuleType.CardGame);
             instance.m_cardGameKeyPart = value;
         }
     }
