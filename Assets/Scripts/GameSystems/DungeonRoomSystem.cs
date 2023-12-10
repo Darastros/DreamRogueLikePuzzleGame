@@ -129,7 +129,7 @@ namespace GameSystems
             {
                 OnNewRoomAppear(newRoom, _obj.entrance);
             }
-            else if(m_runtimeRooms.Any(_pair => !_pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
+            else if(!m_runtimeRooms.Any(_pair => _pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
             {
                 newRoom = GenerateRoom(where.x, where.y, exitRoom);
                 if (newRoom != null)
