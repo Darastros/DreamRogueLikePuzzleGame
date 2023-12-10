@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public static GameRuleActivation OnDeactivateCardGame;
 
     private static bool m_cardGameActivated = false;
+    public static bool CardGameActivated => m_cardGameActivated;
     [MenuItem("GameManager/Switch Card Game")]
     public static void SwitchCardGame()
     {
@@ -24,6 +25,7 @@ public class GameManager : MonoBehaviour
     }
     
     private static bool m_platformerActivated = false;
+    public static bool PlatformerActivated => m_platformerActivated;
     [MenuItem("GameManager/Switch Platformer Game")]
     public static void SwitchPlatformerGame()
     {
@@ -33,6 +35,7 @@ public class GameManager : MonoBehaviour
     }
     
     private static bool m_rpgActivated = false;
+    public static bool RPGActivated => m_rpgActivated;
     [MenuItem("GameManager/Switch RPG Game")]
     public static void SwitchRPGGame()
     {

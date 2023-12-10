@@ -15,7 +15,8 @@ public class MovementManager : MonoBehaviour
     void OnEnable()
     {
         ListenEvent();
-        DeactivatePlatformerGame();
+        if(GameManager.PlatformerActivated) ActivatePlatformerGame();
+        else DeactivatePlatformerGame();
     }
 
     void OnDisable()

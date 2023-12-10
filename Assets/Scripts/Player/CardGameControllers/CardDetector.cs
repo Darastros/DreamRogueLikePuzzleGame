@@ -24,7 +24,7 @@ namespace CardGame
             }
         }
         
-        private void Start()
+        private void Awake()
         {
             ResetDetector();
         }

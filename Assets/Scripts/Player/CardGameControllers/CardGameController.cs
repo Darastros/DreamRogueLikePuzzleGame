@@ -32,7 +32,8 @@ namespace CardGame
         {
             ListenEvent();
             m_hand = new List<Card>();
-            Deactivate();
+            if(GameManager.CardGameActivated) Activate();
+            else Deactivate();
         }
 
         void OnDisable()
