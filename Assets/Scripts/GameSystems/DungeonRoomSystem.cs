@@ -138,7 +138,7 @@ namespace GameSystems
             }
                 
             m_currentRoom = _newRoom;
-            PrintDebugMap();
+            UpdateDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             if (m_currentRoom.m_runtimeGameScene != null)
@@ -268,6 +268,7 @@ namespace GameSystems
             {
                 Debug.LogError($"Trying to remove a non-existing room at {_roomCoordinate}");
             }
+            UpdateDebugMap();
         }
 
         private bool DoesRoomMeetRequirement(
@@ -455,7 +456,7 @@ namespace GameSystems
             return false;
         }
 
-        private void PrintDebugMap()
+        private void UpdateDebugMap()
         {
             Vector2Int mapSizeMax = Vector2Int.zero;
             Vector2Int mapSizeMin = Vector2Int.zero;
@@ -509,7 +510,6 @@ namespace GameSystems
                 }
                 builder.AppendLine();
             }
-            Debug.Log(builder.ToString());
             if(debugMap)
                 debugMap.text = builder.ToString();
             if (debugCoordinate)
