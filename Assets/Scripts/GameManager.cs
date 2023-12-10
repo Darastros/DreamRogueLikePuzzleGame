@@ -158,6 +158,11 @@ public class GameManager : MonoBehaviour
     [MenuItem("GameManager/CardGame/Remove Card Game from stack")]
     public static void ForceRemoveRpgGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveRPGGameRuleFromStack());
     
+    [MenuItem("GameManager/Hit player")]
+    public static void HitPlayer()
+    {
+        --PlayerDataManager.life;
+    }
     #endif
     #endregion
     public delegate void GameFlow();

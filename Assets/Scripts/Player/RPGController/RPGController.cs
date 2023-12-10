@@ -51,10 +51,21 @@ namespace RPG
         
         private void EnterObject(RPGObject _object)
         {
+            if (_object.coinsNumbers < 0 && m_coins < -_object.coinsNumbers) return;
+            if (_object.keysNumbers < 0 && m_keys < -_object.keysNumbers) return;
+            
             m_coins += _object.coinsNumbers;
-            if (_object.coinsNumbers > 0) OnGetCoins?.Invoke(m_coins, _object.coinsNumbers);
+            if (_object.coinsNumbers != 0) 
+                OnGetCoins?.Invoke(m_coins, _object.coinsNumbers);
+            
             m_keys += _object.keysNumbers;
-            if (_object.keysNumbers > 0) OnGetKeys?.Invoke(m_keys, _object.keysNumbers);
+            if (_object.keysNumbers != 0)
+                OnGetKeys?.Invoke(m_keys, _object.keysNumbers);
+
+            if (_object.lifePoints > 0) PlayerDataManager.life += _object.lifePoints;
+            if (_object.artifact) ++PlayerDataManager.artifact;
+            if (_object.portalPart) PlayerDataManager.rpgGameKeyPart = true;
+            
             _object.PickUp();
             
         }

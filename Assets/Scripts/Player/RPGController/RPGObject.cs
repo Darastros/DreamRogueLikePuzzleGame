@@ -8,6 +8,7 @@ namespace RPG
     {
         [SerializeField] public int keysNumbers = 0;
         [SerializeField] public int coinsNumbers = 0;
+        [SerializeField] public int lifePoints = 0;
         [SerializeField] public bool artifact = false;
         [SerializeField] public bool portalPart = false;
 
