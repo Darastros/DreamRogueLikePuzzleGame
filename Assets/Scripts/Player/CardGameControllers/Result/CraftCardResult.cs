@@ -13,9 +13,9 @@ namespace CardGame
         [SerializeField] private bool m_worldItem = false;
         [SerializeField] private GameObject m_object;
 
-        public void Spawn(Vector3 _position)
+        public virtual void Apply(Vector3 _position)
         {
-            GameObject.Instantiate(m_object, _position, Quaternion.identity);
+            if(m_worldItem && m_object) Instantiate(m_object, _position, Quaternion.identity);
         }
     }
 }

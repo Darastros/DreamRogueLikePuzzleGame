@@ -105,7 +105,7 @@ namespace CardGame
                 {
                     //Debug.Log("Craft : " + result.name);
                     OnCraftSuccess?.Invoke(result);
-                    result.Spawn(transform.position);
+                    result.Apply(transform.position);
                 }
                 else OnCraftFailed?.Invoke();
                 
