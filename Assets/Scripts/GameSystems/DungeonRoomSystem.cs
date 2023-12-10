@@ -490,14 +490,7 @@ namespace GameSystems
                     }
                     else if (m_runtimeRooms.TryGetValue(coordinate, out Room room))
                     {
-                        if (room == m_currentRoom)
-                        {
-                            builder.Append("[\u00a4]");
-                        }
-                        else
-                        {
-                            builder.Append("[*]");
-                        }
+                        builder.Append(room == m_currentRoom ? "[\u00a4]" : "[*]");
                     }
                     else if(existingRooms.Contains(coordinate))
                     {
