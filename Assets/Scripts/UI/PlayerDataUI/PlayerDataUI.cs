@@ -17,6 +17,7 @@ public class PlayerDataUI : MonoBehaviour
     {
         PlayerDataManager.OnHeal += Heal;
         PlayerDataManager.OnHit += Hit;
+        PlayerDataManager.OnDeath += Death;
         PlayerDataManager.OnActivateKeyPart += ActivateKeyPart;
         PlayerDataManager.OnCollectArtifact += CollectArtifact;
         PlayerDataManager.OnUseArtifact += UseArtifact;
@@ -26,6 +27,7 @@ public class PlayerDataUI : MonoBehaviour
     {
         PlayerDataManager.OnHeal -= Heal;
         PlayerDataManager.OnHit -= Hit;
+        PlayerDataManager.OnDeath -= Death;
         PlayerDataManager.OnActivateKeyPart -= ActivateKeyPart;
     }
 
@@ -44,6 +46,11 @@ public class PlayerDataUI : MonoBehaviour
     private void Heal(int _newValue, int _delta)
     {
         UpdateLifeBar(_newValue);
+    }
+
+    private void Death()
+    {
+        UpdateLifeBar(0);
     }
 
     private void UpdateLifeBar(int _newValue)
