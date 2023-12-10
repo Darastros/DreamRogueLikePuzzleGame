@@ -46,10 +46,10 @@ namespace RPG
         
         private void EnterObject(RPGObject _object)
         {
-            m_coins += _object.coinNumber;
-            if (_object.coinNumber > 0) OnGetCoins?.Invoke(m_coins, _object.coinNumber);
-            m_keys += _object.keyNumber;
-            if (_object.keyNumber > 0) OnGetKeys?.Invoke(m_keys, _object.keyNumber);
+            m_coins += _object.coinsNumbers;
+            if (_object.coinsNumbers > 0) OnGetCoins?.Invoke(m_coins, _object.coinsNumbers);
+            m_keys += _object.keysNumbers;
+            if (_object.keysNumbers > 0) OnGetKeys?.Invoke(m_keys, _object.keysNumbers);
             _object.PickUp();
             
         }

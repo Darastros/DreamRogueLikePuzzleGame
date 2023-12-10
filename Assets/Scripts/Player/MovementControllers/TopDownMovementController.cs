@@ -5,7 +5,6 @@ using UnityEngine.Serialization;
 
 namespace MovementControllers
 {
-    [RequireComponent(typeof(Rigidbody2D))]
     public class TopDownMovementController : MonoBehaviour, IMovementController
     {
         [SerializeField] private float m_baseSpeed = 20f;

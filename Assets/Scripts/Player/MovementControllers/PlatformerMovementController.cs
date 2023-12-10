@@ -3,8 +3,7 @@ using UnityEngine;
 
 namespace MovementControllers
 {
-    [RequireComponent(typeof(Rigidbody2D))]
-    public class PlatformerController : MonoBehaviour, IMovementController
+    public class PlatformerMovementController : MonoBehaviour, IMovementController
     {
         [SerializeField] private Rigidbody2D m_rigidbody2D;
         [SerializeField] private CapsuleCollider2D m_collider2D;

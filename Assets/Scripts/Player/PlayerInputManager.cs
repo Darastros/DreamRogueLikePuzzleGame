@@ -1,6 +1,7 @@
 ﻿using System;
 using CardGame;
 using MovementControllers;
+using Platformer;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -8,19 +9,19 @@ namespace Player
 {
     public class PlayerInputManager : MonoBehaviour
     {
-        [SerializeField] private MovementManager m_movementManager;
+        [SerializeField] private PlatformerController platformerController;
         [SerializeField] private CardGameController m_cardGameController;
         
         public void OnMoveInput(InputAction.CallbackContext _ctx)
         {
-            m_movementManager.Move(_ctx.ReadValue<Vector2>());
+            platformerController.Move(_ctx.ReadValue<Vector2>());
         }
         
         public void OnJumpImput(InputAction.CallbackContext _ctx)
         {
             if (_ctx.performed)
             {
-                m_movementManager.Jump(_ctx.ReadValueAsButton());
+                platformerController.Jump(_ctx.ReadValueAsButton());
             }
         }
         
