@@ -21,7 +21,7 @@ namespace RPG
         void OnEnable()
         {
             ListenEvent();
-            if(GameManager.RPGActivated) Activate();
+            if(GameManager.Instance.RPGActivated) Activate();
             else Deactivate();
         }
 
@@ -32,7 +32,7 @@ namespace RPG
 
         void Start()
         {
-            if(GameManager.RPGActivated) Activate();
+            if(GameManager.Instance.RPGActivated) Activate();
             else Deactivate();
         }
         private void ListenEvent()

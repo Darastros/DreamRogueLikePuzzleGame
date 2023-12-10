@@ -26,7 +26,7 @@ namespace Platformer
         void OnEnable()
         {
             ListenEvent();
-            if(GameManager.PlatformerActivated) Activate();
+            if(GameManager.Instance.PlatformerActivated) Activate();
             else Deactivate();
         }
 
@@ -37,7 +37,7 @@ namespace Platformer
 
         void Start()
         {
-            if(GameManager.PlatformerActivated) Activate();
+            if(GameManager.Instance.PlatformerActivated) Activate();
             else Deactivate();
         }
         

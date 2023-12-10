@@ -32,7 +32,7 @@ namespace CardGame
         {
             ListenEvent();
             m_hand = new List<Card>();
-            if(GameManager.CardGameActivated) Activate();
+            if(GameManager.Instance.CardGameActivated) Activate();
             else Deactivate();
         }
 
@@ -43,7 +43,7 @@ namespace CardGame
 
         void Start()
         {
-            if(GameManager.CardGameActivated) Activate();
+            if(GameManager.Instance.CardGameActivated) Activate();
             else Deactivate();
         }
 

@@ -1,50 +1,117 @@
-using System.Collections;
-using System.Collections.Generic;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
+
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    public delegate void GameRuleActivation();
+    
+    //Singleton pattern
+    public static GameManager Instance
+    {
+        get
+        {
+            if (_instance != null) return _instance;
+            GameObject go = new GameObject();
+            _instance = go.AddComponent<GameManager>();
+            return _instance;
+        }
+        private set => _instance = value;
+    }
+    private static GameManager _instance;
 
+    
+    // Events (static to please Becher)
+    public delegate void GameRuleActivation();
+    
     public static GameRuleActivation OnActivateRPGGame;
     public static GameRuleActivation OnDeactivateRPGGame;
     public static GameRuleActivation OnActivatePlatformerGame;
     public static GameRuleActivation OnDeactivatePlatformerGame;
     public static GameRuleActivation OnActivateCardGame;
     public static GameRuleActivation OnDeactivateCardGame;
+    
+    // Game rule variables
+    private bool m_platformerActivated = false;
+    public bool PlatformerActivated => m_platformerActivated;
+    
+    private bool m_cardGameActivated = false;
+    public bool CardGameActivated => m_cardGameActivated;
+    
+    private bool m_rpgActivated = false;
+    public bool RPGActivated => m_rpgActivated;
+    
+    
 
-    private static bool m_cardGameActivated = false;
-    public static bool CardGameActivated => m_cardGameActivated;
+    private void Awake()
+    {
+        if (_instance != null && _instance != this)
+        {
+            Destroy(this);
+            return;
+        }
+
+        _instance = this;
+    }
+
+
+    #region DebugEditor
+    #if UNITY_EDITOR
     [MenuItem("GameManager/Switch Card Game")]
     public static void SwitchCardGame()
     {
-        m_cardGameActivated = !m_cardGameActivated;
-        if(m_cardGameActivated) OnActivateCardGame?.Invoke();
-        else OnDeactivateCardGame?.Invoke();
+        if (Application.isPlaying)
+        {
+            Instance.m_cardGameActivated = !Instance.m_cardGameActivated;
+            if(Instance.m_cardGameActivated) OnActivateCardGame?.Invoke();
+            else OnDeactivateCardGame?.Invoke();
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Are you ok?","You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am"); 
+        }
     }
+    #endif
     
-    private static bool m_platformerActivated = false;
-    public static bool PlatformerActivated => m_platformerActivated;
+   
+    
+    
+#if UNITY_EDITOR
     [MenuItem("GameManager/Switch Platformer Game")]
     public static void SwitchPlatformerGame()
     {
-        m_platformerActivated = !m_platformerActivated;
-        if(m_platformerActivated) OnActivatePlatformerGame?.Invoke();
-        else OnDeactivatePlatformerGame?.Invoke();
+        if (Application.isPlaying)
+        {
+            Instance.m_platformerActivated = !Instance.m_platformerActivated;
+            if (Instance.m_platformerActivated) OnActivatePlatformerGame?.Invoke();
+            else OnDeactivatePlatformerGame?.Invoke();
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Are you ok?","You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am"); 
+        }
     }
+#endif
     
-    private static bool m_rpgActivated = false;
-    public static bool RPGActivated => m_rpgActivated;
+#if UNITY_EDITOR
     [MenuItem("GameManager/Switch RPG Game")]
     public static void SwitchRPGGame()
     {
-        m_rpgActivated = !m_rpgActivated;
-        if(m_rpgActivated) OnActivateRPGGame?.Invoke();
-        else OnDeactivateRPGGame?.Invoke();
+        if (Application.isPlaying)
+        {
+            Instance.m_rpgActivated = !Instance.m_rpgActivated;
+            if (Instance.m_rpgActivated) OnActivateRPGGame?.Invoke();
+            else OnDeactivateRPGGame?.Invoke();
+        }
+        else
+        {
+            EditorUtility.DisplayDialog("Are you ok?",
+                "You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am");
+        }
     }
-    
-    
+#endif
+    #endregion
     public delegate void GameFlow();
 
     public static GameFlow OnGamePause;
