@@ -2,7 +2,12 @@
 using UnityEditor;
 #endif
 
+using System;
+using System.Collections.Generic;
+using GameSystems;
+using Unity.Mathematics;
 using UnityEngine;
+using Utils;
 
 public class GameManager : MonoBehaviour
 {
@@ -22,28 +27,34 @@ public class GameManager : MonoBehaviour
     private static GameManager _instance;
 
     
-    // Events (static to please Becher)
+    // Events
     public delegate void GameRuleActivation();
     
     public static GameRuleActivation OnActivateRPGGame;
     public static GameRuleActivation OnDeactivateRPGGame;
+    
     public static GameRuleActivation OnActivatePlatformerGame;
     public static GameRuleActivation OnDeactivatePlatformerGame;
+    
     public static GameRuleActivation OnActivateCardGame;
     public static GameRuleActivation OnDeactivateCardGame;
     
     // Game rule variables
-    private bool m_platformerActivated = false;
-    public bool PlatformerActivated => m_platformerActivated;
-    
-    private bool m_cardGameActivated = false;
-    public bool CardGameActivated => m_cardGameActivated;
-    
-    private bool m_rpgActivated = false;
-    public bool RPGActivated => m_rpgActivated;
+    private uint m_platformerRuleStack = 0;
+    public bool PlatformerActivated => m_platformerRuleStack > 0;
     
     
+    private uint m_cardGameRuleStack = 0;
+    public bool CardGameActivated => m_cardGameRuleStack > 0;
+    
+   
+    private uint m_RPGRuleStack = 0;
+    public bool RPGActivated => m_RPGRuleStack > 0;
+    
+    // Internal
+    public delegate void Callback();
 
+    
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -54,63 +65,95 @@ public class GameManager : MonoBehaviour
 
         _instance = this;
     }
+    
+    public void AddRPGGameRuleToStack()
+    {
+        ++m_RPGRuleStack;
+        if (m_RPGRuleStack == 1)
+        {
+            OnActivateRPGGame.Invoke();
+        }
+    }
 
+    public void RemoveRPGGameRuleFromStack()
+    {
+        m_RPGRuleStack = math.max(0, m_RPGRuleStack - 1);
+        if (m_RPGRuleStack == 0)
+        {
+            OnDeactivateRPGGame.Invoke();
+        }
+    }
+
+    public void AddPlatformerGameToStack()
+    {
+        ++m_platformerRuleStack;
+        if (m_platformerRuleStack == 1)
+        {
+            OnActivatePlatformerGame.Invoke();
+        }
+    }
+
+    public void RemovePlatformerGameFromStack()
+    {
+        m_platformerRuleStack = math.max(0, m_platformerRuleStack - 1);
+        if (m_platformerRuleStack == 0)
+        {
+            OnDeactivatePlatformerGame.Invoke();
+        }
+    }
+
+    public void AddCardGameToStack()
+    {
+        ++m_cardGameRuleStack;
+        if (m_cardGameRuleStack == 1)
+        {
+            OnActivateCardGame.Invoke();
+        }
+    }
+
+    public void RemoveCardGameFromStack()
+    {
+        m_cardGameRuleStack = math.max(0, m_cardGameRuleStack - 1);
+        if (m_cardGameRuleStack == 0)
+        {
+            OnDeactivateCardGame.Invoke();
+        }
+    }
 
     #region DebugEditor
     #if UNITY_EDITOR
-    [MenuItem("GameManager/Switch Card Game")]
-    public static void SwitchCardGame()
+
+    private static void ExecuteLambdaIfApplicationPlaying(Callback _function, string _dialogTitle = "Are you ok?", string _errorMessage = "You're trying to switch game rules while not in Play mod, are you drunk?", string _validate = "Yes I am")
     {
         if (Application.isPlaying)
         {
-            Instance.m_cardGameActivated = !Instance.m_cardGameActivated;
-            if(Instance.m_cardGameActivated) OnActivateCardGame?.Invoke();
-            else OnDeactivateCardGame?.Invoke();
+            _function.Invoke();
         }
         else
         {
-            EditorUtility.DisplayDialog("Are you ok?","You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am"); 
+            EditorUtility.DisplayDialog(_dialogTitle,_errorMessage, _validate); 
         }
     }
+
+    [MenuItem("GameManager/CardGame/Add Card Game to stack")]
+    public static void ForceAddCardGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddCardGameToStack());
+    
+    [MenuItem("GameManager/CardGame/Remove Card Game from stack")]
+    public static void ForceRemoveCardGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveCardGameFromStack());
+    
+    [MenuItem("GameManager/Platformer/Add Platformer Rule to stack")]
+    public static void ForceAddPlatformerGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddPlatformerGameToStack());
+    
+    [MenuItem("GameManager/Platformer/Remove Platformer Rule from stack")]
+    public static void ForceRemovePlatformerGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemovePlatformerGameFromStack());
+    
+    [MenuItem("GameManager/RPG/Add RPG System to stack")]
+    public static void ForceAddRpgGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddRPGGameRuleToStack());
+    
+    [MenuItem("GameManager/CardGame/Remove Card Game from stack")]
+    public static void ForceRemoveRpgGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveRPGGameRuleFromStack());
+    
     #endif
-    
-   
-    
-    
-#if UNITY_EDITOR
-    [MenuItem("GameManager/Switch Platformer Game")]
-    public static void SwitchPlatformerGame()
-    {
-        if (Application.isPlaying)
-        {
-            Instance.m_platformerActivated = !Instance.m_platformerActivated;
-            if (Instance.m_platformerActivated) OnActivatePlatformerGame?.Invoke();
-            else OnDeactivatePlatformerGame?.Invoke();
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Are you ok?","You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am"); 
-        }
-    }
-#endif
-    
-#if UNITY_EDITOR
-    [MenuItem("GameManager/Switch RPG Game")]
-    public static void SwitchRPGGame()
-    {
-        if (Application.isPlaying)
-        {
-            Instance.m_rpgActivated = !Instance.m_rpgActivated;
-            if (Instance.m_rpgActivated) OnActivateRPGGame?.Invoke();
-            else OnDeactivateRPGGame?.Invoke();
-        }
-        else
-        {
-            EditorUtility.DisplayDialog("Are you ok?",
-                "You're trying to switch game rules while not in Play mod, are you drunk?", "Yes I am");
-        }
-    }
-#endif
     #endregion
     public delegate void GameFlow();
 
