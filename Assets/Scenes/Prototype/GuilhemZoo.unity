@@ -472,6 +472,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player
       objectReference: {fileID: 0}
+    - target: {fileID: 8117532525379099905, guid: e95abd2401ad4264c9f20707358d9d7a, type: 3}
+      propertyPath: m_TagString
+      value: Player
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -905,6 +909,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 28a2f4a39b589964fabd23e6f2e43a36, type: 2}
   exitRoom:
   - {fileID: 11400000, guid: 88f72b650f199e3429c2c81b22eafa15, type: 2}
+  forceExitRoomToBeFirstRoom: 0
   debugMap: {fileID: 821883509}
   debugCoordinate: {fileID: 367706531}
 --- !u!4 &416105318
@@ -916,7 +921,7 @@ Transform:
   m_GameObject: {fileID: 416105316}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.696491, y: -0.70146453, z: -0.17373914}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1702,6 +1707,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformerController: {fileID: 0}
   m_cardGameController: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!114 &1249849708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2387,6 +2395,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   platformerController: {fileID: 0}
   m_cardGameController: {fileID: 0}
+  PlayerLayer:
+    serializedVersion: 2
+    m_Bits: 6
 --- !u!114 &1687480333
 MonoBehaviour:
   m_ObjectHideFlags: 0

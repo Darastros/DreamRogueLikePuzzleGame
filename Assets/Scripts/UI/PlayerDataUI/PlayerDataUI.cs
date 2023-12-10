@@ -31,13 +31,25 @@ public class PlayerDataUI : MonoBehaviour
         PlayerDataManager.OnActivateKeyPart -= ActivateKeyPart;
     }
 
-    private void ActivateKeyPart(string _part)
+    private void ActivateKeyPart(GameRuleType _part)
     {
-        if(_part == "RPG") m_RPGKeyPart.SetTrigger("Activate");
-        else if(_part == "Card") m_cardGameKeyPart.SetTrigger("Activate");
-        else m_platformerKeyPart.SetTrigger("Activate");
+        switch (_part)
+        {
+            case GameRuleType.RPG:
+                m_RPGKeyPart.SetTrigger("Activate");
+                break;
+            case GameRuleType.CardGame:
+                m_cardGameKeyPart.SetTrigger("Activate");
+                break;
+            case GameRuleType.Platformer:
+                m_platformerKeyPart.SetTrigger("Activate");
+                break;
+            default:
+                Debug.LogError($"Cannot activate Key part {_part}");
+                break;
+        }
     }
-
+    
     private void Hit(int _newValue, int _delta)
     {
         UpdateLifeBar(_newValue);

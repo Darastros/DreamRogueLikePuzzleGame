@@ -129,7 +129,7 @@ namespace GameSystems
             {
                 OnNewRoomAppear(newRoom, _obj.entrance);
             }
-            else if(m_runtimeRooms.Any(_pair => !_pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
+            else if(!m_runtimeRooms.Any(_pair => _pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
             {
                 newRoom = GenerateRoom(where.x, where.y, exitRoom);
                 if (newRoom != null)
@@ -250,6 +250,23 @@ namespace GameSystems
             Debug.AssertFormat(false, "Cannot find any room that meets the {0} with those forbidden entrances {1}",
                 neededEntrances, forbiddenEntrances);
             return null;
+        }
+        
+        public void CloseRoom(RoomEntrance _whichEntrance)
+        {
+            // check if the current room has a north entrance
+            if (m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(_whichEntrance)) 
+            {   
+                // get the coordinate of the room to the north from the current room
+                Vector2Int coordinate = m_currentRoom.Coordinate + _whichEntrance.GetOffset();
+                
+                // then destroy the room in the north
+                DestroyRoom(coordinate);
+            }
+            else
+            {
+                Debug.LogError($"Trying to close door {_whichEntrance} but this room is suppose to only have {m_currentRoom.m_roomDescriptor.m_entrances}");
+            }
         }
         
         [ContextMenu("Destroy room north")]
