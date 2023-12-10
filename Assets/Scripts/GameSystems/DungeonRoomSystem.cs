@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Player;
 using ScriptableObjects;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
@@ -35,6 +38,8 @@ namespace GameSystems
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
 
+        public TextMeshProUGUI debugMap;
+        public TextMeshProUGUI debugCoordinate;
 
         // Runtime variables
         private Room m_currentRoom;
@@ -120,7 +125,7 @@ namespace GameSystems
                 }
                 else
                 {
-                    Debug.Assert(false, "Failed to generate the ROOM!");
+                    Debug.LogError($"Failed to generate the ROOM! at position: {where}");
                 }
             }
         }
@@ -133,7 +138,7 @@ namespace GameSystems
             }
                 
             m_currentRoom = _newRoom;
-
+            UpdateDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             if (m_currentRoom.m_runtimeGameScene != null)
@@ -242,8 +247,6 @@ namespace GameSystems
                 Debug.Log("The current room does not have a north entrance.");
             }
         }
-    
-        
         private void DestroyRoom(Vector2Int _roomCoordinate)
         {
             if(m_runtimeRooms.Remove(_roomCoordinate, out Room room))
@@ -256,7 +259,7 @@ namespace GameSystems
                     {
                         if (!IsThereAPathLeadingTo(Vector2Int.zero, neighbours))
                         {
-                            PropagateDestroy(neighbours.Coordinate);
+                            DestroyRoom(neighbours.Coordinate);
                         }
                     }
                 }
@@ -265,23 +268,7 @@ namespace GameSystems
             {
                 Debug.LogError($"Trying to remove a non-existing room at {_roomCoordinate}");
             }
-        }
-
-        private void PropagateDestroy(Vector2Int _roomCoordinate)
-        {
-            if (_roomCoordinate.x == Int32.MaxValue && _roomCoordinate.y == Int32.MinValue) return;
-            if (m_runtimeRooms.Remove(_roomCoordinate, out Room room))
-            {
-                room.RemoveRuntimeObject();
-                Debug.Log($"Removed room at coordinate {_roomCoordinate}");
-                foreach (Vector2Int valueNeighborsCoordinate in room.m_neighborsCoordinates)
-                {
-                    if (m_runtimeRooms.TryGetValue(valueNeighborsCoordinate, out Room neighbours))
-                    {
-                         PropagateDestroy(neighbours.Coordinate);
-                    }
-                }
-            }
+            UpdateDebugMap();
         }
 
         private bool DoesRoomMeetRequirement(
@@ -433,15 +420,15 @@ namespace GameSystems
                 $"This room can't have doors?! => {_forbiddenEntrances}");
         }
         
-        bool IsThereAPathLeadingTo(Vector2Int targetCoordinates, Room startingRoom)
+        bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom)
         {
             var visitedRooms = new HashSet<Room>(); 
             var roomsToVisit = new Stack<Room>();
 
-            roomsToVisit.Push(startingRoom);
-            void AddAllUnvisitedNeighborsToVisitStack(Room currentRoom)
+            roomsToVisit.Push(_startingRoom);
+            void AddAllUnvisitedNeighborsToVisitStack(Room _currentRoom)
             {
-                foreach (var neighborCoordinate in currentRoom.m_neighborsCoordinates)
+                foreach (var neighborCoordinate in _currentRoom.m_neighborsCoordinates)
                 {
                     if (m_runtimeRooms.TryGetValue(neighborCoordinate, out Room neighborRoom) && !visitedRooms.Contains(neighborRoom))
                     {
@@ -451,14 +438,14 @@ namespace GameSystems
             }
 
             // Initial population from the starting room
-            AddAllUnvisitedNeighborsToVisitStack(startingRoom);
+            AddAllUnvisitedNeighborsToVisitStack(_startingRoom);
     
             while (roomsToVisit.TryPop(out Room currentRoom))
             {
                 // Mark room as visited when it's popped (ensures it won't be visited again)
                 visitedRooms.Add(currentRoom);
 
-                if (currentRoom.Coordinate == targetCoordinates)
+                if (currentRoom.Coordinate == _targetCoordinates)
                 {
                     return true;
                 }
@@ -466,8 +453,67 @@ namespace GameSystems
                 // Visit all unvisited neighbor rooms
                 AddAllUnvisitedNeighborsToVisitStack(currentRoom);
             }
-
             return false;
+        }
+
+        private void UpdateDebugMap()
+        {
+            Vector2Int mapSizeMax = Vector2Int.zero;
+            Vector2Int mapSizeMin = Vector2Int.zero;
+
+            HashSet<Vector2Int> existingRooms = new HashSet<Vector2Int>();
+            foreach (var (key, room) in m_runtimeRooms)
+            {
+                foreach (Vector2Int roomNeighborsCoordinate in room.m_neighborsCoordinates)
+                {
+                    mapSizeMax.x = math.max(roomNeighborsCoordinate.x, mapSizeMax.x);
+                    mapSizeMax.y = math.max(roomNeighborsCoordinate.y, mapSizeMax.y);
+                    
+                    mapSizeMin.x = math.min(roomNeighborsCoordinate.x, mapSizeMin.x);
+                    mapSizeMin.y = math.min(roomNeighborsCoordinate.y, mapSizeMin.y);
+                    existingRooms.Add(roomNeighborsCoordinate);
+                }
+            }
+
+            StringBuilder builder = new StringBuilder();
+            for (int y = mapSizeMax.y; y >= mapSizeMin.y; y--)
+            {
+                for (int x = mapSizeMin.x; x <= mapSizeMax.x; x++)
+                {
+                    Vector2Int coordinate = new Vector2Int(x, y);
+                    if (coordinate == Vector2Int.zero)
+                    {
+                        if (coordinate == Vector2Int.zero)
+                        {
+                            builder.Append("[S]");
+                        }
+                    }
+                    else if (m_runtimeRooms.TryGetValue(coordinate, out Room room))
+                    {
+                        if (room == m_currentRoom)
+                        {
+                            builder.Append("[\u00a4]");
+                        }
+                        else
+                        {
+                            builder.Append("[*]");
+                        }
+                    }
+                    else if(existingRooms.Contains(coordinate))
+                    {
+                        builder.Append("[?]");
+                    }
+                    else
+                    {
+                        builder.Append("[ ]");
+                    }
+                }
+                builder.AppendLine();
+            }
+            if(debugMap)
+                debugMap.text = builder.ToString();
+            if (debugCoordinate)
+                debugCoordinate.text = m_currentRoom.Coordinate.ToString();
         }
     }
 }
