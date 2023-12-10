@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using Player;
 using ScriptableObjects;
+using TMPro;
+using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
@@ -35,6 +38,8 @@ namespace GameSystems
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
 
+        public TextMeshProUGUI debugMap;
+        public TextMeshProUGUI debugCoordinate;
 
         // Runtime variables
         private Room m_currentRoom;
@@ -133,7 +138,7 @@ namespace GameSystems
             }
                 
             m_currentRoom = _newRoom;
-
+            PrintDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             if (m_currentRoom.m_runtimeGameScene != null)
@@ -447,8 +452,68 @@ namespace GameSystems
                 // Visit all unvisited neighbor rooms
                 AddAllUnvisitedNeighborsToVisitStack(currentRoom);
             }
-
             return false;
+        }
+
+        private void PrintDebugMap()
+        {
+            Vector2Int mapSizeMax = Vector2Int.zero;
+            Vector2Int mapSizeMin = Vector2Int.zero;
+
+            HashSet<Vector2Int> existingRooms = new HashSet<Vector2Int>();
+            foreach (var (key, room) in m_runtimeRooms)
+            {
+                foreach (Vector2Int roomNeighborsCoordinate in room.m_neighborsCoordinates)
+                {
+                    mapSizeMax.x = math.max(roomNeighborsCoordinate.x, mapSizeMax.x);
+                    mapSizeMax.y = math.max(roomNeighborsCoordinate.y, mapSizeMax.y);
+                    
+                    mapSizeMin.x = math.min(roomNeighborsCoordinate.x, mapSizeMin.x);
+                    mapSizeMin.y = math.min(roomNeighborsCoordinate.y, mapSizeMin.y);
+                    existingRooms.Add(roomNeighborsCoordinate);
+                }
+            }
+
+            StringBuilder builder = new StringBuilder();
+            for (int y = mapSizeMax.y; y >= mapSizeMin.y; y--)
+            {
+                for (int x = mapSizeMin.x; x <= mapSizeMax.x; x++)
+                {
+                    Vector2Int coordinate = new Vector2Int(x, y);
+                    if (coordinate == Vector2Int.zero)
+                    {
+                        if (coordinate == Vector2Int.zero)
+                        {
+                            builder.Append("[S]");
+                        }
+                    }
+                    else if (m_runtimeRooms.TryGetValue(coordinate, out Room room))
+                    {
+                        if (room == m_currentRoom)
+                        {
+                            builder.Append("[\u00a4]");
+                        }
+                        else
+                        {
+                            builder.Append("[*]");
+                        }
+                    }
+                    else if(existingRooms.Contains(coordinate))
+                    {
+                        builder.Append("[?]");
+                    }
+                    else
+                    {
+                        builder.Append("[ ]");
+                    }
+                }
+                builder.AppendLine();
+            }
+            Debug.Log(builder.ToString());
+            if(debugMap)
+                debugMap.text = builder.ToString();
+            if (debugCoordinate)
+                debugCoordinate.text = m_currentRoom.Coordinate.ToString();
         }
     }
 }
