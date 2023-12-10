@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class PlayerDataUI : MonoBehaviour
 {
     [SerializeField] private List<Image> m_hearts;
+    [SerializeField] private TextMeshProUGUI m_artifactNumberText;
     [SerializeField] private Sprite m_heartSpriteFull;
     [SerializeField] private Sprite m_heartSpriteEmpty;
     [SerializeField] private Animator m_RPGKeyPart;
@@ -16,8 +18,10 @@ public class PlayerDataUI : MonoBehaviour
         PlayerDataManager.OnHeal += Heal;
         PlayerDataManager.OnHit += Hit;
         PlayerDataManager.OnActivateKeyPart += ActivateKeyPart;
+        PlayerDataManager.OnCollectArtifact += CollectArtifact;
+        PlayerDataManager.OnUseArtifact += UseArtifact;
     }
-
+    
     private void OnDisable()
     {
         PlayerDataManager.OnHeal -= Heal;
@@ -53,4 +57,16 @@ public class PlayerDataUI : MonoBehaviour
             else m_hearts[i].sprite = m_heartSpriteEmpty;
         }
     }
+    
+
+    private void CollectArtifact(int _newValue, int _delta)
+    {
+        m_artifactNumberText.text = (_newValue <= 9 ? "0" : "") + _newValue;
+    }
+
+    private void UseArtifact(int _newValue, int _delta)
+    {
+        m_artifactNumberText.text = (_newValue <= 9 ? "0" : "") + _newValue;
+    }
+
 }

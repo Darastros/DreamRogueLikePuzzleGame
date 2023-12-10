@@ -33,7 +33,7 @@ public class PlayerDataManager : MonoBehaviour
         set
         {
             int clampValue = math.clamp(value, 0, instance.m_maxLife);
-            int delta = clampValue - instance.m_life;
+            int delta = value - instance.m_life;
             
             if (delta == 0) return;
              if (delta > 0)
@@ -132,4 +132,10 @@ public class PlayerDataManager : MonoBehaviour
         }
     }
     #endregion
+
+
+    public void Awake()
+    {
+        m_life = m_maxLife;
+    }
 }

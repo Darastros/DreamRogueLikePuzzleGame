@@ -44,6 +44,11 @@ public class GameManager : MonoBehaviour
         else OnDeactivateRPGGame?.Invoke();
     }
     
+    [MenuItem("GameManager/Hit player")]
+    public static void HitPlayer()
+    {
+        --PlayerDataManager.life;
+    }
     
     public delegate void GameFlow();
 

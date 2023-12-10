@@ -8,6 +8,7 @@ namespace Platformer
 {
     public class PlatformerController : MonoBehaviour
     {
+        [SerializeField] private int m_strawberryNeededToGetKeyPart = 10;
         [SerializeField] private PlatformerDetector m_detector;
         private int m_strawberries = 0;
         
@@ -59,6 +60,10 @@ namespace Platformer
         {
             m_strawberries += _object.strawberriesNumbers;
             if (_object.strawberriesNumbers > 0) OnGetStrawberries?.Invoke(m_strawberries, _object.strawberriesNumbers);
+            if (_object.lifePoints > 0) PlayerDataManager.life += _object.lifePoints;
+            if (_object.artifact) ++PlayerDataManager.artifact;
+            
+            if (m_strawberries >= m_strawberryNeededToGetKeyPart) PlayerDataManager.platformerGameKeyPart = true;
             _object.PickUp();
         }
 

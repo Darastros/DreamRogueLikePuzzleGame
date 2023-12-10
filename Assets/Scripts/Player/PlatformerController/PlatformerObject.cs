@@ -9,7 +9,6 @@ namespace Platformer
         [SerializeField] public int strawberriesNumbers = 0;
         [SerializeField] public int lifePoints = 0;
         [SerializeField] public bool artifact = false;
-        [SerializeField] public bool portalPart = false;
         private Animator m_animator;
 
         private void Awake()
