@@ -26,26 +26,32 @@ namespace Platformer
         void OnEnable()
         {
             ListenEvent();
-            if(GameManager.PlatformerActivated) ActivatePlatformerGame();
-            else DeactivatePlatformerGame();
+            if(GameManager.PlatformerActivated) Activate();
+            else Deactivate();
         }
 
         void OnDisable()
         {
             UnListenEvent();
         }
+
+        void Start()
+        {
+            if(GameManager.PlatformerActivated) Activate();
+            else Deactivate();
+        }
         
         private void ListenEvent()
         {
-            GameManager.OnActivatePlatformerGame += ActivatePlatformerGame;
-            GameManager.OnDeactivatePlatformerGame += DeactivatePlatformerGame;
+            GameManager.OnActivatePlatformerGame += Activate;
+            GameManager.OnDeactivatePlatformerGame += Deactivate;
             m_detector.OnPlatformerObjectEnter += EnterObject;
         }
 
         private void UnListenEvent()
         {
-            GameManager.OnActivatePlatformerGame -= ActivatePlatformerGame;
-            GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformerGame;
+            GameManager.OnActivatePlatformerGame -= Activate;
+            GameManager.OnDeactivatePlatformerGame -= Deactivate;
             m_detector.OnPlatformerObjectEnter -= EnterObject;
         }
 
@@ -56,7 +62,7 @@ namespace Platformer
             _object.PickUp();
         }
 
-        private void ActivatePlatformerGame()
+        private void Activate()
         {
             platformerMovementController.enabled = true;
             m_topDownController.enabled = false;
@@ -67,7 +73,7 @@ namespace Platformer
             OnActivate?.Invoke();
         }
 
-        private void DeactivatePlatformerGame()
+        private void Deactivate()
         {
             platformerMovementController.enabled = false;
             m_topDownController.enabled = true;

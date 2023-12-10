@@ -21,6 +21,10 @@ namespace RPG
         public void PickUp()
         {
             m_animator.SetTrigger("PickUp");
+            if (TryGetComponent(out Rigidbody2D _rigidbody))
+            {
+                _rigidbody.isKinematic = true;
+            }
         }
 
         public void Destroy()

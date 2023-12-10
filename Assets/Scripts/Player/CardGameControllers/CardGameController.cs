@@ -41,6 +41,12 @@ namespace CardGame
             UnListenEvent();
         }
 
+        void Start()
+        {
+            if(GameManager.CardGameActivated) Activate();
+            else Deactivate();
+        }
+
         private void ListenEvent()
         {
             m_detector.OnCardObjectEnter += EnterCard;
