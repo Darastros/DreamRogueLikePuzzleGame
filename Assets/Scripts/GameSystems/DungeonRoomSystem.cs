@@ -134,21 +134,14 @@ namespace GameSystems
         {
             if (m_currentRoom != null)
             {
-                m_currentRoom.m_runtimeGameScene.SetActive(false);
+                m_currentRoom.HideRoom();
             }
                 
             m_currentRoom = _newRoom;
             UpdateDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
-            if (m_currentRoom.m_runtimeGameScene != null)
-            {
-                m_currentRoom.m_runtimeGameScene.SetActive(true);
-            }
-            else
-            {
-                m_currentRoom.m_runtimeGameScene = Instantiate(m_currentRoom.m_roomDescriptor.m_prefab);
-            }
+            m_currentRoom.ActivateRoom();
 
             #if UNITY_EDITOR
             ValidateCurrentRoom();
@@ -251,7 +244,7 @@ namespace GameSystems
         {
             if(m_runtimeRooms.Remove(_roomCoordinate, out Room room))
             {
-                room.RemoveRuntimeObject();
+                room.Destroy();
                 Debug.Log($"Removed room at coordinate {_roomCoordinate}");
                 foreach (Vector2Int valueNeighborsCoordinate in room.m_neighborsCoordinates)
                 {

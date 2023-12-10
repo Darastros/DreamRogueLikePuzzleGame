@@ -2,12 +2,17 @@
 using UnityEditor;
 #endif
 
-using System;
-using System.Collections.Generic;
-using GameSystems;
 using Unity.Mathematics;
 using UnityEngine;
-using Utils;
+
+
+public enum GameRuleType
+{
+    None,
+    Platformer,
+    RPG,
+    CardGame
+}
 
 public class GameManager : MonoBehaviour
 {
