@@ -159,13 +159,17 @@ namespace MovementControllers
             Physics2D.queriesStartInColliders = false;
 
             // Ground and Ceiling
-            Bounds bounds = m_collider2D.bounds;
+            Bounds bounds = m_collider2D.bounds ;
             Vector2 size = m_collider2D.size;
             CapsuleDirection2D direction = m_collider2D.direction;
             
-            bool groundHit = Physics2D.CapsuleCast(bounds.center, size, direction, 0, Vector2.down, GrounderDistance, ~PlayerLayer);
-            bool ceilingHit = Physics2D.CapsuleCast(bounds.center, size, direction, 0, Vector2.up, GrounderDistance, ~PlayerLayer);
-
+            RaycastHit2D[] hitRes = new RaycastHit2D[3];
+            var rayGround = m_collider2D.Cast(Vector2.down, hitRes, GrounderDistance);
+            bool groundHit = rayGround > 0;
+            
+            var rayUp =  m_collider2D.Cast(Vector2.up, hitRes, GrounderDistance);
+            bool ceilingHit = rayUp > 0;
+           
             // Hit a Ceiling
             if (ceilingHit) m_frameVelocity.y = Mathf.Min(0, m_frameVelocity.y);
 

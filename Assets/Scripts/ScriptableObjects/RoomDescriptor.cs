@@ -8,6 +8,8 @@ namespace ScriptableObjects
     {
         public RoomEntrance m_entrances;
         public GameObject m_prefab;
+
+        public GameRuleType m_gameRuleType = GameRuleType.None;
         
         public bool m_registerToRoomPool = true;
         public bool m_registerToStartPool;

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using ScriptableObjects;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 namespace GameSystems
 {
@@ -44,11 +45,54 @@ namespace GameSystems
             Debug.Assert(IsValid(), "Invalid room");
         }
 
-        public void RemoveRuntimeObject()
+        public void ActivateRoom()
         {
-            Object.Destroy(m_runtimeGameScene);
+            if (m_runtimeGameScene == null) // If initial spawn
+            {
+                m_runtimeGameScene = GameObject.Instantiate(m_roomDescriptor.m_prefab, DungeonRoomSystem.Instance.transform);
+
+                switch (m_roomDescriptor.m_gameRuleType)
+                { 
+                    case GameRuleType.Platformer:
+                        GameManager.Instance.AddPlatformerGameToStack();
+                        break;
+                    case GameRuleType.RPG:
+                        GameManager.Instance.AddRPGGameRuleToStack();
+                        break;
+                    case GameRuleType.CardGame:
+                        GameManager.Instance.AddCardGameToStack();
+                        break;
+                }
+            }
+            else
+            {
+                m_runtimeGameScene.SetActive(true);
+            }
         }
 
+        public void HideRoom()
+        {
+            m_runtimeGameScene.SetActive(false);
+        }
+        
+        public void Destroy()
+        {
+            switch (m_roomDescriptor.m_gameRuleType)
+            {
+                case GameRuleType.Platformer:
+                    GameManager.Instance.RemovePlatformerGameFromStack();
+                    break;
+                case GameRuleType.RPG:
+                    GameManager.Instance.RemoveRPGGameRuleFromStack();
+                    break;
+                case GameRuleType.CardGame:
+                    GameManager.Instance.RemoveCardGameFromStack();
+                    break;
+            }
+            Object.Destroy(m_runtimeGameScene);
+            m_runtimeGameScene = null;
+        }
+        
         public bool IsValid()
         {
             if (m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.Invalid) ||

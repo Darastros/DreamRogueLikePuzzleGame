@@ -23,7 +23,7 @@ namespace GameSystems
 
         private void OnTriggerEnter2D(Collider2D other)
         {
-            if (other.TryGetComponent<IMovementController>(out var _player))
+            if (other.CompareTag("Player"))
             {
                 DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<OnPlayerOpenDoor>(whichEntrance);
             }

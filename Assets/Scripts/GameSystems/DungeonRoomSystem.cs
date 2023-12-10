@@ -38,6 +38,8 @@ namespace GameSystems
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
 
+        public bool forceExitRoomToBeFirstRoom = false;
+
         public TextMeshProUGUI debugMap;
         public TextMeshProUGUI debugCoordinate;
 
@@ -50,6 +52,8 @@ namespace GameSystems
         private static readonly Vector2Int North = Vector2Int.up;
         private static readonly Vector2Int East = Vector2Int.right;
         private static readonly Vector2Int West = Vector2Int.left;
+
+        private static readonly Vector2Int[] Direction = { North, East, South, West };
 
         private static readonly Vector2Int SouthEast = South + East;
         private static readonly Vector2Int SouthWest = South + West;
@@ -98,6 +102,17 @@ namespace GameSystems
                 OnNewRoomAppear(newRoom, RoomEntrance.None);
             }
 
+            if (!forceExitRoomToBeFirstRoom && exitRoom.Count > 0)
+            {
+                var exitRoomCoordinate = Direction.GetRandomElem();
+                Debug.Log($"SPOILER: EXIT ROOM IS AT POS {exitRoomCoordinate}");
+                var exitRoom = GenerateRoom(exitRoomCoordinate.x, exitRoomCoordinate.y, this.exitRoom);
+                if (exitRoom != null)
+                {
+                    m_runtimeRooms.Add(exitRoomCoordinate, exitRoom);
+                }
+            }
+
             m_eventDispatcher.RegisterEvent<OnPlayerOpenDoor>(this, OnPlayerWalkDoor);
         }
 
@@ -114,9 +129,23 @@ namespace GameSystems
             {
                 OnNewRoomAppear(newRoom, _obj.entrance);
             }
+            else if(m_runtimeRooms.Any(_pair => !_pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
+            {
+                newRoom = GenerateRoom(where.x, where.y, exitRoom);
+                if (newRoom != null)
+                {
+                    Debug.Assert(newRoom.IsValid(), "Generated room is invalid");
+                    m_runtimeRooms.Add(newRoom.Coordinate, newRoom);
+                    OnNewRoomAppear(newRoom, _obj.entrance);
+                }
+                else
+                {
+                    Debug.LogError($"Failed to generate the ROOM! at position: {where}");
+                }
+            }
             else
             {
-                newRoom = GenerateRoom(where.x, where.y);
+                newRoom = GenerateRoom(where.x, where.y, roomPool);
                 if (newRoom != null)
                 {
                     Debug.Assert(newRoom.IsValid(), "Generated room is invalid");
@@ -134,21 +163,14 @@ namespace GameSystems
         {
             if (m_currentRoom != null)
             {
-                m_currentRoom.m_runtimeGameScene.SetActive(false);
+                m_currentRoom.HideRoom();
             }
                 
             m_currentRoom = _newRoom;
             UpdateDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
-            if (m_currentRoom.m_runtimeGameScene != null)
-            {
-                m_currentRoom.m_runtimeGameScene.SetActive(true);
-            }
-            else
-            {
-                m_currentRoom.m_runtimeGameScene = Instantiate(m_currentRoom.m_roomDescriptor.m_prefab);
-            }
+            m_currentRoom.ActivateRoom();
 
             #if UNITY_EDITOR
             ValidateCurrentRoom();
@@ -212,10 +234,10 @@ namespace GameSystems
             m_eventDispatcher.UnregisterAllEvents(this);
         }
 
-        private Room GenerateRoom(int _x, int _y)
+        private Room GenerateRoom(int _x, int _y, List<RoomDescriptor> _pool)
         {
             GetNeededEntranceConstraints(out var neededEntrances, out var forbiddenEntrances, _x, _y);
-            List<RoomDescriptor> availableRooms = roomPool.FindAll(_room =>
+            List<RoomDescriptor> availableRooms = _pool.FindAll(_room =>
                 DoesRoomMeetRequirement(_room, neededEntrances, forbiddenEntrances));
 
             if (availableRooms.Count > 0)
@@ -251,7 +273,7 @@ namespace GameSystems
         {
             if(m_runtimeRooms.Remove(_roomCoordinate, out Room room))
             {
-                room.RemoveRuntimeObject();
+                room.Destroy();
                 Debug.Log($"Removed room at coordinate {_roomCoordinate}");
                 foreach (Vector2Int valueNeighborsCoordinate in room.m_neighborsCoordinates)
                 {
@@ -490,14 +512,7 @@ namespace GameSystems
                     }
                     else if (m_runtimeRooms.TryGetValue(coordinate, out Room room))
                     {
-                        if (room == m_currentRoom)
-                        {
-                            builder.Append("[\u00a4]");
-                        }
-                        else
-                        {
-                            builder.Append("[*]");
-                        }
+                        builder.Append(room == m_currentRoom ? "[\u00a4]" : "[*]");
                     }
                     else if(existingRooms.Contains(coordinate))
                     {

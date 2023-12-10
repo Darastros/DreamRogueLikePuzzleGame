@@ -9,7 +9,7 @@ public class GravityObject : MonoBehaviour
     void Awake()
     {
         m_rigidbody = GetComponent<Rigidbody2D>();
-        if(GameManager.PlatformerActivated) ActivateGravity();
+        if(GameManager.Instance.PlatformerActivated) ActivateGravity();
         else DeactivateGravity();
     }
     
