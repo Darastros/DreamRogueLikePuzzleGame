@@ -252,6 +252,23 @@ namespace GameSystems
             return null;
         }
         
+        public void CloseRoom(RoomEntrance _whichEntrance)
+        {
+            // check if the current room has a north entrance
+            if (m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(_whichEntrance)) 
+            {   
+                // get the coordinate of the room to the north from the current room
+                Vector2Int coordinate = m_currentRoom.Coordinate + _whichEntrance.GetOffset();
+                
+                // then destroy the room in the north
+                DestroyRoom(coordinate);
+            }
+            else
+            {
+                Debug.LogError($"Trying to close door {_whichEntrance} but this room is suppose to only have {m_currentRoom.m_roomDescriptor.m_entrances}");
+            }
+        }
+        
         [ContextMenu("Destroy room north")]
         public void DebugDestroyRoomNorth()
         {

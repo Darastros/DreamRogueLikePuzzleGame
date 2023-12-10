@@ -1,5 +1,6 @@
 ﻿using System;
 using MovementControllers;
+using Player;
 
 #if UNITY_EDITOR
 using UnityEditor;
@@ -8,7 +9,7 @@ using UnityEngine;
 
 namespace GameSystems
 {
-    public class Door : MonoBehaviour
+    public class Door : MonoBehaviour, IUsable
     {
         [SerializeField] private Collider2D m_collider2D;
 
@@ -38,6 +39,14 @@ namespace GameSystems
                     "OK I'LL REMOVE IT NOW");
 #endif
                 Debug.LogError("RoomEntrance should not contain multiple flags.", this);
+            }
+        }
+
+        public void Use(GameObject _user)
+        {
+            if (PlayerDataManager.TryUseArtifact())
+            {
+                DungeonRoomSystem.Instance.CloseRoom(whichEntrance);
             }
         }
     }
