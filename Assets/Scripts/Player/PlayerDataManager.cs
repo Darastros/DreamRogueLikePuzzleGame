@@ -25,6 +25,7 @@ public class PlayerDataManager : MonoBehaviour
     
     #region Life
     [SerializeField] private int m_maxLife = 5;
+    [SerializeField] private int m_artifactAtStart = 1;
     private int m_life;
 
     public static int life
@@ -136,6 +137,15 @@ public class PlayerDataManager : MonoBehaviour
 
     public void Awake()
     {
+        Reset();
+    }
+
+    public void Reset()
+    {
         m_life = m_maxLife;
+        m_artifact = m_artifactAtStart;
+        m_cardGameKeyPart = false;
+        m_platformerGameKeyPart = false;
+        m_RPGGameKeyPart = false;
     }
 }

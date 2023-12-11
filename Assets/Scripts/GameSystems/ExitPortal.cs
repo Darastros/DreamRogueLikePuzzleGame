@@ -7,7 +7,9 @@ public class ExitPortal : MonoBehaviour
     public SpriteRenderer _debugFeedBackRPG;
     public SpriteRenderer _debugFeedBackCard;
     public SpriteRenderer _debugFeedBackPlatformer;
-    public GameObject _debugEndScreen;
+    
+    public delegate void VictoryEventDelegate();
+    public static VictoryEventDelegate OnCrossPortal;
     
     private void OnEnable()
     {
@@ -40,7 +42,7 @@ public class ExitPortal : MonoBehaviour
             if (PlayerDataManager.cardGameKeyPart && PlayerDataManager.platformerGameKeyPart &&
                 PlayerDataManager.rpgGameKeyPart)
             {
-                _debugEndScreen.SetActive(true);
+                OnCrossPortal?.Invoke();
             }
         }
     }

@@ -27,6 +27,7 @@ namespace Platformer
         void OnEnable()
         {
             ListenEvent();
+            
             if(GameManager.Instance.PlatformerActivated) Activate();
             else Deactivate();
         }
