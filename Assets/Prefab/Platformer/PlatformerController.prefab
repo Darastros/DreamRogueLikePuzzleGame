@@ -174,45 +174,35 @@ MonoBehaviour:
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  JumpPower: 2
   jumpDynamicMin:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 12.959246
-      outSlope: 12.959246
+      inSlope: 7.775967
+      outSlope: 7.775967
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.17799917
+      outWeight: 0.17582822
     - serializedVersion: 3
-      time: 0.19790481
-      value: 1.0014561
-      inSlope: -0.006499052
-      outSlope: -0.006499052
+      time: 0.13725175
+      value: 0.5051644
+      inSlope: 0.04305783
+      outSlope: 0.04305783
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 0.6401488
+      outWeight: 0.98460084
     - serializedVersion: 3
-      time: 0.3320347
-      value: 0.9977616
-      inSlope: 0.02268425
-      outSlope: 0.02268425
+      time: 0.29864252
+      value: 0.004140786
+      inSlope: -6.470314
+      outSlope: -6.470314
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.32957116
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.50099385
-      value: 0.0016941428
-      inSlope: -13.376831
-      outSlope: -13.376831
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1160688
+      inWeight: 0.16822083
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
@@ -223,44 +213,35 @@ MonoBehaviour:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 12.959246
-      outSlope: 12.959246
+      inSlope: 25.722988
+      outSlope: 25.722988
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.17799917
+      outWeight: 0.12559651
     - serializedVersion: 3
-      time: 0.19790481
-      value: 1.0014561
-      inSlope: -0.006499052
-      outSlope: -0.006499052
+      time: 0.31003368
+      value: 3.2239392
+      inSlope: -0.0113565875
+      outSlope: -0.0113565875
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
+      inWeight: 1
+      outWeight: 1
     - serializedVersion: 3
-      time: 0.3320347
-      value: 0.9977616
-      inSlope: 0.02268425
-      outSlope: 0.02268425
+      time: 0.69767
+      value: 0.0010427448
+      inSlope: -18.912523
+      outSlope: -18.912523
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.32957116
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.50099385
-      value: 0.0016941428
-      inSlope: -13.376831
-      outSlope: -13.376831
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.1160688
+      inWeight: 0.10558086
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
   MaxFallSpeed: 40
-  FallAcceleration: 110
+  FallAcceleration: 80
   JumpEndEarlyGravityModifier: 3
   CoyoteTime: 0.15
   JumpBuffer: 0.2

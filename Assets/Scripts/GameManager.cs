@@ -71,6 +71,11 @@ public class GameManager : MonoBehaviour
 
         _instance = this;
     }
+
+    private void Start()
+    {
+        AddPlatformerGameToStack();
+    }
     
     #region GameRules
     public void AddRPGGameRuleToStack()

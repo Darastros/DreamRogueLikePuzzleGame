@@ -1,4 +1,5 @@
 ﻿using System;
+using Unity.Mathematics;
 using UnityEngine;
 
 namespace MovementControllers
@@ -42,10 +43,8 @@ namespace MovementControllers
         [Tooltip("The detection distance for grounding and roof detection"), Range(0f, 0.5f)]
         public float GrounderDistance = 0.05f;
 
-        [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
-        public float JumpPower = 36;
-
-        public AnimationCurve jumpDynamicMin;
+        [Header("JUMP")]
+        
         public AnimationCurve jumpDynamicMax;
 
         [Tooltip("The maximum vertical movement speed")]
@@ -76,8 +75,11 @@ namespace MovementControllers
         private bool m_bufferedJumpUsable;
         private bool m_endedJumpEarly;
         private bool m_jumpToConsume;
+        private bool m_jumpHold;
+        private bool m_exitJump;
         private float m_timeJumpWasPressed;
         private float m_jumpTimer;
+        private float m_jumpHoldTimer;
         private float m_jumpInitHeight;
         
         private Action<bool, float> GroundedChanged;
@@ -118,6 +120,9 @@ namespace MovementControllers
             m_coyoteUsable = false;
             m_jumping = true;
             m_jumpTimer = 0.0f;
+            m_jumpHoldTimer = 0.0f;
+            m_jumpHold = true;
+            m_exitJump = false;
             m_jumpInitHeight = transform.position.y;
             //m_frameVelocity.y = JumpPower;
             Jumped?.Invoke();
@@ -152,10 +157,19 @@ namespace MovementControllers
             if (m_jumping)
             {
                 m_jumpTimer += GameManager.deltaTime;
-                m_frameVelocity.y = GameManager.deltaTime <= 0.0f ? 0.0f : (jumpDynamicMax.Evaluate(m_jumpTimer) - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
-                m_jumping = m_jumpTimer <= jumpDynamicMax.length;
+                m_jumpHold &= m_frameInput.JumpHeld;
+                
+                float jumpDuration = jumpDynamicMax.keys[^1].time;
+                m_jumping = m_jumpTimer <= jumpDuration && (m_jumpHold || m_jumpTimer > 0.15f);
+                if (m_jumping)
+                {
+                    float position = jumpDynamicMax.Evaluate(m_jumpTimer);
+                    float speed = GameManager.deltaTime <= 0.0f ? 0.0f : (position - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
+                    m_frameVelocity.y = speed;
+                    return;
+                }
             }
-            else if (m_grounded && m_frameVelocity.y <= 0f)
+            if (m_grounded && m_frameVelocity.y <= 0f)
             {
                 m_frameVelocity.y = GroundingForce;
             }
