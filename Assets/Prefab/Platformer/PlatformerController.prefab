@@ -28,7 +28,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 6641161793384034759}
@@ -45,6 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: de3011d0a9822db49a0976273a827293, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_currentObject: {fileID: 0}
 --- !u!70 &1596096948949225910
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -127,10 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d647c1fa365f29345b4cbee125e7be54, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_strawberryNeededToGetKeyPart: 10
   m_detector: {fileID: 3071502548432254750}
   m_topDownController: {fileID: 5153123593943305287}
   platformerMovementController: {fileID: 8960817459711416987}
-  m_rigidbody2D: {fileID: 0}
   m_playerInput: {fileID: 0}
 --- !u!114 &5153123593943305287
 MonoBehaviour:
@@ -144,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca4e8ca47b348b6b764483881a4a961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseSpeed: 20
+  m_baseSpeed: 40
   m_speedMultiplier: 1
   m_rigidbody2D: {fileID: 0}
 --- !u!114 &8960817459711416987

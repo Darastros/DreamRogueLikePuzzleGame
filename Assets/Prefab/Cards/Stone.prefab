@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &1678302465346074169
+--- !u!1001 &4911597033639837345
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -10,11 +10,31 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.5
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 397037553336281819, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -32,29 +52,21 @@ PrefabInstance:
       propertyPath: m_card
       value: 
       objectReference: {fileID: 11400000, guid: 27cab3f01772f9d45af31effad36254d, type: 2}
-    - target: {fileID: 2103622100994502952, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
-      propertyPath: m_Layer
-      value: 8
-      objectReference: {fileID: 0}
     - target: {fileID: 2519094212053027673, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Name
-      value: Stone
-      objectReference: {fileID: 0}
-    - target: {fileID: 2519094212053027673, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
-      propertyPath: m_Layer
-      value: 8
+      value: Stone Variant
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.b
-      value: 0.3773585
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.g
-      value: 0.3773585
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.r
-      value: 0.3773585
+      value: 0.5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -2,6 +2,7 @@
 using UnityEditor;
 #endif
 
+using System;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
         _instance = this;
     }
     
+    #region GameRules
     public void AddRPGGameRuleToStack()
     {
         ++m_RPGRuleStack;
@@ -124,6 +126,74 @@ public class GameManager : MonoBehaviour
             OnDeactivateCardGame.Invoke();
         }
     }
+    #endregion
+    
+    #region Game flow
+    public delegate void GameFlow();
+
+    public static GameFlow OnGamePause;
+    public static GameFlow OnGameRestart;
+    public static GameFlow OnGameResume;
+    public static GameFlow OnGameWin;
+    public static GameFlow OnGameLoose;
+
+    private bool m_gameStart = true;
+    private bool m_gamePaused = false;
+
+    private void OnEnable()
+    {
+        PlayerDataManager.OnDeath += LooseGame;
+        ExitPortal.OnCrossPortal += WinGame;
+        m_gameStart = true;
+    }
+
+
+    private void OnDisable()
+    {
+        PlayerDataManager.OnDeath -= LooseGame;
+        ExitPortal.OnCrossPortal -= WinGame;
+    }
+
+    private void WinGame()
+    {
+        OnGameWin?.Invoke();
+        m_gameStart = false;
+    }
+
+    private void LooseGame()
+    {
+        OnGameLoose?.Invoke();
+        m_gameStart = false;
+    }
+
+    public void Restart()
+    {
+        OnGameRestart?.Invoke();
+        m_gameStart = true;
+    }
+
+    public void Pause()
+    {
+        if (m_gameStart && !m_gamePaused)
+        {
+            m_gamePaused = true;
+            OnGamePause?.Invoke();
+        }
+    }
+
+    public void Resume()
+    {
+        if (m_gameStart && m_gamePaused)
+        {
+            m_gamePaused = false;
+            OnGameResume?.Invoke();
+        }
+    }
+
+    private static float m_timeFactor = 1.0f;
+    public static float deltaTime => Time.deltaTime * m_timeFactor;
+    
+    #endregion
 
     #region DebugEditor
     #if UNITY_EDITOR
@@ -165,13 +235,4 @@ public class GameManager : MonoBehaviour
     }
     #endif
     #endregion
-    public delegate void GameFlow();
-
-    public static GameFlow OnGamePause;
-    public static GameFlow OnGameRestart;
-    public static GameFlow OnGameResume;
-
-    private static float m_timeFactor = 1.0f;
-    public static float deltaTime => Time.deltaTime * m_timeFactor;
-
 }
