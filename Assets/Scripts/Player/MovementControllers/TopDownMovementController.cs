@@ -39,7 +39,7 @@ namespace MovementControllers
 
         private void FixedUpdate()
         {
-            m_rigidbody2D.AddForce(m_wantedDirection * (m_baseSpeed * m_speedMultiplier));
+            m_rigidbody2D.AddForce(m_wantedDirection * (m_baseSpeed * m_speedMultiplier * GameManager.timeFactor));
         }
     }
 }

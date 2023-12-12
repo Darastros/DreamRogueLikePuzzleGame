@@ -45,6 +45,9 @@ namespace MovementControllers
         [Header("JUMP")] [Tooltip("The immediate velocity applied when jumping")]
         public float JumpPower = 36;
 
+        public AnimationCurve jumpDynamicMin;
+        public AnimationCurve jumpDynamicMax;
+
         [Tooltip("The maximum vertical movement speed")]
         public float MaxFallSpeed = 40;
 
@@ -68,11 +71,14 @@ namespace MovementControllers
         private bool m_cachedQueryStartInColliders;
         private float m_frameLeftGrounded = float.MinValue;
         private bool m_grounded;
+        private bool m_jumping;
         private bool m_coyoteUsable;
         private bool m_bufferedJumpUsable;
         private bool m_endedJumpEarly;
         private bool m_jumpToConsume;
         private float m_timeJumpWasPressed;
+        private float m_jumpTimer;
+        private float m_jumpInitHeight;
         
         private Action<bool, float> GroundedChanged;
         private Action Jumped;
@@ -99,7 +105,7 @@ namespace MovementControllers
 
             HandleJump();
             HandleDirection();
-            HandleGravity();
+            HandleVerticality();
             
             ApplyMovement();
         }
@@ -110,7 +116,10 @@ namespace MovementControllers
             m_timeJumpWasPressed = 0;
             m_bufferedJumpUsable = false;
             m_coyoteUsable = false;
-            m_frameVelocity.y = JumpPower;
+            m_jumping = true;
+            m_jumpTimer = 0.0f;
+            m_jumpInitHeight = transform.position.y;
+            //m_frameVelocity.y = JumpPower;
             Jumped?.Invoke();
         }
         
@@ -130,17 +139,23 @@ namespace MovementControllers
             if (m_frameInput.Move.x == 0)
             {
                 var deceleration = m_grounded ? GroundDeceleration : AirDeceleration;
-                m_frameVelocity.x = Mathf.MoveTowards(m_frameVelocity.x, 0, deceleration * Time.fixedDeltaTime);
+                m_frameVelocity.x = Mathf.MoveTowards(m_frameVelocity.x, 0, deceleration * GameManager.fixedDeltaTime);
             }
             else
             {
-                m_frameVelocity.x = Mathf.MoveTowards(m_frameVelocity.x, m_frameInput.Move.x * MaxSpeed, Acceleration * Time.fixedDeltaTime);
+                m_frameVelocity.x = Mathf.MoveTowards(m_frameVelocity.x, m_frameInput.Move.x * MaxSpeed, Acceleration * GameManager.fixedDeltaTime);
             }
         }
         
-        private void HandleGravity()
+        private void HandleVerticality()
         {
-            if (m_grounded && m_frameVelocity.y <= 0f)
+            if (m_jumping)
+            {
+                m_jumpTimer += GameManager.deltaTime;
+                m_frameVelocity.y = GameManager.deltaTime <= 0.0f ? 0.0f : (jumpDynamicMax.Evaluate(m_jumpTimer) - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
+                m_jumping = m_jumpTimer <= jumpDynamicMax.length;
+            }
+            else if (m_grounded && m_frameVelocity.y <= 0f)
             {
                 m_frameVelocity.y = GroundingForce;
             }
@@ -148,11 +163,11 @@ namespace MovementControllers
             {
                 var inAirGravity = FallAcceleration;
                 if (m_endedJumpEarly && m_frameVelocity.y > 0) inAirGravity *= JumpEndEarlyGravityModifier;
-                m_frameVelocity.y = Mathf.MoveTowards(m_frameVelocity.y, -MaxFallSpeed, inAirGravity * Time.fixedDeltaTime);
+                m_frameVelocity.y = Mathf.MoveTowards(m_frameVelocity.y, -MaxFallSpeed, inAirGravity * GameManager.fixedDeltaTime);
             }
         }
         
-        private void ApplyMovement() => m_rigidbody2D.velocity = m_frameVelocity;
+        private void ApplyMovement() => m_rigidbody2D.velocity = m_frameVelocity * GameManager.timeFactor;
 
         private void CheckCollisions()
         {
@@ -174,11 +189,12 @@ namespace MovementControllers
             if (ceilingHit) m_frameVelocity.y = Mathf.Min(0, m_frameVelocity.y);
 
             // Landed on the Ground
-            if (!m_grounded && groundHit)
+            if (!m_grounded && groundHit && (!m_jumping || m_jumpTimer > 0.1f))
             {
                 m_grounded = true;
                 m_coyoteUsable = true;
                 m_bufferedJumpUsable = true;
+                m_jumping = false;
                 m_endedJumpEarly = false;
                 GroundedChanged?.Invoke(true, Mathf.Abs(m_frameVelocity.y));
             }

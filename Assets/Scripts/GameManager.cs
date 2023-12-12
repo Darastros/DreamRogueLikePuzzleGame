@@ -191,7 +191,9 @@ public class GameManager : MonoBehaviour
     }
 
     private static float m_timeFactor = 1.0f;
+    public static float timeFactor => m_timeFactor;
     public static float deltaTime => Time.deltaTime * m_timeFactor;
+    public static float fixedDeltaTime => Time.fixedDeltaTime * m_timeFactor;
     
     #endregion
 

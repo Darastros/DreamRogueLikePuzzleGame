@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca4e8ca47b348b6b764483881a4a961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseSpeed: 40
+  m_baseSpeed: 25
   m_speedMultiplier: 1
   m_rigidbody2D: {fileID: 0}
 --- !u!114 &8960817459711416987
@@ -168,13 +168,97 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
-  MaxSpeed: 14
-  Acceleration: 120
+  MaxSpeed: 8
+  Acceleration: 60
   GroundDeceleration: 60
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  JumpPower: 36
+  JumpPower: 2
+  jumpDynamicMin:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.959246
+      outSlope: 12.959246
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.17799917
+    - serializedVersion: 3
+      time: 0.19790481
+      value: 1.0014561
+      inSlope: -0.006499052
+      outSlope: -0.006499052
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3320347
+      value: 0.9977616
+      inSlope: 0.02268425
+      outSlope: 0.02268425
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.32957116
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.50099385
+      value: 0.0016941428
+      inSlope: -13.376831
+      outSlope: -13.376831
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1160688
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  jumpDynamicMax:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 12.959246
+      outSlope: 12.959246
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0.17799917
+    - serializedVersion: 3
+      time: 0.19790481
+      value: 1.0014561
+      inSlope: -0.006499052
+      outSlope: -0.006499052
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.3320347
+      value: 0.9977616
+      inSlope: 0.02268425
+      outSlope: 0.02268425
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.32957116
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 0.50099385
+      value: 0.0016941428
+      inSlope: -13.376831
+      outSlope: -13.376831
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.1160688
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   MaxFallSpeed: 40
   FallAcceleration: 110
   JumpEndEarlyGravityModifier: 3
