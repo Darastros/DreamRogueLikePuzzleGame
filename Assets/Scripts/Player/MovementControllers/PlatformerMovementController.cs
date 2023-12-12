@@ -200,8 +200,12 @@ namespace MovementControllers
             bool ceilingHit = rayUp > 0;
            
             // Hit a Ceiling
-            if (ceilingHit) m_frameVelocity.y = Mathf.Min(0, m_frameVelocity.y);
-
+            if (ceilingHit)
+            {
+                m_jumping = false;
+                m_frameVelocity.y = Mathf.Min(0, m_frameVelocity.y);
+            }
+            
             // Landed on the Ground
             if (!m_grounded && groundHit && (!m_jumping || m_jumpTimer > 0.1f))
             {

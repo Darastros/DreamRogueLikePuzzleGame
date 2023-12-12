@@ -168,60 +168,27 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
-  MaxSpeed: 8
-  Acceleration: 60
+  MaxSpeed: 6
+  Acceleration: 75
   GroundDeceleration: 60
   AirDeceleration: 30
   GroundingForce: -1.5
   GrounderDistance: 0.05
-  jumpDynamicMin:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 7.775967
-      outSlope: 7.775967
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0.17582822
-    - serializedVersion: 3
-      time: 0.13725175
-      value: 0.5051644
-      inSlope: 0.04305783
-      outSlope: 0.04305783
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.6401488
-      outWeight: 0.98460084
-    - serializedVersion: 3
-      time: 0.29864252
-      value: 0.004140786
-      inSlope: -6.470314
-      outSlope: -6.470314
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.16822083
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
   jumpDynamicMax:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: 0
       value: 0
-      inSlope: 25.722988
-      outSlope: 25.722988
+      inSlope: 19.435907
+      outSlope: 19.435907
       tangentMode: 0
       weightedMode: 0
       inWeight: 0
-      outWeight: 0.12559651
+      outWeight: 0.13200755
     - serializedVersion: 3
       time: 0.31003368
-      value: 3.2239392
+      value: 2.1881773
       inSlope: -0.0113565875
       outSlope: -0.0113565875
       tangentMode: 0
@@ -230,12 +197,12 @@ MonoBehaviour:
       outWeight: 1
     - serializedVersion: 3
       time: 0.69767
-      value: 0.0010427448
-      inSlope: -18.912523
-      outSlope: -18.912523
+      value: 0.00070773996
+      inSlope: -16.268517
+      outSlope: -16.268517
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.10558086
+      inWeight: 0.115916796
       outWeight: 0
     m_PreInfinity: 2
     m_PostInfinity: 2
