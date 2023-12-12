@@ -25,9 +25,21 @@ namespace ScriptableObjects
             }
         }
 
+        private void Reset()
+        {
+            if (m_prefab == null && Selection.activeGameObject)
+            {
+                m_prefab = Selection.activeGameObject;
+                ComputeEntrances();
+            }
+        }
+
         [ContextMenu("ComputeEntrances")]
         private void ComputeEntrances()
         {
+            if(m_prefab == null)
+                return;
+            
             RoomEntrance type = RoomEntrance.None;
             foreach (Door door in m_prefab.GetComponentsInChildren<Door>())
             {
