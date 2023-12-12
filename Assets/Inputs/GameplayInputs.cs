@@ -35,6 +35,24 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Craft"",
+                    ""type"": ""Button"",
+                    ""id"": ""da6ade11-ef57-48c3-aa92-958fd2b5e43f"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""70fae0ad-ce5d-4ee8-9154-c17ee93bd7cc"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -158,6 +176,50 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Move"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1865700d-d058-45ba-a031-9ee3d4382daa"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0692a66f-3c6b-4b4a-96d7-a42f4867de75"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""25b5df33-8c7e-4fc3-a630-906029d905fa"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2f15c13f-c976-487a-8e6c-2147070a6ed5"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -178,6 +240,24 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
                     ""name"": ""Jump"",
                     ""type"": ""PassThrough"",
                     ""id"": ""7c5365c2-de28-4e57-801e-b500d7d0046b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Craft"",
+                    ""type"": ""Button"",
+                    ""id"": ""0bdfdff3-1443-479c-a449-094e2f5711b2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Use"",
+                    ""type"": ""Button"",
+                    ""id"": ""7a61786c-4f53-4ed4-81b8-50cd8e8e44e9"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -327,6 +407,50 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdf0e5d0-f26c-4f6d-8e8a-ab5f0b97021b"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""e16c677d-697d-443e-9bf2-7f5ec49f44a5"",
+                    ""path"": ""<Gamepad>/buttonEast"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Craft"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0bc82180-a865-4301-8c01-7a247fbf6b24"",
+                    ""path"": ""<Gamepad>/buttonWest"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Gamepad"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b61b0c8b-3f2d-47d8-b64e-2822939b058d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard+Mouse"",
+                    ""action"": ""Use"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -364,10 +488,14 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
         // TopDown
         m_TopDown = asset.FindActionMap("TopDown", throwIfNotFound: true);
         m_TopDown_Move = m_TopDown.FindAction("Move", throwIfNotFound: true);
+        m_TopDown_Craft = m_TopDown.FindAction("Craft", throwIfNotFound: true);
+        m_TopDown_Use = m_TopDown.FindAction("Use", throwIfNotFound: true);
         // Platformer
         m_Platformer = asset.FindActionMap("Platformer", throwIfNotFound: true);
         m_Platformer_Move = m_Platformer.FindAction("Move", throwIfNotFound: true);
         m_Platformer_Jump = m_Platformer.FindAction("Jump", throwIfNotFound: true);
+        m_Platformer_Craft = m_Platformer.FindAction("Craft", throwIfNotFound: true);
+        m_Platformer_Use = m_Platformer.FindAction("Use", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -430,11 +558,15 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_TopDown;
     private List<ITopDownActions> m_TopDownActionsCallbackInterfaces = new List<ITopDownActions>();
     private readonly InputAction m_TopDown_Move;
+    private readonly InputAction m_TopDown_Craft;
+    private readonly InputAction m_TopDown_Use;
     public struct TopDownActions
     {
         private @GameplayInputs m_Wrapper;
         public TopDownActions(@GameplayInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_TopDown_Move;
+        public InputAction @Craft => m_Wrapper.m_TopDown_Craft;
+        public InputAction @Use => m_Wrapper.m_TopDown_Use;
         public InputActionMap Get() { return m_Wrapper.m_TopDown; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -447,6 +579,12 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Craft.started += instance.OnCraft;
+            @Craft.performed += instance.OnCraft;
+            @Craft.canceled += instance.OnCraft;
+            @Use.started += instance.OnUse;
+            @Use.performed += instance.OnUse;
+            @Use.canceled += instance.OnUse;
         }
 
         private void UnregisterCallbacks(ITopDownActions instance)
@@ -454,6 +592,12 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Craft.started -= instance.OnCraft;
+            @Craft.performed -= instance.OnCraft;
+            @Craft.canceled -= instance.OnCraft;
+            @Use.started -= instance.OnUse;
+            @Use.performed -= instance.OnUse;
+            @Use.canceled -= instance.OnUse;
         }
 
         public void RemoveCallbacks(ITopDownActions instance)
@@ -477,12 +621,16 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
     private List<IPlatformerActions> m_PlatformerActionsCallbackInterfaces = new List<IPlatformerActions>();
     private readonly InputAction m_Platformer_Move;
     private readonly InputAction m_Platformer_Jump;
+    private readonly InputAction m_Platformer_Craft;
+    private readonly InputAction m_Platformer_Use;
     public struct PlatformerActions
     {
         private @GameplayInputs m_Wrapper;
         public PlatformerActions(@GameplayInputs wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Platformer_Move;
         public InputAction @Jump => m_Wrapper.m_Platformer_Jump;
+        public InputAction @Craft => m_Wrapper.m_Platformer_Craft;
+        public InputAction @Use => m_Wrapper.m_Platformer_Use;
         public InputActionMap Get() { return m_Wrapper.m_Platformer; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -498,6 +646,12 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
             @Jump.started += instance.OnJump;
             @Jump.performed += instance.OnJump;
             @Jump.canceled += instance.OnJump;
+            @Craft.started += instance.OnCraft;
+            @Craft.performed += instance.OnCraft;
+            @Craft.canceled += instance.OnCraft;
+            @Use.started += instance.OnUse;
+            @Use.performed += instance.OnUse;
+            @Use.canceled += instance.OnUse;
         }
 
         private void UnregisterCallbacks(IPlatformerActions instance)
@@ -508,6 +662,12 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
             @Jump.started -= instance.OnJump;
             @Jump.performed -= instance.OnJump;
             @Jump.canceled -= instance.OnJump;
+            @Craft.started -= instance.OnCraft;
+            @Craft.performed -= instance.OnCraft;
+            @Craft.canceled -= instance.OnCraft;
+            @Use.started -= instance.OnUse;
+            @Use.performed -= instance.OnUse;
+            @Use.canceled -= instance.OnUse;
         }
 
         public void RemoveCallbacks(IPlatformerActions instance)
@@ -546,10 +706,14 @@ public partial class @GameplayInputs: IInputActionCollection2, IDisposable
     public interface ITopDownActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnCraft(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
     public interface IPlatformerActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+        void OnCraft(InputAction.CallbackContext context);
+        void OnUse(InputAction.CallbackContext context);
     }
 }
