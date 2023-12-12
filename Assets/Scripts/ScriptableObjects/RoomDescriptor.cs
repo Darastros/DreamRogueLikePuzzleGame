@@ -1,4 +1,6 @@
-﻿using GameSystems;
+﻿using System;
+using GameSystems;
+using UnityEditor;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -14,5 +16,45 @@ namespace ScriptableObjects
         public bool m_registerToRoomPool = true;
         public bool m_registerToStartPool;
         public bool m_registerToExitPool;
+
+        private void OnValidate()
+        {
+            if (m_prefab != null && m_entrances == RoomEntrance.None)
+            {
+                ComputeEntrances();
+            }
+        }
+
+        private void Reset()
+        {
+            if (m_prefab == null && Selection.activeGameObject)
+            {
+                m_prefab = Selection.activeGameObject;
+                ComputeEntrances();
+            }
+        }
+
+        [ContextMenu("ComputeEntrances")]
+        private void ComputeEntrances()
+        {
+            if(m_prefab == null)
+                return;
+            
+            RoomEntrance type = RoomEntrance.None;
+            foreach (Door door in m_prefab.GetComponentsInChildren<Door>())
+            {
+                type |= door.whichEntrance;
+            }
+            m_entrances = type;
+        }
+
+        [MenuItem("RoomSystem/RecomputeAllEntrancesForRooms")]
+        private static void RecomputeAllEntrancesForRooms()
+        {
+            foreach (RoomDescriptor roomDescriptor in Resources.FindObjectsOfTypeAll<RoomDescriptor>())
+            {
+                roomDescriptor.ComputeEntrances();
+            }
+        }
     }
 }

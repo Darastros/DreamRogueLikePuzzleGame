@@ -49,7 +49,7 @@ namespace GameSystems
         {
             if (m_runtimeGameScene == null) // If initial spawn
             {
-                m_runtimeGameScene = GameObject.Instantiate(m_roomDescriptor.m_prefab, DungeonRoomSystem.Instance.transform);
+                m_runtimeGameScene = Object.Instantiate(m_roomDescriptor.m_prefab, DungeonRoomSystem.Instance.transform);
 
                 switch (m_roomDescriptor.m_gameRuleType)
                 { 
