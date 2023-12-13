@@ -7,7 +7,7 @@ namespace MovementControllers
     public class PlatformerMovementController : MonoBehaviour, IMovementController
     {
         [SerializeField] private Rigidbody2D m_rigidbody2D;
-        [SerializeField] private CapsuleCollider2D m_collider2D;
+        [SerializeField] private Collider2D m_collider2D;
         
         /// <summary>
         /// CONFIGURABLE FIELDS
@@ -186,11 +186,6 @@ namespace MovementControllers
         private void CheckCollisions()
         {
             Physics2D.queriesStartInColliders = false;
-
-            // Ground and Ceiling
-            Bounds bounds = m_collider2D.bounds ;
-            Vector2 size = m_collider2D.size;
-            CapsuleDirection2D direction = m_collider2D.direction;
             
             RaycastHit2D[] hitRes = new RaycastHit2D[3];
             var rayGround = m_collider2D.Cast(Vector2.down, hitRes, GrounderDistance);
