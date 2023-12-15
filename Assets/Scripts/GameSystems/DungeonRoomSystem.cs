@@ -49,7 +49,8 @@ namespace GameSystems
 
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
         public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
-        private RoomEntrance m_lastDoorOpenned;
+        private RoomEntrance m_lastDoorOpened;
+        public RoomEntrance LastDoorOpened => m_lastDoorOpened;
             
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
@@ -185,7 +186,7 @@ namespace GameSystems
             #endif
             
            GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
-           m_lastDoorOpenned = _from.GetOpposite();
+           m_lastDoorOpened = _from.GetOpposite();
            GameManager.Instance.ShowPlayer();
         }
 
