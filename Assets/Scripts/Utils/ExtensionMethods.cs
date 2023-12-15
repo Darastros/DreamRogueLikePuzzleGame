@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameSystems;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public static class ExtensionMethods
 {
@@ -71,5 +72,28 @@ public static class ExtensionMethods
             return component;
         }
         return _go.AddComponent<TValue>();
+    }
+    
+    
+    public static void DestroyChildren(this GameObject _go)
+    {
+        Transform transform = _go.transform;
+        int i = 0;
+    
+        //Array to hold all child obj
+        GameObject[] allChildren = new GameObject[transform.childCount];
+
+        //Find all child obj and store to that array
+        foreach (Transform child in transform)
+        {
+            allChildren[i] = child.gameObject;
+            i += 1;
+        }
+
+        //Now destroy them
+        foreach (GameObject child in allChildren)
+        {
+            Object.Destroy(child);
+        }
     }
 }

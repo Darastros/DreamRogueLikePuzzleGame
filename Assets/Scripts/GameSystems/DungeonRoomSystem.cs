@@ -113,6 +113,7 @@ namespace GameSystems
                 if (exitRoom != null)
                 {
                     m_runtimeRooms.Add(exitRoomCoordinate, exitRoom);
+                    GetEventDispatcher().SendEvent<ForceRefreshMap>();
                 }
             }
 

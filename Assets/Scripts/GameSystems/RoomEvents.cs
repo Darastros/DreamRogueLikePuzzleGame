@@ -21,4 +21,11 @@ namespace GameSystems
         public OnRoomChanged()
         {}
     }
+    
+    [Serializable]
+    public class ForceRefreshMap : Event
+    {
+        public ForceRefreshMap()
+        {}
+    }
 }
