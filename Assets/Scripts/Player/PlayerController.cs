@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CardGame;
+using GameSystems;
 using MovementControllers;
 using Platformer;
 using RPG;
@@ -13,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private Animator m_animator;
     
     [SerializeField] private Transform m_spriteParent;
+    [SerializeField] private PlayerDataManager m_dataManager;
     [SerializeField] private PlatformerController m_platformerController;
     [SerializeField] private RPGController m_rpgController;
     [SerializeField] private CardGameController m_cardGameController;
@@ -41,6 +43,7 @@ public class PlayerController : MonoBehaviour
         m_platformerController.platformerMovementController.Jumped += Jump;
         PlatformerController.OnActivate += SwitchPlatformer;
         PlatformerController.OnDeactivate += SwitchTopDown;
+        PlayerDataManager.OnHit += Hit;
     }
 
     private void UnListenEvent()
@@ -51,6 +54,7 @@ public class PlayerController : MonoBehaviour
         m_platformerController.platformerMovementController.Jumped -= Jump;
         PlatformerController.OnActivate -= SwitchPlatformer;
         PlatformerController.OnDeactivate -= SwitchTopDown;
+        PlayerDataManager.OnHit -= Hit;
     }
 
     void Update()
@@ -92,7 +96,7 @@ public class PlayerController : MonoBehaviour
         m_animator.SetTrigger("JumpStretch");
     }
 
-    private void Hit()
+    private void Hit(int _newValue, int _delta)
     {
         m_animator.ResetTrigger("Hit");
         m_animator.ResetTrigger("HitStretch");
@@ -116,6 +120,16 @@ public class PlayerController : MonoBehaviour
         m_animator.ResetTrigger("Hit");
         m_animator.ResetTrigger("HitStretch");
         m_animator.SetBool("platformer",false);
+        
+    }
+
+    public void EndHit()
+    {
+        if (GameManager.Instance.PlatformerActivated)
+        {
+            Debug.Log("TP");
+            GameManager.Instance.TeleportPlayerToRoomEntrance(DungeonRoomSystem.Instance.LastDoorOpened);
+        }
         
     }
 }
