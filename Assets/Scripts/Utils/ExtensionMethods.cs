@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GameSystems;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public static class ExtensionMethods
 {
@@ -53,5 +54,46 @@ public static class ExtensionMethods
     public static IEnumerable<Enum> GetFlags(this Enum e)
     {
         return Enum.GetValues(e.GetType()).Cast<Enum>().Where(e.HasFlag);
+    }
+
+    public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> _dict, TKey _key) 
+        where TValue : new()
+    {
+        if (_dict.TryGetValue(_key, out TValue val)) return val;
+        val = new TValue();
+        _dict.Add(_key, val);
+        return val;
+    }
+    
+    public static TValue GetOrCreate<TValue>(this GameObject _go) where TValue : Component
+    {
+        if (_go.TryGetComponent(out TValue component))
+        {
+            return component;
+        }
+        return _go.AddComponent<TValue>();
+    }
+    
+    
+    public static void DestroyChildren(this GameObject _go)
+    {
+        Transform transform = _go.transform;
+        int i = 0;
+    
+        //Array to hold all child obj
+        GameObject[] allChildren = new GameObject[transform.childCount];
+
+        //Find all child obj and store to that array
+        foreach (Transform child in transform)
+        {
+            allChildren[i] = child.gameObject;
+            i += 1;
+        }
+
+        //Now destroy them
+        foreach (GameObject child in allChildren)
+        {
+            Object.Destroy(child);
+        }
     }
 }

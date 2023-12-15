@@ -45,8 +45,13 @@ namespace GameSystems
 
         // Runtime variables
         private Room m_currentRoom;
-        private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
+        public Room CurrentRoom => m_currentRoom;
 
+        private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
+        public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
+        private RoomEntrance m_lastDoorOpened;
+        public RoomEntrance LastDoorOpened => m_lastDoorOpened;
+            
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
         private static readonly Vector2Int North = Vector2Int.up;
@@ -59,6 +64,7 @@ namespace GameSystems
         private static readonly Vector2Int SouthWest = South + West;
         private static readonly Vector2Int NorthEast = North + East;
         private static readonly Vector2Int NorthWest = North + West;
+        
 
         private void Awake()
         {
@@ -110,6 +116,7 @@ namespace GameSystems
                 if (exitRoom != null)
                 {
                     m_runtimeRooms.Add(exitRoomCoordinate, exitRoom);
+                    GetEventDispatcher().SendEvent<ForceRefreshMap>();
                 }
             }
 
@@ -163,12 +170,14 @@ namespace GameSystems
         {
             if (m_currentRoom != null)
             {
+                GameManager.Instance.HidePlayer();
                 m_currentRoom.HideRoom();
             }
-                
+
+            Room oldRoom = m_currentRoom;
             m_currentRoom = _newRoom;
+            GetEventDispatcher().SendEvent<OnRoomChanged>(oldRoom, m_currentRoom);
             UpdateDebugMap();
-            var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             m_currentRoom.ActivateRoom();
 
@@ -176,16 +185,9 @@ namespace GameSystems
             ValidateCurrentRoom();
             #endif
             
-            //TODO: Clean this shit
-            Door[] doors = m_currentRoom.m_runtimeGameScene.GetComponentsInChildren<Door>();
-            foreach (var door in doors)
-            {
-                if (door.whichEntrance.GetOpposite() == _from)
-                {
-                    player.position = door.teleportPos.position;
-                    break;
-                }
-            }
+           GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
+           m_lastDoorOpened = _from.GetOpposite();
+           GameManager.Instance.ShowPlayer();
         }
 
         private void ValidateCurrentRoom()

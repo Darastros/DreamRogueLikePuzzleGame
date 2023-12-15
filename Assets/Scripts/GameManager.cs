@@ -2,7 +2,7 @@
 using UnityEditor;
 #endif
 
-using System;
+using GameSystems;
 using Unity.Mathematics;
 using UnityEngine;
 
@@ -140,11 +140,15 @@ public class GameManager : MonoBehaviour
     private bool m_gameStart = true;
     private bool m_gamePaused = false;
 
+    private PlayerController m_playerController;
+    public PlayerController PlayerController => m_playerController;
+
     private void OnEnable()
     {
         PlayerDataManager.OnDeath += LooseGame;
         ExitPortal.OnCrossPortal += WinGame;
         m_gameStart = true;
+        m_playerController = FindObjectOfType<PlayerController>();
     }
 
 
@@ -187,6 +191,25 @@ public class GameManager : MonoBehaviour
         {
             m_gamePaused = false;
             OnGameResume?.Invoke();
+        }
+    }
+    
+    public void HidePlayer()
+    {
+        m_playerController.enabled = false;
+    }
+    
+    public void ShowPlayer()
+    {
+        m_playerController.enabled = true;
+    }
+
+    public void TeleportPlayerToRoomEntrance(RoomEntrance _entrance)
+    {
+        Door entrance = DungeonRoomSystem.Instance.CurrentRoom.GetEntrance(_entrance);
+        if (entrance!= null && m_playerController && m_playerController.TryGetComponent(out Rigidbody2D _rb))
+        {
+            _rb.position = entrance.teleportPos.position;
         }
     }
 
