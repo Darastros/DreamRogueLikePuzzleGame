@@ -7,5 +7,7 @@ namespace MovementControllers
         void Move(Vector2 _wantedDirection);
 
         void Jump(bool _buttonPressed);
+
+        bool IsOnGround();
     }
 }

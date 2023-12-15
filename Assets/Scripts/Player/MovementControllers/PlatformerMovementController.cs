@@ -82,8 +82,8 @@ namespace MovementControllers
         private float m_jumpHoldTimer;
         private float m_jumpInitHeight;
         
-        private Action<bool, float> GroundedChanged;
-        private Action Jumped;
+        public Action<bool, float> GroundedChanged;
+        public Action Jumped;
         
         private FrameInput m_frameInput = new FrameInput();
         private bool HasBufferedJump => m_bufferedJumpUsable && Time.time < m_timeJumpWasPressed + JumpBuffer;
@@ -255,6 +255,11 @@ namespace MovementControllers
             {
                 m_frameInput.LastJumpDownFrameStamp = int.MinValue;
             }
+        }
+
+        public bool IsOnGround()
+        {
+            return m_grounded;
         }
     }
     public struct FrameInput
