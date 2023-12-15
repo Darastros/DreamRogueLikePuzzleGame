@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameSystems;
+using ScriptableObjects;
 using UnityEngine;
 using Utils;
 
@@ -48,7 +49,12 @@ namespace UI
                 GameObject prefabToUse = GetPrefabToUse(coordinate, currentRoom);
                 Vector2Int offsetedCoordinate = m_useCurrentRoomAsCenter ? coordinate - currentRoom.Coordinate : coordinate;
                 var instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate);
-
+                if(instanciated.TryGetComponent( out RoomUIRuntimeData runtimeData))
+                {
+                    runtimeData.Coordinate = coordinate;
+                    runtimeData.AssociatedRoom = room;
+                }
+                
                 foreach (Vector2Int roomNeighborsCoordinate in room.m_neighborsCoordinates)
                 {
                     if (!currentRooms.ContainsKey(roomNeighborsCoordinate) && neighborsAlreadyTreated.Add(roomNeighborsCoordinate))
@@ -56,6 +62,11 @@ namespace UI
                         prefabToUse = GetPrefabToUse(roomNeighborsCoordinate, currentRoom);
                         offsetedCoordinate = m_useCurrentRoomAsCenter ? roomNeighborsCoordinate - currentRoom.Coordinate : roomNeighborsCoordinate;
                         instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate);
+                        if(instanciated.TryGetComponent( out runtimeData))
+                        {
+                            runtimeData.Coordinate = coordinate;
+                            runtimeData.AssociatedRoom = null;
+                        }
                     }
                 }
             }
