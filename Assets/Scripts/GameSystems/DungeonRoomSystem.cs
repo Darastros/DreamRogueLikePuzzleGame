@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
+using Random = System.Random;
 
 namespace GameSystems
 {
@@ -38,6 +39,8 @@ namespace GameSystems
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
 
+        private Random m_randomRoom = new Random();
+        
         public bool forceExitRoomToBeFirstRoom = false;
 
         public TextMeshProUGUI debugMap;
@@ -121,6 +124,16 @@ namespace GameSystems
             }
 
             m_eventDispatcher.RegisterEvent<OnPlayerOpenDoor>(this, OnPlayerWalkDoor);
+        }
+
+        private WeightedList<RoomDescriptor> ComputeWeightedList(List<RoomDescriptor> _pool)
+        {
+            WeightedList<RoomDescriptor> list = new WeightedList<RoomDescriptor>(m_randomRoom);
+            foreach (RoomDescriptor roomDescriptor in _pool)
+            {
+                list.Add(roomDescriptor, Math.Max(1, roomDescriptor.m_weight));
+            }
+            return list;
         }
 
         Vector2Int GetRoomCoordinate(RoomEntrance _entrance)
@@ -242,9 +255,11 @@ namespace GameSystems
             List<RoomDescriptor> availableRooms = _pool.FindAll(_room =>
                 DoesRoomMeetRequirement(_room, neededEntrances, forbiddenEntrances));
 
+            var weightedList = ComputeWeightedList(availableRooms);
+
             if (availableRooms.Count > 0)
             {
-                var selectedRoom = availableRooms.GetRandomElem();
+                var selectedRoom = weightedList.Next();
                 var newRoom = new Room(_x, _y, selectedRoom);
                 return newRoom;
             }
