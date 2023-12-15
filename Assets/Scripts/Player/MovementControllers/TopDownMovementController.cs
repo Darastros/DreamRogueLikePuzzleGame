@@ -37,6 +37,11 @@ namespace MovementControllers
             // Do nothing
         }
 
+        public bool IsOnGround()
+        {
+            return true;
+        }
+
         private void FixedUpdate()
         {
             m_rigidbody2D.AddForce(m_wantedDirection * (m_baseSpeed * m_speedMultiplier * GameManager.timeFactor));

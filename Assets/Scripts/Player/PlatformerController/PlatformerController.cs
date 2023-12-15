@@ -11,8 +11,8 @@ namespace Platformer
         [SerializeField] private PlatformerDetector m_detector;
         private int m_strawberries = 0;
         
-        [SerializeField] private TopDownMovementController m_topDownController;
-        [SerializeField] private PlatformerMovementController platformerMovementController;
+        [SerializeField] public TopDownMovementController m_topDownController;
+        [SerializeField] public PlatformerMovementController platformerMovementController;
         [SerializeField] private PlayerInput m_playerInput;
 
         public delegate void Switch();
@@ -108,6 +108,11 @@ namespace Platformer
             {
                 GameManager.Instance.TeleportPlayerToRoomEntrance(DungeonRoomSystem.Instance.LastDoorOpened);
             }
+        }
+
+        public bool IsOnGround()
+        {
+            return m_currentMovementController.IsOnGround();
         }
     }
 }
