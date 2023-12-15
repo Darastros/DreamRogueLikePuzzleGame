@@ -49,6 +49,7 @@ namespace GameSystems
 
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
         public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
+        private RoomEntrance m_lastDoorOpenned;
             
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
@@ -62,6 +63,7 @@ namespace GameSystems
         private static readonly Vector2Int SouthWest = South + West;
         private static readonly Vector2Int NorthEast = North + East;
         private static readonly Vector2Int NorthWest = North + West;
+        
 
         private void Awake()
         {
@@ -167,13 +169,14 @@ namespace GameSystems
         {
             if (m_currentRoom != null)
             {
+                GameManager.Instance.HidePlayer();
                 m_currentRoom.HideRoom();
             }
-                
+
+            Room oldRoom = m_currentRoom;
             m_currentRoom = _newRoom;
-            GetEventDispatcher().SendEvent<OnRoomChanged>();
+            GetEventDispatcher().SendEvent<OnRoomChanged>(oldRoom, m_currentRoom);
             UpdateDebugMap();
-            var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             m_currentRoom.ActivateRoom();
 
@@ -181,16 +184,9 @@ namespace GameSystems
             ValidateCurrentRoom();
             #endif
             
-            //TODO: Clean this shit
-            Door[] doors = m_currentRoom.m_runtimeGameScene.GetComponentsInChildren<Door>();
-            foreach (var door in doors)
-            {
-                if (door.whichEntrance.GetOpposite() == _from)
-                {
-                    player.position = door.teleportPos.position;
-                    break;
-                }
-            }
+           GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
+           m_lastDoorOpenned = _from.GetOpposite();
+           GameManager.Instance.ShowPlayer();
         }
 
         private void ValidateCurrentRoom()
