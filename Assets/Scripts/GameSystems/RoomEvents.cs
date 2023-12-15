@@ -13,4 +13,12 @@ namespace GameSystems
             entrance = _entrance;
         }
     }
+    
+    
+    [Serializable]
+    public class OnRoomChanged : Event
+    {
+        public OnRoomChanged()
+        {}
+    }
 }

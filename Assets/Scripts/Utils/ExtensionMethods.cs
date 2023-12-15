@@ -54,4 +54,22 @@ public static class ExtensionMethods
     {
         return Enum.GetValues(e.GetType()).Cast<Enum>().Where(e.HasFlag);
     }
+
+    public static TValue GetOrCreate<TKey, TValue>(this IDictionary<TKey, TValue> _dict, TKey _key) 
+        where TValue : new()
+    {
+        if (_dict.TryGetValue(_key, out TValue val)) return val;
+        val = new TValue();
+        _dict.Add(_key, val);
+        return val;
+    }
+    
+    public static TValue GetOrCreate<TValue>(this GameObject _go) where TValue : Component
+    {
+        if (_go.TryGetComponent(out TValue component))
+        {
+            return component;
+        }
+        return _go.AddComponent<TValue>();
+    }
 }

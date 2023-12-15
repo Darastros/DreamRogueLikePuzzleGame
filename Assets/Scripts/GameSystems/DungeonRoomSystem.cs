@@ -45,8 +45,11 @@ namespace GameSystems
 
         // Runtime variables
         private Room m_currentRoom;
-        private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
+        public Room CurrentRoom => m_currentRoom;
 
+        private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
+        public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
+            
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
         private static readonly Vector2Int North = Vector2Int.up;
@@ -167,6 +170,7 @@ namespace GameSystems
             }
                 
             m_currentRoom = _newRoom;
+            GetEventDispatcher().SendEvent<OnRoomChanged>();
             UpdateDebugMap();
             var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
