@@ -47,7 +47,6 @@ namespace Platformer
             GameManager.OnActivatePlatformerGame += Activate;
             GameManager.OnDeactivatePlatformerGame += Deactivate;
             m_detector.OnPlatformerObjectEnter += EnterObject;
-            PlayerDataManager.OnHit += OnPlayerHit;
         }
 
         private void UnListenEvent()
@@ -55,7 +54,6 @@ namespace Platformer
             GameManager.OnActivatePlatformerGame -= Activate;
             GameManager.OnDeactivatePlatformerGame -= Deactivate;
             m_detector.OnPlatformerObjectEnter -= EnterObject;
-            PlayerDataManager.OnHit -= OnPlayerHit;
         }
 
         private void EnterObject(PlatformerObject _object)
@@ -102,13 +100,6 @@ namespace Platformer
             m_currentMovementController.Jump(_value);
         }
         
-        private void OnPlayerHit(int _newLife, int _lifeDecrease)
-        {
-            if (_newLife > 0)
-            {
-                GameManager.Instance.TeleportPlayerToRoomEntrance(DungeonRoomSystem.Instance.LastDoorOpened);
-            }
-        }
 
         public bool IsOnGround()
         {
