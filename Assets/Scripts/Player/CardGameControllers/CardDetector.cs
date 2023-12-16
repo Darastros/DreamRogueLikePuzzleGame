@@ -44,10 +44,7 @@ namespace CardGame
             if (_other.TryGetComponent(out CardObject _cardObject))
             {
                 m_contactObjects.Add(_cardObject);
-                if (!currentObject)
-                {
-                    currentObject = _cardObject;
-                }
+                currentObject = _cardObject;
             }
         }
 
@@ -58,7 +55,7 @@ namespace CardGame
                 m_contactObjects.Remove(_cardObject);
                 if (currentObject == _cardObject)
                 {
-                    currentObject = m_contactObjects.Count > 0 ? m_contactObjects[0] : null;
+                    currentObject = m_contactObjects.Count > 0 ? m_contactObjects[^1] : null;
                 }
             }
         }
