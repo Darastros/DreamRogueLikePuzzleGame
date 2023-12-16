@@ -25,7 +25,7 @@ namespace UI
             CardGameController.OnGettingCard += AddCard;
             CardGameController.OnCraftSuccess += CraftSuccess;
             CardGameController.OnCraftFailed += CraftFailed;
-            CardGameController.OnReset += ResetHand;
+            CardGameController.OnReset += Reset;
         }
 
         private void OnDisable()
@@ -33,7 +33,7 @@ namespace UI
             CardGameController.OnGettingCard -= AddCard;
             CardGameController.OnCraftSuccess -= CraftSuccess;
             CardGameController.OnCraftFailed -= CraftFailed;
-            CardGameController.OnReset -= ResetHand;
+            CardGameController.OnReset -= Reset;
             
         }
         
@@ -74,11 +74,9 @@ namespace UI
         private void Reset()
         {
             m_animator.SetTrigger("Reset");
-            ResetHand();
         }
         private void ResetHand()
         {
-            m_animator.SetTrigger("Reset");
             m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {
