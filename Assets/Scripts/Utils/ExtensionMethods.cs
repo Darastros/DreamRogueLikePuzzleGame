@@ -9,6 +9,9 @@ public static class ExtensionMethods
 {
     public static T GetRandomElem<T>(this ICollection<T> _collection)
     {
+        if (_collection == null || _collection.Count == 0)
+            return default;
+        
         var index = UnityEngine.Random.Range(0, _collection.Count);
         var element = _collection.ElementAt(index);
         return element;

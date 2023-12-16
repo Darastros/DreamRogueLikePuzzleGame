@@ -139,7 +139,7 @@ namespace GameSystems
                     candidates.Add(room);
             }
 
-            var result = candidates.GetRandomElem();
+            Room result = candidates.GetRandomElem();
             if (result == null && !_ignore4NeighborsConstraint)
                 result = GetRoomAtTheEdgeV2(true);
             return result;
