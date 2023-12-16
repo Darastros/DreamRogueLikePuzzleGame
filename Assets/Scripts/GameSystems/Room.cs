@@ -41,7 +41,7 @@ namespace GameSystems
                 m_neighborsCoordinates.Add(Coordinate + Vector2Int.left);
             }
             
-            Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}");
+            Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}", _roomDescriptor);
             Debug.Assert(IsValid(), "Invalid room");
         }
 
