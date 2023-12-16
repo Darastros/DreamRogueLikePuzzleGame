@@ -33,6 +33,7 @@ public class PlayerDataManager : MonoBehaviour
         get => instance.m_life;
         set
         {
+            if (isDead) return;
             int clampValue = math.clamp(value, 0, instance.m_maxLife);
             int delta = value - instance.m_life;
             
