@@ -20,6 +20,8 @@ namespace UI
         {
             DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
             DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<ForceRefreshMap>(this, ForceRefreshMap);
+            
+            RefreshMap();
         }
 
         private void OnDestroy()
