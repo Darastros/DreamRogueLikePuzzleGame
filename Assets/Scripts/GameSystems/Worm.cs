@@ -111,7 +111,7 @@ namespace GameSystems
             return sortedRoom;
         }
 
-        private Room GetRoomAtTheEdgeV2()
+        private Room GetRoomAtTheEdgeV2(bool _ignore4NeighborsConstraint = false)
         {
             Vector2Int curCoordinate = DungeonRoomSystem.Instance.CurrentRoom.Coordinate;
             List<Room> candidates = new List<Room>();
@@ -126,15 +126,23 @@ namespace GameSystems
                 }
                 
                 bool neighborHaveLinkToStartRoom = true;
-                foreach (Room instanciatedNeighbor in room.GetInstanciatedNeighbors())
+                var neighbors = room.GetInstanciatedNeighbors();
+                
+                if (neighbors.Count == 4 && !_ignore4NeighborsConstraint)
+                    continue;
+                
+                foreach (Room instanciatedNeighbor in neighbors)
                 {
                     neighborHaveLinkToStartRoom = neighborHaveLinkToStartRoom && DungeonRoomSystem.Instance.IsThereAPathLeadingTo(Vector2Int.zero, instanciatedNeighbor, room);
                 }
                 if(neighborHaveLinkToStartRoom && coordinate != curCoordinate)
                     candidates.Add(room);
             }
-            
-            return candidates.GetRandomElem();
+
+            var result = candidates.GetRandomElem();
+            if (result == null && !_ignore4NeighborsConstraint)
+                result = GetRoomAtTheEdgeV2(true);
+            return result;
         }
 
         [ContextMenu("Log candidates")]
