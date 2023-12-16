@@ -279,6 +279,7 @@ namespace GameSystems
                 
                 // then destroy the room in the north
                 DestroyRoom(coordinate);
+                GetEventDispatcher().SendEvent<ForceRefreshMap>();
             }
             else
             {
@@ -291,12 +292,9 @@ namespace GameSystems
         {
             // check if the current room has a north entrance
             if (m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
-            {   
-                // get the coordinate of the room to the north from the current room
-                Vector2Int northRoomCoordinate = m_currentRoom.Coordinate + North;
-                
+            {
                 // then destroy the room in the north
-                DestroyRoom(northRoomCoordinate);
+                CloseRoom(RoomEntrance.North);
             }
             else 
             {
