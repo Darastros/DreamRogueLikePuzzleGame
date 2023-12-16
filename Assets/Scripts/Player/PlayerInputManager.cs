@@ -59,5 +59,7 @@ namespace Player
     public interface IUsable
     {
         void Use(GameObject _user);
+        void Hover();
+        void Exit();
     }
 }
