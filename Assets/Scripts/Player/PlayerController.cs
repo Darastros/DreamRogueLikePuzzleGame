@@ -127,7 +127,6 @@ public class PlayerController : MonoBehaviour
     {
         if (GameManager.Instance.PlatformerActivated)
         {
-            Debug.Log("TP");
             GameManager.Instance.TeleportPlayerToRoomEntrance(DungeonRoomSystem.Instance.LastDoorOpened);
         }
         
