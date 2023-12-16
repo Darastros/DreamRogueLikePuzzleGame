@@ -28,9 +28,11 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnDeactivatePlatformerGame += RemovePlatformerGameRules;
         GameManager.OnActivateRPGGame += AddRPGGameRules;
         GameManager.OnDeactivateRPGGame += RemoveRPGGameRules;
+        GameManager.OnActivateStartGame += AddStartGameRules;
+        GameManager.OnDeactivateStartGame += RemoveStartGameRules;
 
         m_activeRules = new List<Animator>();
-        AddStartGameRules();
+        
     }
 
     private void OnDisable()
@@ -46,6 +48,8 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnDeactivatePlatformerGame -= RemovePlatformerGameRules;
         GameManager.OnActivateRPGGame -= AddRPGGameRules;
         GameManager.OnDeactivateRPGGame -= RemoveRPGGameRules;
+        GameManager.OnActivateStartGame -= AddStartGameRules;
+        GameManager.OnDeactivateStartGame -= RemoveStartGameRules;
     }
 
     private void FixedUpdate()

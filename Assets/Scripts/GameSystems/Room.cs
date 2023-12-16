@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using GameSystems.RoomScript;
 using ScriptableObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -51,6 +52,11 @@ namespace GameSystems
             {
                 m_runtimeGameScene = Object.Instantiate(m_roomDescriptor.m_prefab, DungeonRoomSystem.Instance.transform);
 
+                if (m_roomDescriptor.m_registerToStartPool)
+                {
+                    m_runtimeGameScene.GetOrCreate<StartRoom>();
+                }
+                
                 switch (m_roomDescriptor.m_gameRuleType)
                 { 
                     case GameRuleType.Platformer:
