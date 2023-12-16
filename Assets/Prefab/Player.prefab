@@ -212,6 +212,7 @@ GameObject:
   - component: {fileID: 5592165078315507119}
   - component: {fileID: 4722640160886390688}
   - component: {fileID: 8060540606002898561}
+  - component: {fileID: 5324761998746901579}
   - component: {fileID: 8288124411205607940}
   - component: {fileID: 4091015562410516030}
   - component: {fileID: 8884096822842131054}
@@ -257,6 +258,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_spriteParent: {fileID: 354634790393966617}
+  m_dataManager: {fileID: 0}
   m_platformerController: {fileID: 636195252138589441}
   m_rpgController: {fileID: 8377159059761447448}
   m_cardGameController: {fileID: 6364590282432159044}
@@ -278,6 +280,18 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 70
   m_useRadius: 1
+--- !u!114 &5324761998746901579
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8117532525379099905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e83e311bdceabe840ade9df33a3cb4c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &8288124411205607940
 Rigidbody2D:
   serializedVersion: 4

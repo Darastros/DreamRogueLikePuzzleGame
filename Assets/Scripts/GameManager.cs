@@ -24,8 +24,7 @@ public class GameManager : MonoBehaviour
         get
         {
             if (_instance != null) return _instance;
-            GameObject go = new GameObject();
-            _instance = go.AddComponent<GameManager>();
+            _instance = FindObjectOfType<GameManager>();
             return _instance;
         }
         private set => _instance = value;
@@ -60,6 +59,7 @@ public class GameManager : MonoBehaviour
     // Internal
     public delegate void Callback();
 
+    public Effects effects;
     
     private void Awake()
     {

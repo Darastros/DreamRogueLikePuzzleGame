@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dca4e8ca47b348b6b764483881a4a961, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_baseSpeed: 25
+  m_baseSpeed: 45
   m_speedMultiplier: 1
   m_rigidbody2D: {fileID: 0}
 --- !u!114 &8960817459711416987
@@ -178,7 +178,7 @@ MonoBehaviour:
   SnapInput: 1
   VerticalDeadZoneThreshold: 0.3
   HorizontalDeadZoneThreshold: 0.1
-  MaxSpeed: 6
+  MaxSpeed: 8
   Acceleration: 75
   GroundDeceleration: 60
   AirDeceleration: 30
@@ -197,7 +197,7 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0.13200755
     - serializedVersion: 3
-      time: 0.31003368
+      time: 0.2645205
       value: 2.1881773
       inSlope: -0.0113565875
       outSlope: -0.0113565875
@@ -206,7 +206,7 @@ MonoBehaviour:
       inWeight: 1
       outWeight: 1
     - serializedVersion: 3
-      time: 0.69767
+      time: 0.59525144
       value: 0.00070773996
       inSlope: -16.268517
       outSlope: -16.268517
