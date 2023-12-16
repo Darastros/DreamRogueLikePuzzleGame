@@ -104,5 +104,15 @@ namespace GameSystems
 
             return true;
         }
+
+        public Door GetEntrance(RoomEntrance _entrance)
+        {
+            foreach (Door door in m_runtimeGameScene.transform.GetComponentsInChildren<Door>())
+            {
+                if (door.whichEntrance == _entrance)
+                    return door;
+            }
+            return null;
+        }
     }
 }

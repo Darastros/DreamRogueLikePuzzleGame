@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using GameSystems;
+using ScriptableObjects;
 using UnityEngine;
+using UnityEngine.UI;
 using Utils;
 
 namespace UI
@@ -12,6 +14,7 @@ namespace UI
         private UDictionary<RoomTypeUI, GameObject> m_roomUIPrefab = new UDictionary<RoomTypeUI, GameObject>();
         [SerializeField] private bool m_useCurrentRoomAsCenter = true;
         [SerializeField] private float m_offsetBetweenRoom = 0.1f;
+        [SerializeField] private Color m_currentColor;
 
         private void Start()
         {
@@ -47,25 +50,37 @@ namespace UI
             {
                 GameObject prefabToUse = GetPrefabToUse(coordinate, currentRoom);
                 Vector2Int offsetedCoordinate = m_useCurrentRoomAsCenter ? coordinate - currentRoom.Coordinate : coordinate;
-                var instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate);
-
+                var instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate, currentRoom.Coordinate == coordinate);
+                if(instanciated.TryGetComponent( out RoomUIRuntimeData runtimeData))
+                {
+                    runtimeData.Coordinate = coordinate;
+                    runtimeData.AssociatedRoom = room;
+                }
+                
                 foreach (Vector2Int roomNeighborsCoordinate in room.m_neighborsCoordinates)
                 {
                     if (!currentRooms.ContainsKey(roomNeighborsCoordinate) && neighborsAlreadyTreated.Add(roomNeighborsCoordinate))
                     {
                         prefabToUse = GetPrefabToUse(roomNeighborsCoordinate, currentRoom);
                         offsetedCoordinate = m_useCurrentRoomAsCenter ? roomNeighborsCoordinate - currentRoom.Coordinate : roomNeighborsCoordinate;
-                        instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate);
+                        
+                        instanciated = InstanciateRoom(prefabToUse, offsetedCoordinate, false);
+                        if(instanciated.TryGetComponent( out runtimeData))
+                        {
+                            runtimeData.Coordinate = coordinate;
+                            runtimeData.AssociatedRoom = null;
+                        }
                     }
                 }
             }
         }
 
-        private GameObject InstanciateRoom(GameObject prefabToUse, Vector2Int coordinate)
+        private GameObject InstanciateRoom(GameObject prefabToUse, Vector2Int coordinate, bool current)
         {
             var instanciated = Instantiate(prefabToUse, transform, false);
             if (instanciated.TryGetComponent(out RectTransform rectTransform))
             {
+                if(current) instanciated.GetComponent<Image>().color = m_currentColor;
                 instanciated.transform.localPosition = new Vector2(coordinate.x * rectTransform.rect.width + (coordinate.x * m_offsetBetweenRoom), coordinate.y * rectTransform.rect.height + (coordinate.y * m_offsetBetweenRoom));
             }
             instanciated.name = $"{instanciated.name}_{coordinate.x}_{coordinate.y}";
@@ -76,11 +91,11 @@ namespace UI
         {
             GameObject prefabToUse = null;
             DungeonRoomSystem.Instance.CurrentRooms.TryGetValue(_coordinate, out Room room);
-            if (_coordinate == _currentRoom.Coordinate)
+            /*if (_coordinate == _currentRoom.Coordinate)
             {
                 m_roomUIPrefab.TryGetValue(RoomTypeUI.CurrentRoom, out prefabToUse);
             }
-            else if (room != null)
+            else*/ if (room != null)
             {
                 if (room.m_roomDescriptor.m_registerToStartPool)
                 {

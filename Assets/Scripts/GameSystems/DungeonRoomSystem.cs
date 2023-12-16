@@ -9,6 +9,7 @@ using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
+using Random = System.Random;
 
 namespace GameSystems
 {
@@ -38,6 +39,8 @@ namespace GameSystems
         public List<RoomDescriptor> startRoom;
         public List<RoomDescriptor> exitRoom;
 
+        private Random m_randomRoom = new Random();
+        
         public bool forceExitRoomToBeFirstRoom = false;
 
         public TextMeshProUGUI debugMap;
@@ -49,6 +52,8 @@ namespace GameSystems
 
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
         public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
+        private RoomEntrance m_lastDoorOpened;
+        public RoomEntrance LastDoorOpened => m_lastDoorOpened;
             
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
@@ -62,6 +67,7 @@ namespace GameSystems
         private static readonly Vector2Int SouthWest = South + West;
         private static readonly Vector2Int NorthEast = North + East;
         private static readonly Vector2Int NorthWest = North + West;
+        
 
         private void Awake()
         {
@@ -120,6 +126,16 @@ namespace GameSystems
             m_eventDispatcher.RegisterEvent<OnPlayerOpenDoor>(this, OnPlayerWalkDoor);
         }
 
+        private WeightedList<RoomDescriptor> ComputeWeightedList(List<RoomDescriptor> _pool)
+        {
+            WeightedList<RoomDescriptor> list = new WeightedList<RoomDescriptor>(m_randomRoom);
+            foreach (RoomDescriptor roomDescriptor in _pool)
+            {
+                list.Add(roomDescriptor, Math.Max(1, roomDescriptor.m_weight));
+            }
+            return list;
+        }
+
         Vector2Int GetRoomCoordinate(RoomEntrance _entrance)
         {
             return m_currentRoom.Coordinate + _entrance.GetOffset();
@@ -167,13 +183,14 @@ namespace GameSystems
         {
             if (m_currentRoom != null)
             {
+                GameManager.Instance.HidePlayer();
                 m_currentRoom.HideRoom();
             }
-                
+
+            Room oldRoom = m_currentRoom;
             m_currentRoom = _newRoom;
-            GetEventDispatcher().SendEvent<OnRoomChanged>();
+            GetEventDispatcher().SendEvent<OnRoomChanged>(oldRoom, m_currentRoom);
             UpdateDebugMap();
-            var player = FindObjectOfType<PlayerInputManager>().GetComponent<Rigidbody2D>(); // TODO CLEAN THIS SHIT
             
             m_currentRoom.ActivateRoom();
 
@@ -181,16 +198,9 @@ namespace GameSystems
             ValidateCurrentRoom();
             #endif
             
-            //TODO: Clean this shit
-            Door[] doors = m_currentRoom.m_runtimeGameScene.GetComponentsInChildren<Door>();
-            foreach (var door in doors)
-            {
-                if (door.whichEntrance.GetOpposite() == _from)
-                {
-                    player.position = door.teleportPos.position;
-                    break;
-                }
-            }
+           GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
+           m_lastDoorOpened = _from.GetOpposite();
+           GameManager.Instance.ShowPlayer();
         }
 
         private void ValidateCurrentRoom()
@@ -245,9 +255,11 @@ namespace GameSystems
             List<RoomDescriptor> availableRooms = _pool.FindAll(_room =>
                 DoesRoomMeetRequirement(_room, neededEntrances, forbiddenEntrances));
 
+            var weightedList = ComputeWeightedList(availableRooms);
+
             if (availableRooms.Count > 0)
             {
-                var selectedRoom = availableRooms.GetRandomElem();
+                var selectedRoom = weightedList.Next();
                 var newRoom = new Room(_x, _y, selectedRoom);
                 return newRoom;
             }

@@ -10,6 +10,11 @@ namespace ScriptableObjects
     {
         public RoomEntrance m_entrances;
         public GameObject m_prefab;
+       
+        /// <summary>
+        /// Probability of this room to spawn is influenced by this weight (1 is minimum)
+        /// </summary>
+        public int m_weight = 1;
 
         public GameRuleType m_gameRuleType = GameRuleType.None;
         
