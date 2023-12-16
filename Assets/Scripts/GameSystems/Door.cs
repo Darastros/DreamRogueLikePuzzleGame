@@ -12,6 +12,7 @@ namespace GameSystems
     public class Door : MonoBehaviour, IUsable
     {
         [SerializeField] private Collider2D m_collider2D;
+        private Animator m_animator;
 
         public RoomEntrance whichEntrance;
         public Transform teleportPos;
@@ -20,6 +21,20 @@ namespace GameSystems
         {
             if(m_collider2D == null)
                 TryGetComponent(out m_collider2D);
+            m_animator.SetBool("canSeal", DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 0.0f);
+            if(DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null)
+                m_animator.SetTrigger("Open");
+        }
+
+        private void Awake()
+        {
+            m_animator = GetComponent<Animator>();
+        }
+
+        private void Update()
+        {
+            m_animator.SetBool("canSeal", DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
         }
 
         private void OnTriggerEnter2D(Collider2D other)
@@ -30,24 +45,26 @@ namespace GameSystems
             }
         }
 
-        private void OnValidate()
+        public void Use(GameObject _user)
         {
-            if (whichEntrance != 0 && (whichEntrance & (whichEntrance - 1)) != 0)
+            if (DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.TryUseArtifact())
             {
-#if UNITY_EDITOR
-                EditorUtility.DisplayDialog("ERROR", "RoomEntrance should not contain multiple flags.",
-                    "OK I'LL REMOVE IT NOW");
-#endif
-                Debug.LogError("RoomEntrance should not contain multiple flags.", this);
+                DungeonRoomSystem.Instance.CloseRoom(whichEntrance);
+                m_animator.SetTrigger("Seal");
             }
         }
 
-        public void Use(GameObject _user)
+        public void Hover()
         {
-            if (PlayerDataManager.TryUseArtifact())
-            {
-                DungeonRoomSystem.Instance.CloseRoom(whichEntrance);
-            }
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 1.0f);
+            m_animator.SetBool("hover", true);
+        }
+
+        public void Exit()
+        {
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 1.0f);
+            m_animator.SetBool("hover", false);
+            
         }
     }
 }

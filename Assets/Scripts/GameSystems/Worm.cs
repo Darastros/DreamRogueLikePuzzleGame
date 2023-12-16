@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 using Utils;
@@ -13,14 +14,13 @@ namespace GameSystems
         public EventDispatcher EventDispatcher { get; private set; } = new();
         
         [SerializeField] private int minRoomThresholdForWormToAppear = 30;
-        [SerializeField] private float eatingEveryTime = 30f;
-        [SerializeField] private float timeUntilRoomDestroyed = 20f;
+        [SerializeField] private float timeUntilRoomDestroyed = 30f;
+        [SerializeField] private float newTimerIfRoomSaved = 120f;
         
         private bool m_wormAppeared = false;
         private Coroutine m_wormCoroutine = null;
-        private Dictionary<Vector2Int, Coroutine> m_roomCoroutines = new ();
-        
-        public List<Vector2Int> RoomsAboutToBeDestoyed => m_roomCoroutines.Keys.ToList();
+
+        public Room RoomAboutToBeDestroyed { get; private set; } = null;
 
         private void Start()
         {
@@ -36,50 +36,48 @@ namespace GameSystems
 
         private void OnRoomChanged(OnRoomChanged _obj)
         {
-            if (m_roomCoroutines.TryGetValue(_obj.m_to.Coordinate, out var coroutine))
+            if (m_wormCoroutine != null && RoomAboutToBeDestroyed.Coordinate == _obj.m_to.Coordinate)
             {
-                StopCoroutine(coroutine);
-                m_roomCoroutines.Remove(_obj.m_to.Coordinate);
+                StopCoroutine(m_wormCoroutine);
+                m_wormCoroutine = null;
+                RoomAboutToBeDestroyed = null;
                 EventDispatcher.SendEvent<OnRoomSavedFromWorm>(_obj.m_to);
+                StartCoroutine(Reset());
             }
             
             if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
             {
                 if (!m_wormAppeared)
                 {
-                    m_wormCoroutine = StartCoroutine(EatingWormCoroutine());
+                    m_wormAppeared = true;
+                    m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
                 }
             }
-        }
-
-        private IEnumerator EatingWormCoroutine()
-        {
-            while (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear || m_roomCoroutines.Count > 0)
-            {
-                m_wormAppeared = true;
-                Room roomToDelete = GetRoomAtTheEdge().FirstOrDefault(_room => !m_roomCoroutines.ContainsKey(_room.Coordinate));
-
-                if (roomToDelete != null)
-                {
-                    if (m_roomCoroutines.TryAdd(roomToDelete.Coordinate,
-                            StartCoroutine(DestroyRoomCoroutine(roomToDelete))))
-                    {
-                        EventDispatcher.SendEvent<OnWormStartEatingRoom>(roomToDelete);
-                        DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
-                    }
-                }
-                yield return new WaitForSeconds(eatingEveryTime);
-            }
-            m_wormCoroutine = null;
-            m_wormAppeared = false;
-            EventDispatcher.SendEvent<OnWormLeft>();
         }
         
         private IEnumerator DestroyRoomCoroutine(Room _roomToDestroy)
         {
+            RoomAboutToBeDestroyed = _roomToDestroy;
+            DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
+            EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
             yield return new WaitForSeconds(timeUntilRoomDestroyed);
-            m_roomCoroutines.Remove(_roomToDestroy.Coordinate);
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);
+            m_wormCoroutine = null;
+            RoomAboutToBeDestroyed = null;
+        }
+
+        private IEnumerator Reset()
+        {
+            yield return new WaitForSeconds(newTimerIfRoomSaved);
+            if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
+            {
+                m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
+            }
+            else
+            {
+                EventDispatcher.SendEvent<OnWormLeft>();
+                m_wormAppeared = false;
+            }
         }
 
         /// <summary>
@@ -112,6 +110,46 @@ namespace GameSystems
             }
             var sortedRoom = candidates.OrderByDescending((_room) => (_room.Coordinate - curCoordinate).sqrMagnitude).ToList();
             return sortedRoom;
+        }
+
+        private Room GetRoomAtTheEdgeV2(bool _ignore4NeighborsConstraint = false)
+        {
+            Vector2Int curCoordinate = DungeonRoomSystem.Instance.CurrentRoom.Coordinate;
+            List<Room> candidates = new List<Room>();
+            foreach (var (coordinate, room) in DungeonRoomSystem.Instance.CurrentRooms)
+            {
+                if (coordinate == Vector2Int.zero && coordinate != curCoordinate)
+                {
+                    if (room.GetInstanciatedNeighbors().Count == 1)
+                    {
+                        candidates.Add(room);
+                    }
+                }
+                
+                bool neighborHaveLinkToStartRoom = true;
+                var neighbors = room.GetInstanciatedNeighbors();
+                
+                if (neighbors.Count == 4 && !_ignore4NeighborsConstraint)
+                    continue;
+                
+                foreach (Room instanciatedNeighbor in neighbors)
+                {
+                    neighborHaveLinkToStartRoom = neighborHaveLinkToStartRoom && DungeonRoomSystem.Instance.IsThereAPathLeadingTo(Vector2Int.zero, instanciatedNeighbor, room);
+                }
+                if(neighborHaveLinkToStartRoom && coordinate != curCoordinate)
+                    candidates.Add(room);
+            }
+
+            Room result = candidates.GetRandomElem();
+            if (result == null && !_ignore4NeighborsConstraint)
+                result = GetRoomAtTheEdgeV2(true);
+            return result;
+        }
+
+        [ContextMenu("Log candidates")]
+        void DebugLogRooms()
+        {
+            Debug.Log(GetRoomAtTheEdgeV2().Coordinate);
         }
     }
 

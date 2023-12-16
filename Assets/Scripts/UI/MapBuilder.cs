@@ -59,7 +59,7 @@ namespace UI
                     runtimeData.Coordinate = coordinate;
                     runtimeData.AssociatedRoom = room;
                 }
-                if (m_prefabAboutToBeDestroyedOverlay != null && GameManager.Instance.Worm.RoomsAboutToBeDestoyed.Contains(coordinate))
+                if (m_prefabAboutToBeDestroyedOverlay != null && GameManager.Instance.Worm.RoomAboutToBeDestroyed != null && GameManager.Instance.Worm.RoomAboutToBeDestroyed.Coordinate == coordinate)
                 {
                     InstanciateRoom(m_prefabAboutToBeDestroyedOverlay, offsetedCoordinate, currentRoom.Coordinate == coordinate);
                 }
