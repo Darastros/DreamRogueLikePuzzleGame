@@ -101,4 +101,9 @@ public static class ExtensionMethods
     {
         return DungeonRoomSystem.Instance.GetInstanciatedNeighbors(_room);
     }
+    
+    public static Room GetInstanciatedNeighbor(this Room _room, RoomEntrance _entrance)
+    {
+        return DungeonRoomSystem.Instance.CurrentRooms.GetValueOrDefault(_room.Coordinate + _entrance.GetOffset());
+    }
 }
