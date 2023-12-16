@@ -50,7 +50,7 @@ namespace GameSystems
                 if (!m_wormAppeared)
                 {
                     m_wormAppeared = true;
-                    m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdge()[0]));
+                    m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
                 }
             }
         }
@@ -59,8 +59,8 @@ namespace GameSystems
         {
             RoomAboutToBeDestroyed = _roomToDestroy;
             DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
-            yield return new WaitForSeconds(timeUntilRoomDestroyed);
             EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
+            yield return new WaitForSeconds(timeUntilRoomDestroyed);
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);
             m_wormCoroutine = null;
             RoomAboutToBeDestroyed = null;
@@ -71,10 +71,11 @@ namespace GameSystems
             yield return new WaitForSeconds(newTimerIfRoomSaved);
             if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
             {
-                m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdge()[0]));
+                m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
             }
             else
             {
+                EventDispatcher.SendEvent<OnWormLeft>();
                 m_wormAppeared = false;
             }
         }
@@ -111,9 +112,44 @@ namespace GameSystems
             return sortedRoom;
         }
 
-        private List<Room> GetRoomAtTheEdgeV2()
+        private Room GetRoomAtTheEdgeV2(bool _ignore4NeighborsConstraint = false)
         {
-            return null;
+            Vector2Int curCoordinate = DungeonRoomSystem.Instance.CurrentRoom.Coordinate;
+            List<Room> candidates = new List<Room>();
+            foreach (var (coordinate, room) in DungeonRoomSystem.Instance.CurrentRooms)
+            {
+                if (coordinate == Vector2Int.zero && coordinate != curCoordinate)
+                {
+                    if (room.GetInstanciatedNeighbors().Count == 1)
+                    {
+                        candidates.Add(room);
+                    }
+                }
+                
+                bool neighborHaveLinkToStartRoom = true;
+                var neighbors = room.GetInstanciatedNeighbors();
+                
+                if (neighbors.Count == 4 && !_ignore4NeighborsConstraint)
+                    continue;
+                
+                foreach (Room instanciatedNeighbor in neighbors)
+                {
+                    neighborHaveLinkToStartRoom = neighborHaveLinkToStartRoom && DungeonRoomSystem.Instance.IsThereAPathLeadingTo(Vector2Int.zero, instanciatedNeighbor, room);
+                }
+                if(neighborHaveLinkToStartRoom && coordinate != curCoordinate)
+                    candidates.Add(room);
+            }
+
+            Room result = candidates.GetRandomElem();
+            if (result == null && !_ignore4NeighborsConstraint)
+                result = GetRoomAtTheEdgeV2(true);
+            return result;
+        }
+
+        [ContextMenu("Log candidates")]
+        void DebugLogRooms()
+        {
+            Debug.Log(GetRoomAtTheEdgeV2().Coordinate);
         }
     }
 

@@ -1,15 +1,24 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
+using GameSystems;
 using UnityEngine;
+using Utils;
 
-public class Projectile : MonoBehaviour
+public class Projectile : MonoBehaviour, IEventListener
 {
+    private void Start()
+    {
+        DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, _changed => Destroy(gameObject));
+    }
+
     private void OnTriggerEnter2D(Collider2D _other)
     {
         if (_other.isTrigger) return;
         GetComponent<Animator>().SetTrigger("Destroy");
         if(TryGetComponent(out Rigidbody2D _rigidbody)) _rigidbody.velocity = Vector2.zero;
+    }
+
+    private void OnDestroy()
+    {
+        DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
     }
 
     public void Destroy()
