@@ -145,6 +145,7 @@ public class GameManager : MonoBehaviour
     {
         if (!m_startGameRule) return;
         m_startGameRule = false;
+        LooseGame();
         OnDeactivateStartGame.Invoke();
     }
     
@@ -274,7 +275,7 @@ public class GameManager : MonoBehaviour
     [MenuItem("GameManager/RPG/Add RPG System to stack")]
     public static void ForceAddRpgGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddRPGGameRuleToStack());
     
-    [MenuItem("GameManager/CardGame/Remove Card Game from stack")]
+    [MenuItem("GameManager/CardGame/Remove RPG Game from stack")]
     public static void ForceRemoveRpgGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveRPGGameRuleFromStack());
     
     [MenuItem("GameManager/Hit player")]
