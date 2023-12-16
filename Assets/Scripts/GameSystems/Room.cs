@@ -41,7 +41,7 @@ namespace GameSystems
                 m_neighborsCoordinates.Add(Coordinate + Vector2Int.left);
             }
             
-            Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}");
+            Debug.Log($"Creating room at coordinate {_coordinate}, with this descriptor {_roomDescriptor}", _roomDescriptor);
             Debug.Assert(IsValid(), "Invalid room");
         }
 
@@ -51,6 +51,11 @@ namespace GameSystems
             {
                 m_runtimeGameScene = Object.Instantiate(m_roomDescriptor.m_prefab, DungeonRoomSystem.Instance.transform);
 
+                if (m_roomDescriptor.m_registerToStartPool)
+                {
+                    GameManager.Instance.AddStartGameToStack();
+                }
+                
                 switch (m_roomDescriptor.m_gameRuleType)
                 { 
                     case GameRuleType.Platformer:
@@ -77,6 +82,11 @@ namespace GameSystems
         
         public void Destroy()
         {
+            if (Coordinate == Vector2Int.zero)
+            {
+                GameManager.Instance.RemoveStartGameFromStack();
+            }
+            
             switch (m_roomDescriptor.m_gameRuleType)
             {
                 case GameRuleType.Platformer:

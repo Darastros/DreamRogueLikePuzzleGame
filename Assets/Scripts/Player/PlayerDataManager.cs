@@ -81,9 +81,9 @@ public class PlayerDataManager : MonoBehaviour
 
     public static bool TryUseArtifact()
     {
-        if (instance.m_artifact > 0)
+        if (artifact > 0)
         {
-            --instance.m_artifact;
+            --artifact;
             return true;
         }
 

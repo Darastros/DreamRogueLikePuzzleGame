@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1992623778814589962}
   - component: {fileID: 9094133790132113952}
+  - component: {fileID: 5803814156813149782}
   m_Layer: 0
   m_Name: Level
   m_TagString: Untagged
@@ -59,10 +60,26 @@ MonoBehaviour:
   - {fileID: 11400000, guid: eb5f397a675229441899e0c1b1e877de, type: 2}
   - {fileID: 11400000, guid: 751663a4751a99346ba21e029bb1b807, type: 2}
   - {fileID: 11400000, guid: df38309b1f842db48b987e4379f51f14, type: 2}
+  - {fileID: 11400000, guid: 713bb0bd6b41be0499eebf8c6e08d542, type: 2}
   startRoom:
   - {fileID: 11400000, guid: 28a2f4a39b589964fabd23e6f2e43a36, type: 2}
   exitRoom:
   - {fileID: 11400000, guid: 88f72b650f199e3429c2c81b22eafa15, type: 2}
-  forceExitRoomToBeFirstRoom: 0
+  forceExitRoomToBeFirstRoom: 1
   debugMap: {fileID: 0}
   debugCoordinate: {fileID: 0}
+--- !u!114 &5803814156813149782
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6542137855133268826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13be4ad195ad46e89c432f4c0546f6c5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minRoomThresholdForWormToAppear: 30
+  eatingEveryTime: 30
+  timeUntilRoomDestroyed: 20

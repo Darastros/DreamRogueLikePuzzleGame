@@ -44,7 +44,7 @@ namespace GameSystems
 
         public void Use(GameObject _user)
         {
-            if (PlayerDataManager.TryUseArtifact())
+            if (DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.TryUseArtifact())
             {
                 DungeonRoomSystem.Instance.CloseRoom(whichEntrance);
             }

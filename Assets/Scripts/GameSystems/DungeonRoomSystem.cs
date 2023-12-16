@@ -278,11 +278,21 @@ namespace GameSystems
                 Vector2Int coordinate = m_currentRoom.Coordinate + _whichEntrance.GetOffset();
                 
                 // then destroy the room in the north
-                DestroyRoom(coordinate);
+                CloseRoom(coordinate);
             }
             else
             {
                 Debug.LogError($"Trying to close door {_whichEntrance} but this room is suppose to only have {m_currentRoom.m_roomDescriptor.m_entrances}");
+            }
+        }
+        
+        public void CloseRoom(Vector2Int _coordinates)
+        {
+            // check if the current room has a north entrance
+            if (m_runtimeRooms.TryGetValue(_coordinates, out Room room)) 
+            {
+                DestroyRoom(_coordinates);
+                GetEventDispatcher().SendEvent<ForceRefreshMap>();
             }
         }
         
@@ -291,12 +301,9 @@ namespace GameSystems
         {
             // check if the current room has a north entrance
             if (m_currentRoom.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
-            {   
-                // get the coordinate of the room to the north from the current room
-                Vector2Int northRoomCoordinate = m_currentRoom.Coordinate + North;
-                
+            {
                 // then destroy the room in the north
-                DestroyRoom(northRoomCoordinate);
+                CloseRoom(RoomEntrance.North);
             }
             else 
             {
@@ -390,11 +397,9 @@ namespace GameSystems
             // South
             if (m_runtimeRooms.TryGetValue(coordinate + South, out room)) // If room instantiated next to the coordinate
             {
-                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North)) 
-                {
-                    _neededRoomEntrance |= RoomEntrance.South;
-                }
-                else
+                bool roomHasNorthDoor = room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.North);
+                _neededRoomEntrance |= RoomEntrance.South;
+                if(!roomHasNorthDoor)
                 {
                     _forbiddenEntrances |= RoomEntrance.South;
                 }
@@ -407,11 +412,10 @@ namespace GameSystems
             // East
             if (m_runtimeRooms.TryGetValue(coordinate + East, out room))
             {
-                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West))
-                {
-                    _neededRoomEntrance |= RoomEntrance.East;
-                }
-                else
+                bool roomHasWestDoor = room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.West);
+               _neededRoomEntrance |= RoomEntrance.East;
+                
+                if(!roomHasWestDoor)
                 {
                     _forbiddenEntrances |= RoomEntrance.East;
                 }
@@ -424,11 +428,9 @@ namespace GameSystems
             // West
             if (m_runtimeRooms.TryGetValue(coordinate + West, out room))
             {
-                if (room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East))
-                {
-                    _neededRoomEntrance |= RoomEntrance.West;
-                }
-                else
+                bool roomHaveEastDoor = room.m_roomDescriptor.m_entrances.HasFlag(RoomEntrance.East);
+                _neededRoomEntrance |= RoomEntrance.West;
+                if (!roomHaveEastDoor)
                 {
                     _forbiddenEntrances |= RoomEntrance.West;
                 }
@@ -442,28 +444,32 @@ namespace GameSystems
             // Check if room can appear at position
             //Can appear south
             if (!CheckIfRoomHasNeededEntrance(coordinate + SouthWest, RoomEntrance.East) ||
-                !CheckIfRoomHasNeededEntrance(coordinate + SouthEast, RoomEntrance.West))
+                !CheckIfRoomHasNeededEntrance(coordinate + SouthEast, RoomEntrance.West) ||
+                !CheckIfRoomHasNeededEntrance(coordinate + South + South, RoomEntrance.North))
             {
                 _forbiddenEntrances |= RoomEntrance.South;
             }
 
             //Can appear north
             if (!CheckIfRoomHasNeededEntrance(coordinate + NorthEast, RoomEntrance.West) ||
-                !CheckIfRoomHasNeededEntrance(coordinate + NorthWest, RoomEntrance.East))
+                !CheckIfRoomHasNeededEntrance(coordinate + NorthWest, RoomEntrance.East) ||
+                !CheckIfRoomHasNeededEntrance(coordinate + North + North, RoomEntrance.South))
             {
                 _forbiddenEntrances |= RoomEntrance.North;
             }
 
             //Can appear east
             if (!CheckIfRoomHasNeededEntrance(coordinate + NorthEast, RoomEntrance.South) ||
-                !CheckIfRoomHasNeededEntrance(coordinate + SouthEast, RoomEntrance.North))
+                !CheckIfRoomHasNeededEntrance(coordinate + SouthEast, RoomEntrance.North) ||
+                !CheckIfRoomHasNeededEntrance(coordinate + East + East, RoomEntrance.West))
             {
                 _forbiddenEntrances |= RoomEntrance.East;
             }
 
             //Can appear west
             if (!CheckIfRoomHasNeededEntrance(coordinate + NorthWest, RoomEntrance.South) ||
-                !CheckIfRoomHasNeededEntrance(coordinate + SouthWest, RoomEntrance.North))
+                !CheckIfRoomHasNeededEntrance(coordinate + SouthWest, RoomEntrance.North)||
+                !CheckIfRoomHasNeededEntrance(coordinate + West + West, RoomEntrance.East))
             {
                 _forbiddenEntrances |= RoomEntrance.West;
             }
@@ -475,11 +481,27 @@ namespace GameSystems
             Debug.Assert(_forbiddenEntrances != RoomEntrance.Everything,
                 $"This room can't have doors?! => {_forbiddenEntrances}");
         }
+
+        public List<Room> GetInstanciatedNeighbors(Room _room)
+        {
+            List<Room> result = new List<Room>();
+            foreach (Vector2Int roomNeighborsCoordinate in _room.m_neighborsCoordinates)
+            {
+                if (CurrentRooms.TryGetValue(roomNeighborsCoordinate, out var neighbor))
+                {
+                    result.Add(neighbor);
+                }
+            }
+            return result;
+        }
         
-        bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom)
+        public bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom, Room _blackListRoom = null)
         {
             var visitedRooms = new HashSet<Room>(); 
             var roomsToVisit = new Stack<Room>();
+
+            if (_blackListRoom != null)
+                visitedRooms.Add(_blackListRoom);
 
             roomsToVisit.Push(_startingRoom);
             void AddAllUnvisitedNeighborsToVisitStack(Room _currentRoom)

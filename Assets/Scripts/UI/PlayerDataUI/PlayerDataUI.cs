@@ -21,14 +21,40 @@ public class PlayerDataUI : MonoBehaviour
         PlayerDataManager.OnActivateKeyPart += ActivateKeyPart;
         PlayerDataManager.OnCollectArtifact += CollectArtifact;
         PlayerDataManager.OnUseArtifact += UseArtifact;
+
+        GameManager.OnActivateCardGame += AddCardGameRules;
+        GameManager.OnDeactivateCardGame += RemoveCardGameRules;
+        GameManager.OnActivatePlatformerGame += AddPlatformerGameRules;
+        GameManager.OnDeactivatePlatformerGame += RemovePlatformerGameRules;
+        GameManager.OnActivateRPGGame += AddRPGGameRules;
+        GameManager.OnDeactivateRPGGame += RemoveRPGGameRules;
+        GameManager.OnActivateStartGame += AddStartGameRules;
+        GameManager.OnDeactivateStartGame += RemoveStartGameRules;
+
+        m_activeRules = new List<Animator>();
+        
     }
-    
+
     private void OnDisable()
     {
         PlayerDataManager.OnHeal -= Heal;
         PlayerDataManager.OnHit -= Hit;
         PlayerDataManager.OnDeath -= Death;
         PlayerDataManager.OnActivateKeyPart -= ActivateKeyPart;
+        
+        GameManager.OnActivateCardGame -= AddCardGameRules;
+        GameManager.OnDeactivateCardGame -= RemoveCardGameRules;
+        GameManager.OnActivatePlatformerGame -= AddPlatformerGameRules;
+        GameManager.OnDeactivatePlatformerGame -= RemovePlatformerGameRules;
+        GameManager.OnActivateRPGGame -= AddRPGGameRules;
+        GameManager.OnDeactivateRPGGame -= RemoveRPGGameRules;
+        GameManager.OnActivateStartGame -= AddStartGameRules;
+        GameManager.OnDeactivateStartGame -= RemoveStartGameRules;
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateRulesPos();
     }
 
     private void ActivateKeyPart(GameRuleType _part)
@@ -86,6 +112,86 @@ public class PlayerDataUI : MonoBehaviour
     private void UseArtifact(int _newValue, int _delta)
     {
         m_artifactNumberText.text = (_newValue <= 9 ? "0" : "") + _newValue;
+    }
+    
+    [Header("Game Rule")]
+    [SerializeField] private List<Transform> m_rulesPos;
+    
+    private void UpdateRulesPos()
+    {
+        int pos = 0;
+        for (int i = m_activeRules.Count - 1; i >= 0; --i)
+        {
+            Vector3 requirePos = GetRuleRequirePos(m_activeRules[i].transform, pos);
+            m_activeRules[i].transform.position = Vector3.Lerp(m_activeRules[i].transform.position, requirePos, 0.1f);
+            ++pos;
+        }
+    }
+
+    private Vector3 GetRuleRequirePos(Transform _rule, int _pos)
+    {
+        Vector3 requirePos = _rule.position;
+        requirePos.y = m_rulesPos[_pos].position.y;
+        return requirePos;
+    }
+
+    private void ActivateRule(Animator _rule)
+    {
+        _rule.SetTrigger("Activate");
+        m_activeRules.Add(_rule);
+        _rule.transform.position = GetRuleRequirePos(_rule.transform, 0);
+    }
+    
+    private void DeactivateRule(Animator _rule)
+    {
+        _rule.SetTrigger("Deactivate");
+        m_activeRules.Remove(_rule);
+    }
+
+    
+    [SerializeField] private Animator m_startGameRulesExplain;
+    private List<Animator> m_activeRules;
+    private void AddStartGameRules()
+    {
+        ActivateRule(m_startGameRulesExplain);
+    }
+
+    private void RemoveStartGameRules()
+    {
+        DeactivateRule(m_startGameRulesExplain);
+    }
+
+    [SerializeField] private Animator m_cardGameRulesExplain;
+    private void AddCardGameRules()
+    {
+        ActivateRule(m_cardGameRulesExplain);
+    }
+
+    private void RemoveCardGameRules()
+    {
+        DeactivateRule(m_cardGameRulesExplain);
+    }
+
+    [SerializeField] private Animator m_paltformerRulesExplain;
+    private void AddPlatformerGameRules()
+    {
+        ActivateRule(m_paltformerRulesExplain);
+    }
+
+    private void RemovePlatformerGameRules()
+    {
+        DeactivateRule(m_paltformerRulesExplain);
+    }
+    
+    [SerializeField] private Animator m_rpgRulesExplain;
+    private void AddRPGGameRules()
+    {
+        ActivateRule(m_rpgRulesExplain);
+    }
+
+    private void RemoveRPGGameRules()
+    {
+        DeactivateRule(m_rpgRulesExplain);
     }
 
 }

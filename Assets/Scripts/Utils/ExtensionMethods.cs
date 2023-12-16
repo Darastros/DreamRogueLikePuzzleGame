@@ -9,6 +9,9 @@ public static class ExtensionMethods
 {
     public static T GetRandomElem<T>(this ICollection<T> _collection)
     {
+        if (_collection == null || _collection.Count == 0)
+            return default;
+        
         var index = UnityEngine.Random.Range(0, _collection.Count);
         var element = _collection.ElementAt(index);
         return element;
@@ -95,5 +98,15 @@ public static class ExtensionMethods
         {
             Object.Destroy(child);
         }
+    }
+    
+    public static List<Room> GetInstanciatedNeighbors(this Room _room)
+    {
+        return DungeonRoomSystem.Instance.GetInstanciatedNeighbors(_room);
+    }
+    
+    public static Room GetInstanciatedNeighbor(this Room _room, RoomEntrance _entrance)
+    {
+        return DungeonRoomSystem.Instance.CurrentRooms.GetValueOrDefault(_room.Coordinate + _entrance.GetOffset());
     }
 }
