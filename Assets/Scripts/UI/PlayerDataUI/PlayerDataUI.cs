@@ -28,6 +28,8 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnDeactivatePlatformerGame += RemovePlatformerGameRules;
         GameManager.OnActivateRPGGame += AddRPGGameRules;
         GameManager.OnDeactivateRPGGame += RemoveRPGGameRules;
+
+        m_activeRules = new List<Animator>();
         AddStartGameRules();
     }
 
@@ -44,6 +46,11 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnDeactivatePlatformerGame -= RemovePlatformerGameRules;
         GameManager.OnActivateRPGGame -= AddRPGGameRules;
         GameManager.OnDeactivateRPGGame -= RemoveRPGGameRules;
+    }
+
+    private void FixedUpdate()
+    {
+        UpdateRulesPos();
     }
 
     private void ActivateKeyPart(GameRuleType _part)
@@ -104,48 +111,83 @@ public class PlayerDataUI : MonoBehaviour
     }
     
     [Header("Game Rule")]
+    [SerializeField] private List<Transform> m_rulesPos;
+    
+    private void UpdateRulesPos()
+    {
+        int pos = 0;
+        for (int i = m_activeRules.Count - 1; i >= 0; --i)
+        {
+            Vector3 requirePos = GetRuleRequirePos(m_activeRules[i].transform, pos);
+            m_activeRules[i].transform.position = Vector3.Lerp(m_activeRules[i].transform.position, requirePos, 0.1f);
+            ++pos;
+        }
+    }
+
+    private Vector3 GetRuleRequirePos(Transform _rule, int _pos)
+    {
+        Vector3 requirePos = _rule.position;
+        requirePos.y = m_rulesPos[_pos].position.y;
+        return requirePos;
+    }
+
+    private void ActivateRule(Animator _rule)
+    {
+        _rule.SetTrigger("Activate");
+        m_activeRules.Add(_rule);
+        _rule.transform.position = GetRuleRequirePos(_rule.transform, 0);
+    }
+    
+    private void DeactivateRule(Animator _rule)
+    {
+        _rule.SetTrigger("Deactivate");
+        m_activeRules.Remove(_rule);
+    }
+
+    
     [SerializeField] private Animator m_startGameRulesExplain;
+    private List<Animator> m_activeRules;
     private void AddStartGameRules()
     {
-        m_startGameRulesExplain.SetTrigger("Activate");
+        ActivateRule(m_startGameRulesExplain);
     }
 
     private void RemoveStartGameRules()
     {
-        m_startGameRulesExplain.SetTrigger("Deactivate");
+        DeactivateRule(m_startGameRulesExplain);
     }
 
     [SerializeField] private Animator m_cardGameRulesExplain;
     private void AddCardGameRules()
     {
-        m_cardGameRulesExplain.SetTrigger("Activate");
+        ActivateRule(m_cardGameRulesExplain);
     }
 
     private void RemoveCardGameRules()
     {
-        m_cardGameRulesExplain.SetTrigger("Deactivate");
+        DeactivateRule(m_cardGameRulesExplain);
     }
 
     [SerializeField] private Animator m_paltformerRulesExplain;
     private void AddPlatformerGameRules()
     {
-        m_paltformerRulesExplain.SetTrigger("Activate");
+        ActivateRule(m_paltformerRulesExplain);
     }
 
     private void RemovePlatformerGameRules()
     {
-        m_paltformerRulesExplain.SetTrigger("Deactivate");
+        DeactivateRule(m_paltformerRulesExplain);
     }
     
     [SerializeField] private Animator m_rpgRulesExplain;
     private void AddRPGGameRules()
     {
-        m_rpgRulesExplain.SetTrigger("Activate");
+        ActivateRule(m_rpgRulesExplain);
     }
 
     private void RemoveRPGGameRules()
     {
-        m_rpgRulesExplain.SetTrigger("Deactivate");
+        DeactivateRule(m_rpgRulesExplain);
     }
 
 }

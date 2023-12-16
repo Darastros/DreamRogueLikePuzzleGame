@@ -732,6 +732,11 @@ MonoBehaviour:
   m_RPGKeyPart: {fileID: 5848647409593515780}
   m_platformerKeyPart: {fileID: 2023156070125944794}
   m_cardGameKeyPart: {fileID: 47756867757627856}
+  m_rulesPos:
+  - {fileID: 2418365443948516641}
+  - {fileID: 1296450734438402320}
+  - {fileID: 5382889369190065674}
+  - {fileID: 8615419815440948010}
   m_startGameRulesExplain: {fileID: 3744215346496189966}
   m_cardGameRulesExplain: {fileID: 4637385544101916286}
   m_paltformerRulesExplain: {fileID: 5615755128034191325}
@@ -1200,6 +1205,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
+--- !u!224 &1296450734438402320 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 1377809797723306967, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
+  m_PrefabInstance: {fileID: 208042602290180807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &2418365443948516641 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 2552660460696954854, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
+  m_PrefabInstance: {fileID: 208042602290180807}
+  m_PrefabAsset: {fileID: 0}
 --- !u!95 &3744215346496189966 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 3536800847925069001, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
@@ -1208,6 +1223,11 @@ Animator:
 --- !u!95 &4637385544101916286 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 4807680777445612729, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
+  m_PrefabInstance: {fileID: 208042602290180807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &5382889369190065674 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 5210876942205293773, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
   m_PrefabInstance: {fileID: 208042602290180807}
   m_PrefabAsset: {fileID: 0}
 --- !u!95 &5615755128034191325 stripped
@@ -1223,5 +1243,10 @@ RectTransform:
 --- !u!95 &8478827701087296528 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 8595618499855625943, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
+  m_PrefabInstance: {fileID: 208042602290180807}
+  m_PrefabAsset: {fileID: 0}
+--- !u!224 &8615419815440948010 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 8463111457748249069, guid: 58230c2422a636042bac8849b98e04b4, type: 3}
   m_PrefabInstance: {fileID: 208042602290180807}
   m_PrefabAsset: {fileID: 0}
