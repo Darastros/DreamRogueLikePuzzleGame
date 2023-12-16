@@ -278,12 +278,21 @@ namespace GameSystems
                 Vector2Int coordinate = m_currentRoom.Coordinate + _whichEntrance.GetOffset();
                 
                 // then destroy the room in the north
-                DestroyRoom(coordinate);
-                GetEventDispatcher().SendEvent<ForceRefreshMap>();
+                CloseRoom(coordinate);
             }
             else
             {
                 Debug.LogError($"Trying to close door {_whichEntrance} but this room is suppose to only have {m_currentRoom.m_roomDescriptor.m_entrances}");
+            }
+        }
+        
+        public void CloseRoom(Vector2Int _coordinates)
+        {
+            // check if the current room has a north entrance
+            if (m_runtimeRooms.TryGetValue(_coordinates, out Room room)) 
+            {
+                DestroyRoom(_coordinates);
+                GetEventDispatcher().SendEvent<ForceRefreshMap>();
             }
         }
         
@@ -472,11 +481,27 @@ namespace GameSystems
             Debug.Assert(_forbiddenEntrances != RoomEntrance.Everything,
                 $"This room can't have doors?! => {_forbiddenEntrances}");
         }
+
+        public List<Room> GetInstanciatedNeighbors(Room _room)
+        {
+            List<Room> result = new List<Room>();
+            foreach (Vector2Int roomNeighborsCoordinate in _room.m_neighborsCoordinates)
+            {
+                if (CurrentRooms.TryGetValue(roomNeighborsCoordinate, out var neighbor))
+                {
+                    result.Add(neighbor);
+                }
+            }
+            return result;
+        }
         
-        bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom)
+        public bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom, Room _blackListRoom = null)
         {
             var visitedRooms = new HashSet<Room>(); 
             var roomsToVisit = new Stack<Room>();
+
+            if (_blackListRoom != null)
+                visitedRooms.Add(_blackListRoom);
 
             roomsToVisit.Push(_startingRoom);
             void AddAllUnvisitedNeighborsToVisitStack(Room _currentRoom)

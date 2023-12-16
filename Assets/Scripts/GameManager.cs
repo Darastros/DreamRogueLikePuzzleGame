@@ -142,6 +142,7 @@ public class GameManager : MonoBehaviour
 
     private PlayerController m_playerController;
     public PlayerController PlayerController => m_playerController;
+    public Worm Worm { get; set; }
 
     private void OnEnable()
     {

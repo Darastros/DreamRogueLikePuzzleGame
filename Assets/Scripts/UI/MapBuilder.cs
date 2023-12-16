@@ -15,6 +15,7 @@ namespace UI
         [SerializeField] private bool m_useCurrentRoomAsCenter = true;
         [SerializeField] private float m_offsetBetweenRoom = 0.1f;
         [SerializeField] private Color m_currentColor;
+        [SerializeField] private GameObject m_prefabAboutToBeDestroyedOverlay;
 
         private void Start()
         {
@@ -58,6 +59,10 @@ namespace UI
                     runtimeData.Coordinate = coordinate;
                     runtimeData.AssociatedRoom = room;
                 }
+                if (m_prefabAboutToBeDestroyedOverlay != null && GameManager.Instance.Worm.RoomsAboutToBeDestoyed.Contains(coordinate))
+                {
+                    InstanciateRoom(m_prefabAboutToBeDestroyedOverlay, offsetedCoordinate, currentRoom.Coordinate == coordinate);
+                }
                 
                 foreach (Vector2Int roomNeighborsCoordinate in room.m_neighborsCoordinates)
                 {
@@ -97,7 +102,8 @@ namespace UI
             {
                 m_roomUIPrefab.TryGetValue(RoomTypeUI.CurrentRoom, out prefabToUse);
             }
-            else*/ if (room != null)
+            else*/ 
+            if (room != null)
             {
                 if (room.m_roomDescriptor.m_registerToStartPool)
                 {
@@ -141,7 +147,8 @@ namespace UI
             ExitRoom,
             RPGRoom,
             PlatformerRoom,
-            CardGameRoom
+            CardGameRoom,
+            RoomAboutToBeEaten
         }
     }
 }
