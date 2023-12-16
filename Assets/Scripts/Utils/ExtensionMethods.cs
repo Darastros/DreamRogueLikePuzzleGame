@@ -96,4 +96,9 @@ public static class ExtensionMethods
             Object.Destroy(child);
         }
     }
+    
+    public static List<Room> GetInstanciatedNeighbors(this Room _room)
+    {
+        return DungeonRoomSystem.Instance.GetInstanciatedNeighbors(_room);
+    }
 }
