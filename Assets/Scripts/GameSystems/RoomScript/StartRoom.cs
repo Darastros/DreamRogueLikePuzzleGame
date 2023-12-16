@@ -11,7 +11,10 @@ namespace GameSystems.RoomScript
 
         private void OnDestroy()
         {
-            GameManager.Instance.RemoveStartGameFromStack();
+            if (GameManager.Instance)
+            {
+                GameManager.Instance.RemoveStartGameFromStack();
+            }
         }
     }
 }
