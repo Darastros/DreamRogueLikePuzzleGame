@@ -11,6 +11,7 @@ namespace Player
     {
         [SerializeField] private PlatformerController platformerController;
         [SerializeField] private CardGameController m_cardGameController;
+        [SerializeField] private DetectDoor m_detectDoor;
         [SerializeField] public LayerMask PlayerLayer;
         [SerializeField] private float m_useRadius = 1f;
 
@@ -47,11 +48,8 @@ namespace Player
         {
             if (_ctx.performed)
             {
-                var hit = Physics2D.CircleCast(transform.position, m_useRadius, transform.forward, 0, ~PlayerLayer);
-                if (hit.transform != null && hit.transform.TryGetComponent<IUsable>(out var usable))
-                {
-                    usable.Use(gameObject);
-                }
+                
+                m_detectDoor.Use();
             }
         }
     }

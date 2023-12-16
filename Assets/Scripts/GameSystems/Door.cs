@@ -21,9 +21,10 @@ namespace GameSystems
         {
             if(m_collider2D == null)
                 TryGetComponent(out m_collider2D);
+            m_animator.SetBool("canSeal", DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 0.0f);
             if(DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null)
                 m_animator.SetTrigger("Open");
-                m_animator.SetBool("hover", false);
         }
 
         private void Awake()
@@ -55,11 +56,13 @@ namespace GameSystems
 
         public void Hover()
         {
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 1.0f);
             m_animator.SetBool("hover", true);
         }
 
         public void Exit()
         {
+            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 1.0f);
             m_animator.SetBool("hover", false);
             
         }
