@@ -44,6 +44,8 @@ public class PlayerController : MonoBehaviour
         PlatformerController.OnActivate += SwitchPlatformer;
         PlatformerController.OnDeactivate += SwitchTopDown;
         PlayerDataManager.OnHit += Hit;
+        PlayerDataManager.OnDeath += Death;
+        ExitPortal.OnCrossPortal += EnterPortal;
     }
 
     private void UnListenEvent()
@@ -55,6 +57,8 @@ public class PlayerController : MonoBehaviour
         PlatformerController.OnActivate -= SwitchPlatformer;
         PlatformerController.OnDeactivate -= SwitchTopDown;
         PlayerDataManager.OnHit -= Hit;
+        PlayerDataManager.OnDeath -= Death;
+        ExitPortal.OnCrossPortal -= EnterPortal;
     }
 
     void Update()
@@ -104,6 +108,11 @@ public class PlayerController : MonoBehaviour
         m_animator.SetTrigger("HitStretch");
     }
 
+    private void Death()
+    {
+        m_animator.SetTrigger("Death");
+    }
+
     private void SwitchPlatformer()
     {
         m_animator.ResetTrigger("Jump");
@@ -129,6 +138,11 @@ public class PlayerController : MonoBehaviour
         {
             GameManager.Instance.TeleportPlayerToRoomEntrance(DungeonRoomSystem.Instance.LastDoorOpened);
         }
-        
+    }
+    
+    private void EnterPortal(Vector3 _center)
+    {
+        transform.position = _center;
+        m_animator.SetTrigger("EnterPortal");
     }
 }

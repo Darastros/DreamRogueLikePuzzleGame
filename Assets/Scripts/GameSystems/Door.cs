@@ -26,7 +26,6 @@ namespace GameSystems
             //m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 0.0f);
             if(DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null)
                 m_animator.SetTrigger("Open");
-            Debug.Log("test");
         }
 
         private void Awake()

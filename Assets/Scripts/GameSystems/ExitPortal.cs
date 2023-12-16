@@ -9,7 +9,7 @@ public class ExitPortal : MonoBehaviour
     public Animator _debugFeedBackCard;
     public Animator _debugFeedBackPlatformer;
     
-    public delegate void VictoryEventDelegate();
+    public delegate void VictoryEventDelegate(Vector3 _center);
     public static VictoryEventDelegate OnCrossPortal;
     
     private void OnEnable()
@@ -44,7 +44,7 @@ public class ExitPortal : MonoBehaviour
             if (PlayerDataManager.cardGameKeyPart && PlayerDataManager.platformerGameKeyPart &&
                 PlayerDataManager.rpgGameKeyPart)
             {
-                OnCrossPortal?.Invoke();
+                OnCrossPortal?.Invoke(transform.position + (Vector3)GetComponent<Collider2D>().offset);
             }
         }
     }
