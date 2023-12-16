@@ -44,7 +44,12 @@ public class GameManager : MonoBehaviour
     public static GameRuleActivation OnActivateCardGame;
     public static GameRuleActivation OnDeactivateCardGame;
     
+    public static GameRuleActivation OnActivateStartGame;
+    public static GameRuleActivation OnDeactivateStartGame;
+    
     // Game rule variables
+    private bool m_startGameRule= false;
+    
     private uint m_platformerRuleStack = 0;
     public bool PlatformerActivated => m_platformerRuleStack > 0;
     
@@ -126,6 +131,23 @@ public class GameManager : MonoBehaviour
             OnDeactivateCardGame.Invoke();
         }
     }
+    
+    public void AddStartGameToStack()
+    {
+        if (!m_startGameRule)
+        {
+            m_startGameRule = true;
+            OnActivateStartGame.Invoke();
+        }
+    }
+
+    public void RemoveStartGameFromStack()
+    {
+        if (!m_startGameRule) return;
+        m_startGameRule = false;
+        OnDeactivateStartGame.Invoke();
+    }
+    
     #endregion
     
     #region Game flow
@@ -215,6 +237,7 @@ public class GameManager : MonoBehaviour
     }
 
     private static float m_timeFactor = 1.0f;
+    
     public static float timeFactor => m_timeFactor;
     public static float deltaTime => Time.deltaTime * m_timeFactor;
     public static float fixedDeltaTime => Time.fixedDeltaTime * m_timeFactor;
