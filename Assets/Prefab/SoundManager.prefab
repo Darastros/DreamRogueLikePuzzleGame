@@ -45,7 +45,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_platformerController: {fileID: 0}
-  mixerGroup: {fileID: -4360494947057514836, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  sfxMixerGroup: {fileID: 0}
+  jingleMixerGroup: {fileID: 0}
   minPitch: 0.9
   maxPitch: 1.1
   stepClips:
@@ -55,10 +56,17 @@ MonoBehaviour:
   healClip: {fileID: 8300000, guid: 15751f87e0d824145a58c538b69866d5, type: 3}
   unlockDoorClip: {fileID: 8300000, guid: fcca568e1af964b4ab336582807f2ba3, type: 3}
   enteringDoorClip: {fileID: 8300000, guid: d7bf07de6e0459141b0ca919a5c96acd, type: 3}
+  collectArtifactClip: {fileID: 0}
+  sealRoomClip: {fileID: 8300000, guid: 1b3c64b03eb76764d911345d85d081c8, type: 3}
   activatePlatformerClip: {fileID: 8300000, guid: e3d27d1b211d68649ab8a33756bb76c3, type: 3}
   jumpClip: {fileID: 8300000, guid: 17136a513926fa840bf012730c83d566, type: 3}
   landingClip: {fileID: 8300000, guid: 9b3e01262a39efa46871a7370a8285b6, type: 3}
+  collectStrawberryClip: {fileID: 8300000, guid: 1a298b9ae28bb4240a3455ae0a0fc4a2, type: 3}
   activateRpgClip: {fileID: 8300000, guid: f543091a788fb614196a0782abcc0630, type: 3}
   coinPitchModifier: 0.003
   rpgCoinClip: {fileID: 8300000, guid: 86f5962f8c7f1514aad2c0ef09fc1622, type: 3}
   rpgKeyClip: {fileID: 8300000, guid: 2c026fe7f54cc3940adbc31554522c28, type: 3}
+  shopBuyClip: {fileID: 8300000, guid: a79e6d43d7c0559429b671681ec8ac40, type: 3}
+  openChestClip: {fileID: 8300000, guid: a321fae8746fa194ca44e5e162ff7d70, type: 3}
+  activateCardClip: {fileID: 8300000, guid: f543091a788fb614196a0782abcc0630, type: 3}
+  pickupCardClip: {fileID: 8300000, guid: 320f31a758ab414479a2d519d828584b, type: 3}
