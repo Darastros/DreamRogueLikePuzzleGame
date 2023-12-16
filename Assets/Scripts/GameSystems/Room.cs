@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using GameSystems.RoomScript;
 using ScriptableObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -54,7 +53,7 @@ namespace GameSystems
 
                 if (m_roomDescriptor.m_registerToStartPool)
                 {
-                    m_runtimeGameScene.GetOrCreate<StartRoom>();
+                    GameManager.Instance.AddStartGameToStack();
                 }
                 
                 switch (m_roomDescriptor.m_gameRuleType)
@@ -83,6 +82,11 @@ namespace GameSystems
         
         public void Destroy()
         {
+            if (Coordinate == Vector2Int.zero)
+            {
+                GameManager.Instance.RemoveStartGameFromStack();
+            }
+            
             switch (m_roomDescriptor.m_gameRuleType)
             {
                 case GameRuleType.Platformer:
