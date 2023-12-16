@@ -59,8 +59,8 @@ namespace GameSystems
         {
             RoomAboutToBeDestroyed = _roomToDestroy;
             DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
-            yield return new WaitForSeconds(timeUntilRoomDestroyed);
             EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
+            yield return new WaitForSeconds(timeUntilRoomDestroyed);
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);
             m_wormCoroutine = null;
             RoomAboutToBeDestroyed = null;
@@ -75,6 +75,7 @@ namespace GameSystems
             }
             else
             {
+                EventDispatcher.SendEvent<OnWormLeft>();
                 m_wormAppeared = false;
             }
         }
