@@ -70,6 +70,11 @@ namespace UI
             {
                 card.CraftFailed();
             }
+        } 
+        private void Reset()
+        {
+            m_animator.SetTrigger("Reset");
+            ResetHand();
         }
         private void ResetHand()
         {
