@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using CardGame;
+using DG.Tweening;
 using GameSystems;
 using MovementControllers;
 using Platformer;
@@ -78,6 +79,10 @@ public class PlayerController : MonoBehaviour
 
     private void Restart()
     {
+        m_platformerController.Restart();
+        m_rpgController.Restart();
+        m_cardGameController.Restart();
+        m_dataManager.Restart();
         m_rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_rigidbody.velocity = Vector2.zero;
     }
@@ -145,4 +150,5 @@ public class PlayerController : MonoBehaviour
         transform.position = _center;
         m_animator.SetTrigger("EnterPortal");
     }
+
 }

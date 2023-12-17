@@ -149,4 +149,9 @@ public class PlayerDataManager : MonoBehaviour
         m_platformerGameKeyPart = false;
         m_RPGGameKeyPart = false;
     }
+
+    public void Restart()
+    {
+        Reset();
+    }
 }

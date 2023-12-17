@@ -1,10 +1,12 @@
 ﻿using System;
+using GameSystems;
 using Unity.Mathematics;
 using UnityEngine;
+using Utils;
 
 namespace MovementControllers
 {
-    public class PlatformerMovementController : MonoBehaviour, IMovementController
+    public class PlatformerMovementController : MonoBehaviour, IMovementController, IEventListener
     {
         [SerializeField] private Rigidbody2D m_rigidbody2D;
         [SerializeField] private Collider2D m_collider2D;
@@ -100,6 +102,20 @@ namespace MovementControllers
         {
             TryAcquireRequiredComponents();
         }
+
+        private void OnEnable()
+        {
+            GameManager.OnTeleportPlayer += TeleportPlayer;
+            //DungeonRoomSystem.Instance.GetEventDispatcher()
+            //    .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        }
+
+        private void OnDisable()
+        {
+            GameManager.OnTeleportPlayer -= TeleportPlayer;
+            //DungeonRoomSystem.Instance.GetEventDispatcher()
+            //    .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        }
         
         private void FixedUpdate()
         {
@@ -124,8 +140,17 @@ namespace MovementControllers
             m_jumpHold = true;
             m_exitJump = false;
             m_jumpInitHeight = transform.position.y;
+            Debug.Log("BEGIN JUMP : " + m_jumpInitHeight);
             //m_frameVelocity.y = JumpPower;
             Jumped?.Invoke();
+        }
+
+        private bool m_isTeleporting;
+        private void TeleportPlayer(Vector3 _pos)
+        {
+            Debug.Log("CHANGE ROOM : " + m_jumpInitHeight + " " + _pos.y + " " + transform.position.y);
+            m_jumpInitHeight = m_jumpInitHeight - transform.position.y + _pos.y;
+            m_isTeleporting = true;
         }
         
         private void HandleJump()
@@ -154,6 +179,11 @@ namespace MovementControllers
         
         private void HandleVerticality()
         {
+            if (m_isTeleporting)
+            {
+                m_isTeleporting = false;
+                return;
+            }
             if (m_jumping)
             {
                 m_jumpTimer += GameManager.deltaTime;
@@ -164,6 +194,7 @@ namespace MovementControllers
                 if (m_jumping)
                 {
                     float position = jumpDynamicMax.Evaluate(m_jumpTimer);
+                    
                     float speed = GameManager.deltaTime <= 0.0f ? 0.0f : (position - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
                     m_frameVelocity.y = speed;
                     return;

@@ -159,6 +159,10 @@ public class GameManager : MonoBehaviour
     public static GameFlow OnGameResume;
     public static GameFlow OnGameWin;
     public static GameFlow OnGameLoose;
+    
+    public delegate void TeleportPlayer(Vector3 _pos);
+
+    public static TeleportPlayer OnTeleportPlayer;
 
     private bool m_gameStart = true;
     private bool m_gamePaused = false;
@@ -233,6 +237,7 @@ public class GameManager : MonoBehaviour
         Door entrance = DungeonRoomSystem.Instance.CurrentRoom.GetEntrance(_entrance);
         if (entrance!= null && m_playerController && m_playerController.TryGetComponent(out Rigidbody2D _rb))
         {
+            OnTeleportPlayer?.Invoke(entrance.teleportPos.position);
             _rb.position = entrance.teleportPos.position;
         }
     }
@@ -275,7 +280,7 @@ public class GameManager : MonoBehaviour
     [MenuItem("GameManager/RPG/Add RPG System to stack")]
     public static void ForceAddRpgGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddRPGGameRuleToStack());
     
-    [MenuItem("GameManager/CardGame/Remove RPG Game from stack")]
+    [MenuItem("GameManager/RPG/Remove RPG Game from stack")]
     public static void ForceRemoveRpgGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveRPGGameRuleFromStack());
     
     [MenuItem("GameManager/Hit player")]
@@ -283,6 +288,13 @@ public class GameManager : MonoBehaviour
     {
         --PlayerDataManager.life;
     }
+
+    [MenuItem("GameManager/Restart")]
+    public static void RestartGame()
+    {
+        Instance.Restart();
+    }
+    
     #endif
     #endregion
 }
