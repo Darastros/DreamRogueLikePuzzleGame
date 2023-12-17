@@ -4,6 +4,10 @@ using Utils;
 
 public class Projectile : MonoBehaviour, IEventListener
 {
+    
+    public delegate void HitDelegate();
+    public static HitDelegate OnHit;
+    
     private void Start()
     {
         DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, _changed => Destroy(gameObject));
@@ -14,6 +18,7 @@ public class Projectile : MonoBehaviour, IEventListener
         if (_other.isTrigger) return;
         GetComponent<Animator>().SetTrigger("Destroy");
         if(TryGetComponent(out Rigidbody2D _rigidbody)) _rigidbody.velocity = Vector2.zero;
+        OnHit?.Invoke();
     }
 
     private void OnDestroy()

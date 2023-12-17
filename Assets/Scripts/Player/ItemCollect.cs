@@ -8,6 +8,7 @@ using UnityEngine;
 public class ItemCollect : MonoBehaviour
 {
     [SerializeField] private TextMeshPro m_text;
+    [SerializeField] private TextMeshPro m_textOutline;
     [SerializeField] private Animator m_animator;
     void OnEnable()
     {
@@ -46,6 +47,7 @@ public class ItemCollect : MonoBehaviour
     {
         
         m_text.text = (_number > 0? "+":"") + _number;
+        m_textOutline.text = (_number > 0? "+":"") + _number;
         DisableSpriteRenderer();
         m_coinSprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -55,6 +57,7 @@ public class ItemCollect : MonoBehaviour
     private void GetKey(int _total, int _number)
     {
         m_text.text = (_number > 0? "+":"") + _number;
+        m_textOutline.text = (_number > 0? "+":"") + _number;
         DisableSpriteRenderer();
         m_keySprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -64,6 +67,7 @@ public class ItemCollect : MonoBehaviour
     private void Heal(int _newvalue, int _delta)
     {
         m_text.text = (_delta > 0? "+":"") + _delta;
+        m_textOutline.text = (_delta > 0? "+":"") + _delta;
         DisableSpriteRenderer();
         m_healSprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -73,6 +77,7 @@ public class ItemCollect : MonoBehaviour
     private void Hit(int _newvalue, int _delta)
     {
         m_text.text = (_delta > 0? "+":"") + _delta;
+        m_textOutline.text = (_delta > 0? "+":"") + _delta;
         DisableSpriteRenderer();
         m_healSprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -82,6 +87,7 @@ public class ItemCollect : MonoBehaviour
     private void UseArtifact(int _newvalue, int _delta)
     {
         m_text.text = (_delta > 0 ? "+" : "") + _delta;
+        m_textOutline.text = (_delta > 0 ? "+" : "") + _delta;
         DisableSpriteRenderer();
         m_artifactSprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -90,6 +96,7 @@ public class ItemCollect : MonoBehaviour
     private void CollectArtifact(int _newvalue, int _delta)
     {
         m_text.text = (_delta > 0? "+":"") + _delta;
+        m_textOutline.text = (_delta > 0? "+":"") + _delta;
         DisableSpriteRenderer();
         m_artifactSprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");
@@ -99,6 +106,7 @@ public class ItemCollect : MonoBehaviour
     private void GetStrawberries(int _total, int _number)
     {
         m_text.text = (_number > 0? "+":"") + _number;
+        m_textOutline.text = (_number > 0? "+":"") + _number;
         DisableSpriteRenderer();
         m_strawberrySprite.gameObject.SetActive(true);
         m_animator.SetTrigger("Collect");

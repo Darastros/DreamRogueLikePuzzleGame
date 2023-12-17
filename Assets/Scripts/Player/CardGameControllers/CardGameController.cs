@@ -19,6 +19,7 @@ namespace CardGame
         public delegate void Reset();
         public static Reset OnReset;
         public static Reset OnCraftFailed;
+        public static Reset OnTryCraftWithoutCard;
 
         public delegate void Result(CraftCardResult _result, Vector3 _position);
         public static Result OnCraftSuccess;
@@ -109,6 +110,10 @@ namespace CardGame
                 else OnCraftFailed?.Invoke();
                 
                 m_hand = new List<Card>();
+            }
+            else
+            {
+                OnTryCraftWithoutCard?.Invoke();
             }
         }
 
