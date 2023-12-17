@@ -11,7 +11,7 @@ namespace CardGame
         private Animator m_animator;
         
         private Action<Card> m_callback;
-        public CardType Type => m_card.Type;
+        public CardType Type => m_card.type;
 
         public void Awake()
         {
