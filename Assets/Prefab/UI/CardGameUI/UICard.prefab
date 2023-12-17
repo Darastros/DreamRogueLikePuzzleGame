@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 906997093797759618}
   - component: {fileID: 970372123658637429}
   - component: {fileID: 355334744406477242}
+  - component: {fileID: 6527417144389919747}
   m_Layer: 5
   m_Name: UICard
   m_TagString: Untagged
@@ -53,6 +54,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_data: {fileID: 0}
+  m_image: {fileID: 393130942105022633}
 --- !u!222 &906997093797759618
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -103,7 +105,7 @@ Animator:
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: a492293ca0dd3c7459b4e1011829ad44, type: 2}
   m_CullingMode: 0
-  m_UpdateMode: 0
+  m_UpdateMode: 2
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
@@ -112,6 +114,18 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!225 &6527417144389919747
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3760034001850624225}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &6842093888357943314
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ namespace CardGame
         [SerializeField] private string m_name;
         public string name => m_name;
         [SerializeField] private Sprite m_sprite;
+        public Sprite sprite => m_sprite;
         [SerializeField] private bool m_worldItem = false;
         [SerializeField] private GameObject m_object;
 

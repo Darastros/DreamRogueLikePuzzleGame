@@ -4,11 +4,12 @@ using UnityEngine;
 public class ExitPortal : MonoBehaviour
 {
 
-    public SpriteRenderer _debugFeedBackRPG;
-    public SpriteRenderer _debugFeedBackCard;
-    public SpriteRenderer _debugFeedBackPlatformer;
+    public Animator _animator;
+    public Animator _debugFeedBackRPG;
+    public Animator _debugFeedBackCard;
+    public Animator _debugFeedBackPlatformer;
     
-    public delegate void VictoryEventDelegate();
+    public delegate void VictoryEventDelegate(Vector3 _center);
     public static VictoryEventDelegate OnCrossPortal;
     
     private void OnEnable()
@@ -16,18 +17,19 @@ public class ExitPortal : MonoBehaviour
         PlayerDataManager.OnActivateKeyPart += OnKeyPartCollected;
         if (_debugFeedBackCard != null)
         {
-            _debugFeedBackCard.color = PlayerDataManager.cardGameKeyPart ? _debugFeedBackCard.color = Color.green : Color.red;
+            _debugFeedBackCard.SetBool("active", PlayerDataManager.cardGameKeyPart);
         }
         
         if (_debugFeedBackRPG != null)
         {
-            _debugFeedBackRPG.color = PlayerDataManager.rpgGameKeyPart ? _debugFeedBackRPG.color = Color.green : Color.red;
+            _debugFeedBackRPG.SetBool("active", PlayerDataManager.rpgGameKeyPart);
         }
         
         if (_debugFeedBackPlatformer != null)
         {
-            _debugFeedBackPlatformer.color = PlayerDataManager.platformerGameKeyPart ? _debugFeedBackPlatformer.color = Color.green : Color.red;
+            _debugFeedBackPlatformer.SetBool("active", PlayerDataManager.platformerGameKeyPart);
         }
+        _animator.SetBool("active", PlayerDataManager.platformerGameKeyPart && PlayerDataManager.rpgGameKeyPart && PlayerDataManager.cardGameKeyPart);
     }
 
     private void OnDisable()
@@ -42,7 +44,7 @@ public class ExitPortal : MonoBehaviour
             if (PlayerDataManager.cardGameKeyPart && PlayerDataManager.platformerGameKeyPart &&
                 PlayerDataManager.rpgGameKeyPart)
             {
-                OnCrossPortal?.Invoke();
+                OnCrossPortal?.Invoke(transform.position + (Vector3)GetComponent<Collider2D>().offset);
             }
         }
     }
@@ -68,16 +70,17 @@ public class ExitPortal : MonoBehaviour
         switch (_gameRuleType)
         {
             case GameRuleType.Platformer:
-                if(_debugFeedBackPlatformer != null) _debugFeedBackPlatformer.color = Color.green;
+                if(_debugFeedBackPlatformer != null) _debugFeedBackPlatformer.SetBool("active", true);
                 break;
             case GameRuleType.RPG:
-                if (_debugFeedBackRPG != null) _debugFeedBackRPG.color = Color.green;
+                if (_debugFeedBackRPG != null) _debugFeedBackRPG.SetBool("active", true);
                 break;
             case GameRuleType.CardGame:
-                if (_debugFeedBackCard != null) _debugFeedBackCard.color = Color.green;
+                if (_debugFeedBackCard != null) _debugFeedBackCard.SetBool("active", true);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(_gameRuleType), _gameRuleType, null);
         }
+        _animator.SetBool("active", PlayerDataManager.platformerGameKeyPart && PlayerDataManager.rpgGameKeyPart && PlayerDataManager.cardGameKeyPart);
     }
 }

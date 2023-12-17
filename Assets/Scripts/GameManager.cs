@@ -182,7 +182,7 @@ public class GameManager : MonoBehaviour
         ExitPortal.OnCrossPortal -= WinGame;
     }
 
-    private void WinGame()
+    private void WinGame(Vector3 _center)
     {
         OnGameWin?.Invoke();
         m_gameStart = false;
