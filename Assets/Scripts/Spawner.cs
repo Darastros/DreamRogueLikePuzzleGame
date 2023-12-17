@@ -34,7 +34,7 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        OnSpawn?.Invoke();
+        //OnSpawn?.Invoke();
         var instance = Instantiate(m_spawnObject, transform.position, transform.rotation);
         if (instance.TryGetComponent(out Rigidbody2D _rigidbody))
         {
