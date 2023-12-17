@@ -699,14 +699,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7614872318094074246}
     m_Modifications:
+    - target: {fileID: 794333508192291916, guid: 05d61b6b79414f44c96c9ec12786942c, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 225.8293
+      objectReference: {fileID: 0}
+    - target: {fileID: 794333508192291916, guid: 05d61b6b79414f44c96c9ec12786942c, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 225.8293
+      objectReference: {fileID: 0}
     - target: {fileID: 2208022414606299907, guid: 05d61b6b79414f44c96c9ec12786942c, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b5b59ff30844f954d9f8ed2a65438d43, type: 3}
-    - target: {fileID: 3537161702121006526, guid: 05d61b6b79414f44c96c9ec12786942c, type: 3}
-      propertyPath: m_ConstrainProportionsScale
-      value: 1
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 21300000, guid: ddac9bd6e736f3648a6cf8f4e552d8ff, type: 3}
     - target: {fileID: 5803041948958878302, guid: 05d61b6b79414f44c96c9ec12786942c, type: 3}
       propertyPath: m_Name
       value: PlayerDataUI
