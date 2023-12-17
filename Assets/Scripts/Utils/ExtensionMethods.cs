@@ -109,4 +109,15 @@ public static class ExtensionMethods
     {
         return DungeonRoomSystem.Instance.CurrentRooms.GetValueOrDefault(_room.Coordinate + _entrance.GetOffset());
     }
+    
+    public static Vector2 ToVec2(this Vector3 _vector3)
+    {
+        return new Vector2(_vector3.x, _vector3.y);
+    }
+
+    public static bool TryGetComponentInParent<T>(this Component _component, out T _found)
+    {
+        _found = _component.GetComponentInParent<T>();
+        return _found != null;
+    }
 }
