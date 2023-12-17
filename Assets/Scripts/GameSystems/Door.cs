@@ -62,6 +62,7 @@ namespace GameSystems
             {
                 _collider.isTrigger = false;
             }
+            GameManager.OnTeleportPlayer -= OnPlayerTeleported;
             DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
         }
         
@@ -72,6 +73,19 @@ namespace GameSystems
                 if(DungeonRoomSystem.Instance.LastDoorOpened == whichEntrance)
                     m_animator.SetTrigger(OpenAnimHash);
                 _collider.isTrigger = true;
+                GameManager.OnTeleportPlayer += OnPlayerTeleported;
+            }
+        }
+
+        private void OnPlayerTeleported(Vector3 __pos)
+        {
+            if ((__pos - teleportPos.position).sqrMagnitude < 1) ;
+            {
+                m_collider2D.isTrigger = false;
+                ForceClose();
+                Sequence enableSeq = DOTween.Sequence().AppendInterval(timeBeforeAllowingPlayerToOpenTheDoor);
+                enableSeq.onComplete = ActivateDoorTrigger;
+                enableSeq.Play();
             }
         }
 
