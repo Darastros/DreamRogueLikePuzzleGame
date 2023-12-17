@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Player;
 using ScriptableObjects;
 using TMPro;
 using Unity.Mathematics;
@@ -63,8 +62,16 @@ namespace GameSystems
         private Dictionary<Vector2Int, Room> m_runtimeRooms = new();
         public Dictionary<Vector2Int, Room> CurrentRooms => m_runtimeRooms;
         private RoomEntrance m_lastDoorOpened;
-        public RoomEntrance LastDoorOpened => m_lastDoorOpened;
-            
+        public RoomEntrance LastDoorOpened
+        {
+            private set
+            {
+                m_lastDoorOpened = value;
+                GetEventDispatcher().SendEvent<EventPlayerEnteredRoom>(value);
+            }
+            get => m_lastDoorOpened;
+        }
+
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
         private static readonly Vector2Int North = Vector2Int.up;
@@ -196,9 +203,9 @@ namespace GameSystems
             ValidateCurrentRoom();
             #endif
             
-           GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
-           m_lastDoorOpened = _from.GetOpposite();
-           GameManager.Instance.ShowPlayer();
+            GameManager.Instance.TeleportPlayerToRoomEntrance(_from.GetOpposite());
+            LastDoorOpened = _from.GetOpposite();
+            GameManager.Instance.ShowPlayer();
         }
 
         private void ValidateCurrentRoom()

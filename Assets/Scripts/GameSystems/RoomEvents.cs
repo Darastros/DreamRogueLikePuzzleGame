@@ -35,4 +35,15 @@ namespace GameSystems
         public ForceRefreshMap()
         {}
     }
+    
+    [Serializable]
+    public class EventPlayerEnteredRoom : Event
+    {
+        public RoomEntrance door;
+        public EventPlayerEnteredRoom(){}
+        public EventPlayerEnteredRoom(RoomEntrance _door)
+        {
+            door = _door;
+        }
+    }
 }

@@ -1,6 +1,7 @@
-﻿using System;
-using GameSystems;
+﻿using GameSystems;
+#if UNITY_EDITOR
 using UnityEditor;
+#endif
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -10,14 +11,14 @@ namespace ScriptableObjects
     {
         public RoomEntrance m_entrances;
         public GameObject m_prefab;
-       
+
         /// <summary>
         /// Probability of this room to spawn is influenced by this weight (1 is minimum)
         /// </summary>
         public int m_weight = 1;
 
         public GameRuleType m_gameRuleType = GameRuleType.None;
-        
+
         public bool m_registerToRoomPool = true;
         public bool m_registerToStartPool;
         public bool m_registerToExitPool;
@@ -29,7 +30,7 @@ namespace ScriptableObjects
                 ComputeEntrances();
             }
         }
-
+#if UNITY_EDITOR
         private void Reset()
         {
             if (m_prefab == null && Selection.activeGameObject)
@@ -40,19 +41,22 @@ namespace ScriptableObjects
         }
 
         [ContextMenu("ComputeEntrances")]
+#endif
         private void ComputeEntrances()
         {
-            if(m_prefab == null)
+            if (m_prefab == null)
                 return;
-            
+
             RoomEntrance type = RoomEntrance.None;
             foreach (Door door in m_prefab.GetComponentsInChildren<Door>())
             {
                 type |= door.whichEntrance;
             }
+
             m_entrances = type;
         }
 
+#if UNITY_EDITOR
         [MenuItem("RoomSystem/RecomputeAllEntrancesForRooms")]
         private static void RecomputeAllEntrancesForRooms()
         {
@@ -61,5 +65,6 @@ namespace ScriptableObjects
                 roomDescriptor.ComputeEntrances();
             }
         }
+#endif
     }
 }
