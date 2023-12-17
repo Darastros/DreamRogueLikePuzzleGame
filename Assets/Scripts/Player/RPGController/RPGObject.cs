@@ -6,6 +6,16 @@ namespace RPG
 {
     public class RPGObject : MonoBehaviour
     {
+        
+        // Events
+        public delegate void PickUpItem();
+    
+        public static PickUpItem OnBuyItem;
+        public static PickUpItem OnFailBuyItem;
+        public static PickUpItem OnOpenChest;
+        public static PickUpItem OnFailOpenChest;
+
+        
         [SerializeField] public int keysNumbers = 0;
         [SerializeField] public int coinsNumbers = 0;
         [SerializeField] public int lifePoints = 0;
@@ -31,6 +41,26 @@ namespace RPG
         public void Destroy()
         {
             Destroy(gameObject);
+        }
+
+        public void OpenChest()
+        {
+            OnOpenChest?.Invoke();
+        }
+
+        public void FailOpenChest()
+        {
+            OnFailOpenChest?.Invoke();
+        }
+        
+        public void BuyItem()
+        {
+            OnBuyItem?.Invoke();
+        }
+
+        public void FailBuyItem()
+        {
+            OnFailBuyItem?.Invoke();
         }
     }
 }
