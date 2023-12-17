@@ -3,6 +3,7 @@ using UnityEngine;
 public class Spawner : MonoBehaviour
 {
     [SerializeField] private float m_spawnFrequency = 1.0f;
+    [SerializeField] private float m_spawnFrequencyOffset = 0.0f;
     [SerializeField] private GameObject m_spawnObject;
     [SerializeField] private float m_speed = 10.0f;
     private Animator m_animator;
@@ -14,7 +15,7 @@ public class Spawner : MonoBehaviour
     
     void Awake()
     {
-        m_timer = m_spawnFrequency;
+        m_timer = m_spawnFrequency + m_spawnFrequencyOffset;
         TryGetComponent(out m_animator);
     }
 

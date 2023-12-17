@@ -123,7 +123,7 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayerDataManager.OnUseArtifact -= OnSealedRoom;
         PlayerDataManager.OnHit -= Hit;
         PlayerDataManager.OnHeal -= Heal;
-        DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+        if(DungeonRoomSystem.Instance) DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
         Spawner.OnSpawn -= OnProjectileSpawn;
 
         RPGController.OnGetCoins -= GetRpgCoin;

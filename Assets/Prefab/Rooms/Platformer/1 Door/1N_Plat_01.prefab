@@ -41,7 +41,7 @@ Transform:
   - {fileID: 653903819245348073}
   - {fileID: 5366466421407174125}
   - {fileID: 8845545885350309812}
-  - {fileID: 6728425192489551982}
+  - {fileID: 770313641303616561}
   - {fileID: 5483290611608603918}
   - {fileID: 2730857248615177866}
   - {fileID: 8879587134906731185}
@@ -49,7 +49,7 @@ Transform:
   - {fileID: 2312562376070558301}
   - {fileID: 7681285390215149838}
   - {fileID: 1659697243929538706}
-  - {fileID: 3892048174138623923}
+  - {fileID: 7049199999880963054}
   - {fileID: 7803995495973250892}
   - {fileID: 6075671038764920769}
   - {fileID: 5500043464238476466}
@@ -75,6 +75,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3640299544923707967}
     m_Modifications:
+    - target: {fileID: -5559046288008268011, guid: 869d57851fb4c304698abddb02dfce02, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1104923711282915519, guid: 869d57851fb4c304698abddb02dfce02, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -992,7 +996,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 178582dfed323434b96bc076100041b1, type: 3}
---- !u!4 &3892048174138623923 stripped
+--- !u!4 &7049199999880963054 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6327732559516738652, guid: 178582dfed323434b96bc076100041b1, type: 3}
   m_PrefabInstance: {fileID: 3892048174138623922}
@@ -1569,6 +1573,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 3640299544923707967}
     m_Modifications:
+    - target: {fileID: 2258049858210529101, guid: 8f9b23c24370c7748a3a2252fc952ad1, type: 3}
+      propertyPath: m_spawnFrequencyOffset
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5263785438789486224, guid: 8f9b23c24370c7748a3a2252fc952ad1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.5
@@ -1866,7 +1874,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 178582dfed323434b96bc076100041b1, type: 3}
---- !u!4 &6728425192489551982 stripped
+--- !u!4 &770313641303616561 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6327732559516738652, guid: 178582dfed323434b96bc076100041b1, type: 3}
   m_PrefabInstance: {fileID: 6728425192489551981}
