@@ -55,7 +55,14 @@ namespace Utils
 	        {
 		        foreach (var (listener, callback) in eventListeners)
 		        {
-			        callback.Invoke(_eventToSend);
+			        try
+			        {
+				        callback.Invoke(_eventToSend);
+			        }
+			        catch (Exception e)
+			        {
+				        Debug.LogException(e);
+			        }
 		        }
 	        }
         }
