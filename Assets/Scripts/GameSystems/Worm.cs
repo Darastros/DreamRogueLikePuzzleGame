@@ -16,7 +16,8 @@ namespace GameSystems
         [SerializeField] private int minRoomThresholdForWormToAppear = 30;
         [SerializeField] private float timeUntilRoomDestroyed = 30f;
         [SerializeField] private float newTimerIfRoomSaved = 120f;
-        
+        [SerializeField] private float newTimerIfRoomLost = 100f;
+
         private bool m_wormAppeared = false;
         private Coroutine m_wormCoroutine = null;
 
@@ -44,7 +45,7 @@ namespace GameSystems
                 m_wormCoroutine = null;
                 RoomAboutToBeDestroyed = null;
                 EventDispatcher.SendEvent<OnRoomSavedFromWorm>(_obj.m_to);
-                StartCoroutine(Reset());
+                StartCoroutine(Reset(newTimerIfRoomSaved));
             }
             
             if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
@@ -66,11 +67,12 @@ namespace GameSystems
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);
             m_wormCoroutine = null;
             RoomAboutToBeDestroyed = null;
+            StartCoroutine(Reset(newTimerIfRoomLost));
         }
 
-        private IEnumerator Reset()
+        private IEnumerator Reset(float _newTimer)
         {
-            yield return new WaitForSeconds(newTimerIfRoomSaved);
+            yield return new WaitForSeconds(_newTimer);
             if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
             {
                 m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
