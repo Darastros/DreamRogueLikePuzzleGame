@@ -275,7 +275,7 @@ public class GameManager : MonoBehaviour
     [MenuItem("GameManager/RPG/Add RPG System to stack")]
     public static void ForceAddRpgGameRuleToStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.AddRPGGameRuleToStack());
     
-    [MenuItem("GameManager/CardGame/Remove RPG Game from stack")]
+    [MenuItem("GameManager/RPG/Remove RPG Game from stack")]
     public static void ForceRemoveRpgGameRuleFromStack() => ExecuteLambdaIfApplicationPlaying(() => Instance.RemoveRPGGameRuleFromStack());
     
     [MenuItem("GameManager/Hit player")]
@@ -283,6 +283,13 @@ public class GameManager : MonoBehaviour
     {
         --PlayerDataManager.life;
     }
+
+    [MenuItem("GameManager/Restart")]
+    public static void RestartGame()
+    {
+        Instance.Restart();
+    }
+    
     #endif
     #endregion
 }
