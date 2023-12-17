@@ -133,6 +133,7 @@ namespace GameSystems
             }
 
             m_eventDispatcher.RegisterEvent<OnPlayerOpenDoor>(this, OnPlayerWalkDoor);
+            GameManager.OnGameRestart += ResetMap;
         }
 
         private WeightedList<RoomDescriptor> ComputeWeightedList(List<RoomDescriptor> _pool)
@@ -255,6 +256,7 @@ namespace GameSystems
 
         private void OnDestroy()
         {
+            GameManager.OnGameRestart -= ResetMap;
             m_eventDispatcher.UnregisterAllEvents(this);
         }
 
