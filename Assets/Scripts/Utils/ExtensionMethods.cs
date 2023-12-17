@@ -120,4 +120,17 @@ public static class ExtensionMethods
         _found = _component.GetComponentInParent<T>();
         return _found != null;
     }
+
+    public static RoomEntrance ConvertToRoomEntrance(this Vector2Int _vector2)
+    {
+        if (_vector2 == Vector2Int.up)
+            return RoomEntrance.North;
+        if (_vector2 == Vector2Int.down)
+            return RoomEntrance.South;
+        if (_vector2 == Vector2Int.left)
+            return RoomEntrance.West;
+        if (_vector2 == Vector2Int.right)
+            return RoomEntrance.East;
+        return RoomEntrance.Invalid;
+    }
 }

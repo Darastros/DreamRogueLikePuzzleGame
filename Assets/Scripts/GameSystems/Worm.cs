@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using DG.Tweening;
 using Unity.Mathematics;
 using UnityEngine;
 using Utils;
@@ -17,9 +16,13 @@ namespace GameSystems
         [SerializeField] private float timeUntilRoomDestroyed = 30f;
         [SerializeField] private float newTimerIfRoomSaved = 120f;
         [SerializeField] private float newTimerIfRoomLost = 100f;
+        [SerializeField] private bool forceMinRoomToDestroyOthers = false;
 
         private bool m_wormAppeared = false;
         private Coroutine m_wormCoroutine = null;
+
+        [SerializeField] private GameObject m_wormIndicatorPrefab;
+        private GameObject m_wormIndicatorRuntime;
 
         public Room RoomAboutToBeDestroyed { get; private set; } = null;
 
@@ -28,13 +31,14 @@ namespace GameSystems
             Debug.Assert(GameManager.Instance.Worm == null, "MULTIPLE WORMS ON THE SCENE, IT'S NOT SUPPORTED");
             GameManager.Instance.Worm = this;
             DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnteredRoom);
         }
 
         private void OnDestroy()
         {
             if(DungeonRoomSystem.Instance == null)
                 return;
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterAllEvents(this);
         }
 
         private void OnRoomChanged(OnRoomChanged _obj)
@@ -58,13 +62,54 @@ namespace GameSystems
             }
         }
         
+        private void OnPlayerEnteredRoom(EventPlayerEnteredRoom _obj)
+        {
+            UpdateWormIndicator();
+        }
+
+        private void UpdateWormIndicator()
+        {
+            if(m_wormIndicatorPrefab == null || DungeonRoomSystem.Instance.CurrentRoom.m_runtimeGameScene == null)
+                return;
+            
+            if (m_wormIndicatorRuntime != null)
+            {
+                Destroy(m_wormIndicatorRuntime);
+            }
+            
+            if (RoomAboutToBeDestroyed != null)
+            {
+                List<Room> leading = new List<Room>();
+                foreach (Room instanciatedNeighbor in DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbors())
+                {
+                    if (DungeonRoomSystem.Instance.IsThereAPathLeadingTo(RoomAboutToBeDestroyed.Coordinate,
+                            instanciatedNeighbor, DungeonRoomSystem.Instance.CurrentRoom))
+                    {
+                        leading.Add(instanciatedNeighbor);
+                    }
+                }
+
+                if (leading.Count > 0)
+                {
+                    Room random = leading.GetRandomElem();
+                    var door = DungeonRoomSystem.Instance.CurrentRoom.GetEntrance(
+                        (random.Coordinate - DungeonRoomSystem.Instance.CurrentRoom.Coordinate)
+                        .ConvertToRoomEntrance());
+                    m_wormIndicatorRuntime = Instantiate(m_wormIndicatorPrefab, door.transform.position, Quaternion.identity);
+                    m_wormIndicatorRuntime.transform.SetParent(door.transform, true);
+                }
+            }
+        }
+
         private IEnumerator DestroyRoomCoroutine(Room _roomToDestroy)
         {
             RoomAboutToBeDestroyed = _roomToDestroy;
             DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
             EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
+            UpdateWormIndicator();
             yield return new WaitForSeconds(timeUntilRoomDestroyed);
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);
+            UpdateWormIndicator();
             m_wormCoroutine = null;
             RoomAboutToBeDestroyed = null;
             StartCoroutine(Reset(newTimerIfRoomLost));
@@ -73,11 +118,11 @@ namespace GameSystems
         private IEnumerator Reset(float _newTimer)
         {
             yield return new WaitForSeconds(_newTimer);
-            if (DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)
+            if (!forceMinRoomToDestroyOthers ||(forceMinRoomToDestroyOthers && DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear))
             {
                 m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
             }
-            else
+            else if(forceMinRoomToDestroyOthers)
             {
                 EventDispatcher.SendEvent<OnWormLeft>();
                 m_wormAppeared = false;
