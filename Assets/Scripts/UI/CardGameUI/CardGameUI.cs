@@ -2,7 +2,9 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using CardGame;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
@@ -10,6 +12,8 @@ namespace UI
     {
         [SerializeField] private GameObject m_cardObject;
         [SerializeField] private List<Transform> m_pos;
+        [SerializeField] private Image m_successSprite;
+        [SerializeField] private TextMeshProUGUI m_successText;
         private List<CardUI> m_cards;
         private Animator m_animator;
 
@@ -56,6 +60,8 @@ namespace UI
         private void CraftSuccess(CraftCardResult _result)
         {
             m_animator.SetTrigger("Success");
+            m_successSprite.sprite = _result.sprite;
+            m_successText.text = _result.name;
             m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {
