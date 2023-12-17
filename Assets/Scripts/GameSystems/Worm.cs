@@ -31,6 +31,8 @@ namespace GameSystems
 
         private void OnDestroy()
         {
+            if(DungeonRoomSystem.Instance == null)
+                return;
             DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
         }
 
