@@ -36,7 +36,6 @@ namespace GameSystems
                 TryGetComponent(out m_collider2D);
             m_animator.SetBool(CanSealAnimHash, DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
             m_animator.SetBool(HoverAnimHash, false);
-            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 0.0f);
 
             if(DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null)
             {

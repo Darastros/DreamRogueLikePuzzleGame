@@ -238,7 +238,7 @@ public class GameManager : MonoBehaviour
         if (entrance!= null && m_playerController && m_playerController.TryGetComponent(out Rigidbody2D _rb))
         {
             OnTeleportPlayer?.Invoke(entrance.teleportPos.position);
-            _rb.position = entrance.teleportPos.position;
+            m_playerController.transform.position = entrance.teleportPos.position;
         }
     }
 
