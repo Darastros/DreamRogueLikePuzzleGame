@@ -38,6 +38,11 @@ namespace RPG
             }
         }
 
+        public void Fail()
+        {
+            m_animator.SetTrigger("Fail");
+        }
+        
         public void Destroy()
         {
             Destroy(gameObject);

@@ -51,8 +51,11 @@ namespace RPG
         
         private void EnterObject(RPGObject _object)
         {
-            if (_object.coinsNumbers < 0 && m_coins < -_object.coinsNumbers) return;
-            if (_object.keysNumbers < 0 && m_keys < -_object.keysNumbers) return;
+            if ((_object.coinsNumbers < 0 && m_coins < -_object.coinsNumbers) || (_object.keysNumbers < 0 && m_keys < -_object.keysNumbers))
+            {
+                _object.Fail();
+                return;
+            }
             
             m_coins += _object.coinsNumbers;
             if (_object.coinsNumbers != 0) 
