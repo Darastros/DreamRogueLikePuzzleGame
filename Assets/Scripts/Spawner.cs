@@ -34,8 +34,8 @@ public class Spawner : MonoBehaviour
 
     public void Spawn()
     {
-        var instance = Instantiate(m_spawnObject, transform.position, transform.rotation);
         OnSpawn?.Invoke();
+        var instance = Instantiate(m_spawnObject, transform.position, transform.rotation);
         if (instance.TryGetComponent(out Rigidbody2D _rigidbody))
         {
             _rigidbody.velocity = transform.right * m_speed;
