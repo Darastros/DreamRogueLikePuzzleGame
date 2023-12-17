@@ -75,7 +75,6 @@ namespace GameSystems
             }
             get => m_lastDoorOpened;
         }
-
         // Directions
         private static readonly Vector2Int South = Vector2Int.down;
         private static readonly Vector2Int North = Vector2Int.up;
@@ -92,10 +91,10 @@ namespace GameSystems
         [ContextMenu("FetchAllRooms")]
         public void RetrieveAllRoomDescriptors()
         {
+            Resources.LoadAll<RoomDescriptor>("Rooms");
             roomPool.Clear();
             exitRoom.Clear();
             startRoom.Clear();
-
             foreach (RoomDescriptor roomDescriptor in Resources.FindObjectsOfTypeAll<RoomDescriptor>())
             {
                 if (roomDescriptor.m_registerToRoomPool)
@@ -170,7 +169,7 @@ namespace GameSystems
                 }
                 else
                 {
-                    Debug.LogError($"Failed to generate the ROOM! at position: {where}");
+                    Debug.LogError($"Failed to generate the EXIT ROOM! at position: {where}");
                 }
             }
             else
@@ -275,7 +274,7 @@ namespace GameSystems
                 return newRoom;
             }
 
-            Debug.AssertFormat(false, "Cannot find any room that meets the {0} with those forbidden entrances {1}",
+            Debug.LogErrorFormat("Cannot find any room that meets the {0} with those forbidden entrances {1}",
                 neededEntrances, forbiddenEntrances);
             return null;
         }
