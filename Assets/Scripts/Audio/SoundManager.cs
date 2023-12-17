@@ -29,6 +29,8 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip enteringDoorClip;
     [SerializeField] private AudioClip collectArtifactClip;
     [SerializeField] private AudioClip sealRoomClip;
+    [SerializeField] private AudioClip deathJingleClip;
+    [SerializeField] private AudioClip projectileSpawnClip;
 
 
     [SerializeField] private AudioClip activatePlatformerClip;
@@ -45,6 +47,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     [SerializeField] private AudioClip activateCardClip;
     [SerializeField] private AudioClip pickupCardClip;
+    [SerializeField] private AudioClip craftCardClip;
 
     void Awake()
     {
@@ -85,10 +88,11 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlatformerController.OnGetStrawberries += OnGetStrawberries;
 
         CardGameController.OnGettingCard += OnGettingCard;
+        CardGameController.OnCraftSuccess += OnCardCraft;
 
         // Game interactions
         // GameManager.OnGameRestart += Restart;
-        // GameManager.OnGameLoose += Loose;
+        GameManager.OnGameLoose += OnDeath;
         // GameManager.OnGameWin += Win;
         // ExitPortal.OnCrossPortal += CrossPortal;
 
@@ -108,14 +112,19 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayerDataManager.OnUseArtifact -= OnSealedRoom;
         PlayerDataManager.OnHit -= Hit;
         PlayerDataManager.OnHeal -= Heal;
+        DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+
         RPGController.OnGetCoins -= GetRpgCoin;
         RPGController.OnGetKeys -= GetRpgKey;
 
         PlatformerController.OnGetStrawberries -= OnGetStrawberries;
 
         CardGameController.OnGettingCard -= OnGettingCard;
+        CardGameController.OnCraftSuccess -= OnCardCraft;
 
-        DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+        
+
+        GameManager.OnGameLoose -= OnDeath;
         PlatformerController.OnActivate -= ActivatePlatformer;
         PlatformerController.OnDeactivate -= DeactivatePlatformer;
         RPGController.OnActivate -= ActivateRpg;
@@ -168,6 +177,16 @@ public class SoundManager : MonoBehaviour, IEventListener
     private void OnSealedRoom(int newValue, int delta)
     {
         PlaySfx(sealRoomClip, Random.Range(minPitch, maxPitch));
+    }
+
+    private void OnProjectileSpawn()
+    {
+        PlaySfx(projectileSpawnClip, Random.Range(minPitch, maxPitch));
+    }
+
+    private void OnDeath()
+    {
+        PlayJingle(deathJingleClip);
     }
 
     // Plateformer
@@ -242,6 +261,11 @@ public class SoundManager : MonoBehaviour, IEventListener
     private void OnGettingCard(Card card)
     {
         PlaySfx(pickupCardClip);
+    }
+
+    private void OnCardCraft(CraftCardResult result, Vector3 position)
+    {
+        PlayJingle(craftCardClip);
     }
 
     #endregion
