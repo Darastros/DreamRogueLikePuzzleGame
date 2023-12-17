@@ -125,5 +125,10 @@ namespace GameSystems
             m_animator.SetBool(HoverAnimHash, false);
             
         }
+
+        public void ForceClose()
+        {
+            m_animator.SetTrigger(CloseDoorAnimHash);
+        }
     }
 }

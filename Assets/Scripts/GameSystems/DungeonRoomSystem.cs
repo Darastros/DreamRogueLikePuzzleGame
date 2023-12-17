@@ -5,6 +5,10 @@ using System.Text;
 using ScriptableObjects;
 using TMPro;
 using Unity.Mathematics;
+
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 using UnityEngine;
 using Utils;
 using EventDispatcher = Utils.EventDispatcher;
@@ -272,6 +276,28 @@ namespace GameSystems
             Debug.AssertFormat(false, "Cannot find any room that meets the {0} with those forbidden entrances {1}",
                 neededEntrances, forbiddenEntrances);
             return null;
+        }
+
+
+        #if UNITY_EDITOR
+        [MenuItem("RoomSystem/ResetMap")]
+        public static void DebugResetMap()
+        {
+            Instance.ResetMap();
+        }
+        #endif
+        
+        public void ResetMap()
+        {
+            OnNewRoomAppear(m_runtimeRooms[Vector2Int.zero], RoomEntrance.South);
+            CloseRoom(Vector2Int.up);
+            CloseRoom(Vector2Int.down);
+            CloseRoom(Vector2Int.right);
+            CloseRoom(Vector2Int.left);
+            foreach (Door door in m_runtimeRooms[Vector2Int.zero].GetDoors())
+            {
+                door.ForceClose();
+            }
         }
         
         public void CloseRoom(RoomEntrance _whichEntrance)
