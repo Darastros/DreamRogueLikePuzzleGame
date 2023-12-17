@@ -31,15 +31,9 @@ namespace Platformer
         private void OnEnable()
         {
             m_intitialPos = transform.position;
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         }
         
-        private void OnDisable()
-        {
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-        }
-
-        private void OnRoomChanged(OnRoomChanged _obj)
+        public void OnRoomChanged()
         {
             m_animator.SetTrigger(PickObjectUp);
         }
