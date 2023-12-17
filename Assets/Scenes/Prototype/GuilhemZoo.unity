@@ -361,9 +361,9 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1383880466125224162, guid: fb7b8ee0770245346ae0eeda1c10ab19, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
+    - target: {fileID: 1437830354391208925, guid: fb7b8ee0770245346ae0eeda1c10ab19, type: 3}
+      propertyPath: m_ConstrainProportionsScale
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3499379415071419819, guid: fb7b8ee0770245346ae0eeda1c10ab19, type: 3}
       propertyPath: m_Name
@@ -2632,7 +2632,7 @@ PrefabInstance:
       objectReference: {fileID: 367706531}
     - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
       propertyPath: roomPool.Array.size
-      value: 18
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
       propertyPath: roomPool.Array.data[3]

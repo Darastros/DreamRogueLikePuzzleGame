@@ -10,8 +10,6 @@ using Random = UnityEngine.Random;
 
 public class SoundManager : MonoBehaviour, IEventListener
 {
-    private GameObject _gameObject;
-
     [Header("Controllers")]
     [SerializeField] private PlatformerController m_platformerController;
 
@@ -59,10 +57,6 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private AudioSource musicSource;
 
-    void Awake()
-    {
-        _gameObject = gameObject;
-    }
 
     void OnEnable()
     {
@@ -162,7 +156,8 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
     {
-        AudioSource audioSource = _gameObject.AddComponent<AudioSource>();
+        if (!gameObject) return;
+        AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.outputAudioMixerGroup = mixerGroup;
         audioSource.pitch = pitch;
         audioSource.volume = volume;
