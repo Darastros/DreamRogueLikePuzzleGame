@@ -159,6 +159,10 @@ public class GameManager : MonoBehaviour
     public static GameFlow OnGameResume;
     public static GameFlow OnGameWin;
     public static GameFlow OnGameLoose;
+    
+    public delegate void TeleportPlayer(Vector3 _pos);
+
+    public static TeleportPlayer OnTeleportPlayer;
 
     private bool m_gameStart = true;
     private bool m_gamePaused = false;
@@ -233,6 +237,7 @@ public class GameManager : MonoBehaviour
         Door entrance = DungeonRoomSystem.Instance.CurrentRoom.GetEntrance(_entrance);
         if (entrance!= null && m_playerController && m_playerController.TryGetComponent(out Rigidbody2D _rb))
         {
+            OnTeleportPlayer?.Invoke(entrance.teleportPos.position);
             _rb.position = entrance.teleportPos.position;
         }
     }

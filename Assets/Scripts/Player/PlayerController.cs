@@ -150,4 +150,5 @@ public class PlayerController : MonoBehaviour
         transform.position = _center;
         m_animator.SetTrigger("EnterPortal");
     }
+
 }
