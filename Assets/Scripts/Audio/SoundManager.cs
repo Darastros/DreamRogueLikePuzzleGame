@@ -30,7 +30,10 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip collectArtifactClip;
     [SerializeField] private AudioClip sealRoomClip;
     [SerializeField] private AudioClip deathJingleClip;
+    [SerializeField] private AudioClip portalJingleClip;
     [SerializeField] private AudioClip projectileSpawnClip;
+    [SerializeField] private AudioClip errorClip;
+    [SerializeField] private AudioClip activateKeyPartClip;
 
 
     [SerializeField] private AudioClip activatePlatformerClip;
@@ -48,6 +51,7 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip activateCardClip;
     [SerializeField] private AudioClip pickupCardClip;
     [SerializeField] private AudioClip craftCardClip;
+    [SerializeField] private AudioClip failedCraftCardClip;
 
     void Awake()
     {
@@ -73,64 +77,77 @@ public class SoundManager : MonoBehaviour, IEventListener
     private void ListenEvent()
     {
         // Player interactions
-        m_platformerController.platformerMovementController.Jumped += Jump;
-        m_platformerController.platformerMovementController.GroundedChanged += GroundedChanged;
+        PlayerDataManager.OnActivateKeyPart += ActivateKeyPart;
         PlayerDataManager.OnCollectArtifact += OnCollectArtifact;
         PlayerDataManager.OnUseArtifact += OnSealedRoom;
         PlayerDataManager.OnHit += Hit;
         PlayerDataManager.OnHeal += Heal;
+        Spawner.OnSpawn += OnProjectileSpawn;
+        //Projectile.OnHit += 
 
         RPGController.OnGetCoins += GetRpgCoin;
         RPGController.OnGetKeys += GetRpgKey;
-        // open chest
-        // shop buy
+        RPGObject.OnOpenChest += OpenChest;
+        RPGObject.OnFailOpenChest += ImpossibleAction;
+        RPGObject.OnBuyItem += BuyItem;
+        RPGObject.OnFailBuyItem += ImpossibleAction;
 
         PlatformerController.OnGetStrawberries += OnGetStrawberries;
+        m_platformerController.platformerMovementController.Jumped += Jump;
+        m_platformerController.platformerMovementController.GroundedChanged += GroundedChanged;
 
         CardGameController.OnGettingCard += OnGettingCard;
         CardGameController.OnCraftSuccess += OnCardCraft;
+        CardGameController.OnCraftFailed += CraftFailed;
+        CardGameController.OnTryCraftWithoutCard += ImpossibleAction;
 
         // Game interactions
         // GameManager.OnGameRestart += Restart;
         GameManager.OnGameLoose += OnDeath;
         // GameManager.OnGameWin += Win;
-        // ExitPortal.OnCrossPortal += CrossPortal;
+        ExitPortal.OnCrossPortal += CrossPortal;
 
-        PlatformerController.OnActivate += ActivatePlatformer;
-        PlatformerController.OnDeactivate += DeactivatePlatformer;
-        RPGController.OnActivate += ActivateRpg;
-        RPGController.OnDeactivate += DeactivateRpg;
-        // CardGameController.OnActivate += ActivateCardGame;
-        // CardGameController.OnDeactivate += DeactivateCardGame;
+        GameManager.OnActivatePlatformerGame += ActivatePlatformer;
+        GameManager.OnDeactivatePlatformerGame += DeactivatePlatformer;
+        GameManager.OnActivateRPGGame += ActivateRpg;
+        GameManager.OnDeactivateRPGGame += DeactivateRpg;
+        GameManager.OnActivateCardGame += ActivateCardGame;
+        GameManager.OnDeactivateCardGame += DeactivateCardGame;
     }
 
     private void UnListenEvent()
     {
-        m_platformerController.platformerMovementController.Jumped -= Jump;
-        m_platformerController.platformerMovementController.GroundedChanged -= GroundedChanged;
+        PlayerDataManager.OnActivateKeyPart -= ActivateKeyPart;
         PlayerDataManager.OnCollectArtifact -= OnCollectArtifact;
         PlayerDataManager.OnUseArtifact -= OnSealedRoom;
         PlayerDataManager.OnHit -= Hit;
         PlayerDataManager.OnHeal -= Heal;
         DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+        Spawner.OnSpawn -= OnProjectileSpawn;
 
         RPGController.OnGetCoins -= GetRpgCoin;
         RPGController.OnGetKeys -= GetRpgKey;
+        RPGObject.OnOpenChest -= OpenChest;
+        RPGObject.OnFailOpenChest -= ImpossibleAction;
+        RPGObject.OnBuyItem -= BuyItem;
+        RPGObject.OnFailBuyItem -= ImpossibleAction;
 
         PlatformerController.OnGetStrawberries -= OnGetStrawberries;
+        m_platformerController.platformerMovementController.Jumped -= Jump;
+        m_platformerController.platformerMovementController.GroundedChanged -= GroundedChanged;
 
         CardGameController.OnGettingCard -= OnGettingCard;
         CardGameController.OnCraftSuccess -= OnCardCraft;
-
-        
+        CardGameController.OnCraftFailed -= CraftFailed;
+        CardGameController.OnTryCraftWithoutCard -= ImpossibleAction;
 
         GameManager.OnGameLoose -= OnDeath;
-        PlatformerController.OnActivate -= ActivatePlatformer;
-        PlatformerController.OnDeactivate -= DeactivatePlatformer;
-        RPGController.OnActivate -= ActivateRpg;
-        RPGController.OnDeactivate -= DeactivateRpg;
-        // CardGameController.OnActivate -= ActivateCG;
-        // CardGameController.OnDeactivate -= DeactivateCG;
+        GameManager.OnActivatePlatformerGame -= ActivatePlatformer;
+        GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformer;
+        GameManager.OnActivateRPGGame -= ActivateRpg;
+        GameManager.OnDeactivateRPGGame -= DeactivateRpg;
+        GameManager.OnActivateCardGame -= ActivateCardGame;
+        GameManager.OnDeactivateCardGame -= DeactivateCardGame;
     }
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
@@ -166,7 +183,10 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void OnRoomChanged(OnRoomChanged _obj)
     {
-        PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
+        if(_obj.m_from != null)
+        {
+            PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
+        } 
     }
 
     private void OnCollectArtifact(int newValue, int delta)
@@ -187,6 +207,21 @@ public class SoundManager : MonoBehaviour, IEventListener
     private void OnDeath()
     {
         PlayJingle(deathJingleClip);
+    }
+
+    private void CrossPortal(Vector3 _center)
+    {
+        PlayJingle(portalJingleClip);
+    }
+
+    private void ActivateKeyPart(GameRuleType _part)
+    {
+        PlayJingle(activateKeyPartClip);
+    }
+
+    private void ImpossibleAction()
+    {
+        PlaySfx(errorClip);
     }
 
     // Plateformer
@@ -233,6 +268,16 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlaySfx(rpgKeyClip);
     }
 
+    private void OpenChest()
+    {
+        PlaySfx(openChestClip);
+    }
+
+    private void BuyItem()
+    {
+        PlaySfx(shopBuyClip);
+    }
+
     public void ActivateRpg()
     {
         PlayJingle(activateRpgClip);
@@ -266,6 +311,11 @@ public class SoundManager : MonoBehaviour, IEventListener
     private void OnCardCraft(CraftCardResult result, Vector3 position)
     {
         PlayJingle(craftCardClip);
+    }
+
+    private void CraftFailed()
+    {
+        PlaySfx(failedCraftCardClip);
     }
 
     #endregion
