@@ -50,6 +50,7 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip shopBuyClip;
     [SerializeField] private AudioClip openChestClip;
 
+    [SerializeField] private float activationJingleVolume;
     [SerializeField] private AudioClip activateCardClip;
     [SerializeField] private AudioClip deactivateCardClip;
     [SerializeField] private AudioClip pickupCardClip;
@@ -249,12 +250,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivatePlatformer()
     {
-        PlayJingle(activatePlatformerClip);
+        PlayJingle(activatePlatformerClip, 1f, activationJingleVolume);
     }
 
     public void DeactivatePlatformer()
     {
-        PlayJingle(deactivatePlatformerClip);
+        PlayJingle(deactivatePlatformerClip, 1f, activationJingleVolume);
     }
 
     private void Jump()
@@ -300,12 +301,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivateRpg()
     {
-        PlayJingle(activateRpgClip);
+        PlayJingle(activateRpgClip, 1f, activationJingleVolume);
     }
 
     public void DeactivateRpg()
     {
-        PlayJingle(deactivateRpgClip);
+        PlayJingle(deactivateRpgClip, 1f, activationJingleVolume);
     }
 
     #endregion
@@ -315,12 +316,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivateCardGame()
     {
-        PlayJingle(activateCardClip);
+        PlayJingle(activateCardClip, 1f, activationJingleVolume);
     }
 
     public void DeactivateCardGame()
     {
-        PlayJingle(deactivateCardClip);
+        PlayJingle(deactivateCardClip, 1f, activationJingleVolume);
     }
 
     private void OnGettingCard(Card card)
