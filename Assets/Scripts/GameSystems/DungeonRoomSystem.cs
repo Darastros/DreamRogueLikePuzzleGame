@@ -112,6 +112,8 @@ namespace GameSystems
 
         private void Start()
         {
+            Resources.LoadAll<RoomDescriptor>("Rooms");
+
             if (startRoom.Count > 0)
             {
                 Room newRoom = new Room(0, 0, startRoom.GetRandomElem());
@@ -169,7 +171,10 @@ namespace GameSystems
                 }
                 else
                 {
-                    Debug.LogError($"Failed to generate the EXIT ROOM! at position: {where}");
+                    Debug.LogError($"Failed to generate the EXIT ROOM! at position: {where} \n" +
+                                   $"INFO Room in exit pool =: {exitRoom.Count}\n" +
+                                   $"INFO Room in start pool =: {startRoom.Count}\n" +
+                                   $"INFO Room in Usual pool =: {roomPool.Count}\n");
                 }
             }
             else
@@ -183,7 +188,10 @@ namespace GameSystems
                 }
                 else
                 {
-                    Debug.LogError($"Failed to generate the ROOM! at position: {where}");
+                    Debug.LogError($"Failed to generate the ROOM! at position: {where}"+
+                                   $"INFO Room in exit pool =: {exitRoom.Count}\n" +
+                                   $"INFO Room in start pool =: {startRoom.Count}\n" +
+                                   $"INFO Room in Usual pool =: {roomPool.Count}\n" );
                 }
             }
         }
