@@ -1,15 +1,18 @@
+using System.Collections.Generic;
 using GameSystems;
 using MovementControllers;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Utils;
 
 namespace Platformer
 {
-    public class PlatformerController : MonoBehaviour
+    public class PlatformerController : MonoBehaviour, IEventListener
     {
         [SerializeField] private int m_strawberryNeededToGetKeyPart = 10;
         [SerializeField] private PlatformerDetector m_detector;
         private int m_strawberries = 0;
+        public HashSet<PlatformerObject> ObjectsCollectedInTheRoom { get; set; } = new();
         
         [SerializeField] public TopDownMovementController m_topDownController;
         [SerializeField] public PlatformerMovementController platformerMovementController;
@@ -47,24 +50,33 @@ namespace Platformer
             GameManager.OnActivatePlatformerGame += Activate;
             GameManager.OnDeactivatePlatformerGame += Deactivate;
             m_detector.OnPlatformerObjectEnter += EnterObject;
+            PlayerDataManager.OnHit += OnHit;
+            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         }
-
         private void UnListenEvent()
         {
             GameManager.OnActivatePlatformerGame -= Activate;
             GameManager.OnDeactivatePlatformerGame -= Deactivate;
             m_detector.OnPlatformerObjectEnter -= EnterObject;
+            PlayerDataManager.OnHit -= OnHit;
+            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
         }
 
         private void EnterObject(PlatformerObject _object)
         {
-            m_strawberries += _object.strawberriesNumbers;
-            if (_object.strawberriesNumbers > 0) OnGetStrawberries?.Invoke(m_strawberries, _object.strawberriesNumbers);
-            if (_object.lifePoints > 0) PlayerDataManager.life += _object.lifePoints;
-            if (_object.artifact) ++PlayerDataManager.artifact;
-            
-            if (m_strawberries >= m_strawberryNeededToGetKeyPart) PlayerDataManager.platformerGameKeyPart = true;
-            _object.PickUp();
+            if (_object.needNextRoomToBeActivated)
+            {
+                ObjectsCollectedInTheRoom.Add(_object);
+            }
+            else
+            {
+                m_strawberries += _object.strawberriesNumbers;
+                if (_object.strawberriesNumbers > 0) OnGetStrawberries?.Invoke(m_strawberries, _object.strawberriesNumbers);
+                if (m_strawberries >= m_strawberryNeededToGetKeyPart) PlayerDataManager.platformerGameKeyPart = true;
+                if (_object.lifePoints > 0) PlayerDataManager.life += _object.lifePoints;
+                if (_object.artifact) ++PlayerDataManager.artifact;
+            }
+            _object.PickUp(this);
         }
 
         private void Activate()
@@ -88,6 +100,32 @@ namespace Platformer
             m_detector.gameObject.SetActive(false);
             OnDeactivate?.Invoke();
             m_strawberries = 0;
+        }
+        
+        private void OnHit(int _newvalue, int _delta)
+        {
+            foreach (PlatformerObject platformerObject in ObjectsCollectedInTheRoom)
+            {
+                platformerObject.ResetPosition();
+            }
+            ObjectsCollectedInTheRoom.Clear();
+        }
+
+        private void OnRoomChanged(OnRoomChanged _obj)
+        {
+            int strawBerriesToAdd = 0;
+            foreach (PlatformerObject platformerObject in ObjectsCollectedInTheRoom)
+            {
+                strawBerriesToAdd += platformerObject.strawberriesNumbers;
+                if (platformerObject.lifePoints > 0) PlayerDataManager.life += platformerObject.lifePoints;
+                if (platformerObject.artifact) ++PlayerDataManager.artifact;
+                platformerObject.OnRoomChanged();
+            }
+            m_strawberries += strawBerriesToAdd;
+            if (strawBerriesToAdd > 0) OnGetStrawberries?.Invoke(m_strawberries, strawBerriesToAdd);
+            if (m_strawberries >= m_strawberryNeededToGetKeyPart) PlayerDataManager.platformerGameKeyPart = true;
+            
+            ObjectsCollectedInTheRoom.Clear();
         }
         
         public void Move(Vector2 _value)
