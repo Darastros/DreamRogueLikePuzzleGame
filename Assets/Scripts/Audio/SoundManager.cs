@@ -211,7 +211,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void CrossPortal(Vector3 _center)
     {
-        PlayJingle(portalJingleClip);
+        PlayJingle(portalJingleClip, 1f, 0.5f);
     }
 
     private void ActivateKeyPart(GameRuleType _part)
@@ -310,12 +310,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void OnCardCraft(CraftCardResult result, Vector3 position)
     {
-        PlayJingle(craftCardClip);
+        PlayJingle(craftCardClip, 1.2f);
     }
 
     private void CraftFailed()
     {
-        PlaySfx(failedCraftCardClip);
+        PlaySfx(failedCraftCardClip, 1.2f);
     }
 
     #endregion
