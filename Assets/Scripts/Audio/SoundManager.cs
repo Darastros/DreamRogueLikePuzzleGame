@@ -64,7 +64,6 @@ public class SoundManager : MonoBehaviour, IEventListener
     void OnDisable()
     {
         UnListenEvent();
-        Debug.Log("PUTE");
     }
 
     void Start()
@@ -151,6 +150,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
     {
+        if (!gameObject) return;
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
         audioSource.outputAudioMixerGroup = mixerGroup;
         audioSource.pitch = pitch;
