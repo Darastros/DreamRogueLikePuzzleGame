@@ -55,7 +55,7 @@ namespace GameSystems
 
         private void OnDisable()
         {
-            if(m_initSequence!= null && m_initSequence.IsPlaying()) m_initSequence.Kill();
+            if(m_initSequence != null && m_initSequence.active && m_initSequence.IsPlaying()) m_initSequence.Kill();
             m_collider2D.isTrigger = false;
             GameManager.OnTeleportPlayer -= OnPlayerTeleported;
             DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
@@ -91,8 +91,9 @@ namespace GameSystems
 
         private void OnCollisionExit2D(Collision2D _other)
         {
-            if (m_initSequence != null && m_initSequence.IsPlaying())
+            if(m_initSequence != null && m_initSequence.active && m_initSequence.IsPlaying())
                 return;
+            
             m_isColliding = false;
             ActivateDoorTrigger();
         }
