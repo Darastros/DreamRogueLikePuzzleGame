@@ -8,6 +8,10 @@ public class Spawner : MonoBehaviour
     private Animator m_animator;
     private float m_timer;
     
+    
+    public delegate void SpawnDelegate();
+    public static SpawnDelegate OnSpawn;
+    
     void Awake()
     {
         m_timer = m_spawnFrequency;
@@ -31,6 +35,7 @@ public class Spawner : MonoBehaviour
     public void Spawn()
     {
         var instance = Instantiate(m_spawnObject, transform.position, transform.rotation);
+        OnSpawn?.Invoke();
         if (instance.TryGetComponent(out Rigidbody2D _rigidbody))
         {
             _rigidbody.velocity = transform.right * m_speed;
