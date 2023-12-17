@@ -1,11 +1,6 @@
-﻿using System;
-using DG.Tweening;
-using MovementControllers;
+﻿using DG.Tweening;
 using Player;
 
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
 using UnityEngine;
 using Utils;
 
@@ -29,6 +24,8 @@ namespace GameSystems
         //TODO MATHIEU CLOSE DOOR HERE WHEN TO CLOSE
         private static readonly int CloseDoorAnimHash = Animator.StringToHash("Close");
 
+        private Sequence m_initSequence = null;
+
         private void OnEnable()
         {
             DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnterRoom);
@@ -42,9 +39,9 @@ namespace GameSystems
                 m_animator.SetTrigger(OpenAnimHash);
             }
 
-            Sequence enableSeq = DOTween.Sequence().AppendInterval(timeBeforeAllowingPlayerToOpenTheDoor);
-            enableSeq.onComplete = ActivateDoorTrigger;
-            enableSeq.Play();
+            m_initSequence = DOTween.Sequence().AppendInterval(timeBeforeAllowingPlayerToOpenTheDoor);
+            m_initSequence.onComplete = ActivateDoorTrigger;
+            m_initSequence.Play();
         }
 
         private void OnPlayerEnterRoom(EventPlayerEnteredRoom _obj)
@@ -57,30 +54,44 @@ namespace GameSystems
 
         private void OnDisable()
         {
-            if (TryGetComponent(out Collider2D _collider))
-            {
-                _collider.isTrigger = false;
-            }
+            if(m_initSequence!= null && m_initSequence.IsPlaying()) m_initSequence.Kill();
+            m_collider2D.isTrigger = false;
+            GameManager.OnTeleportPlayer -= OnPlayerTeleported;
             DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
         }
         
         private void ActivateDoorTrigger()
         {
-            if (TryGetComponent(out Collider2D _collider) && !_collider.isTrigger && !m_isColliding)
+            if (TryGetComponent(out Collider2D collide) && !collide.isTrigger && !m_isColliding)
             {
                 if(DungeonRoomSystem.Instance.LastDoorOpened == whichEntrance)
                     m_animator.SetTrigger(OpenAnimHash);
-                _collider.isTrigger = true;
+                collide.isTrigger = true;
+                GameManager.OnTeleportPlayer += OnPlayerTeleported;
             }
         }
 
-        private void OnCollisionEnter2D(Collision2D other)
+        private void OnPlayerTeleported(Vector3 _pos)
+        {
+            if ((_pos - teleportPos.position).sqrMagnitude < 1) ;
+            {
+                m_collider2D.isTrigger = false;
+                ForceClose();
+                Sequence enableSeq = DOTween.Sequence().AppendInterval(timeBeforeAllowingPlayerToOpenTheDoor);
+                enableSeq.onComplete = ActivateDoorTrigger;
+                enableSeq.Play();
+            }
+        }
+
+        private void OnCollisionEnter2D(Collision2D _other)
         {
             m_isColliding = true;
         }
 
-        private void OnCollisionExit2D(Collision2D other)
+        private void OnCollisionExit2D(Collision2D _other)
         {
+            if (m_initSequence != null && m_initSequence.IsPlaying())
+                return;
             m_isColliding = false;
             ActivateDoorTrigger();
         }
@@ -95,9 +106,9 @@ namespace GameSystems
             m_animator.SetBool(CanSealAnimHash, DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
         }
 
-        private void OnTriggerEnter2D(Collider2D other)
+        private void OnTriggerEnter2D(Collider2D _other)
         {
-            if (other.CompareTag("Player"))
+            if (_other.CompareTag("Player"))
             {
                 DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<OnPlayerOpenDoor>(whichEntrance);
             }
@@ -123,6 +134,11 @@ namespace GameSystems
             //m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 1.0f);
             m_animator.SetBool(HoverAnimHash, false);
             
+        }
+
+        public void ForceClose()
+        {
+            m_animator.SetTrigger(CloseDoorAnimHash);
         }
     }
 }
