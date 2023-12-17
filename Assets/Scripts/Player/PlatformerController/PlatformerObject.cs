@@ -38,7 +38,8 @@ namespace Platformer
         
         public void OnRoomChanged()
         {
-            m_animator.SetTrigger(PickObjectUp);
+            if(pickedUp && needNextRoomToBeActivated)
+                Destroy();
         }
 
         public void PickUp(PlatformerController _who)
