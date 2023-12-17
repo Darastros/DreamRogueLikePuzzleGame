@@ -1,3 +1,4 @@
+using DG.Tweening;
 using GameSystems;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -15,6 +16,8 @@ namespace Platformer
         [FormerlySerializedAs("maxDistancePerFixedTime")] [SerializeField] private float velocity = 5f;
         [FormerlySerializedAs("maxDistance")] [SerializeField] private float distanceWithPlayer = 1f;
         [SerializeField] private float distanceBetweenObjects = 0.75f;
+        [SerializeField] private float m_timeReset = 0.75f;
+        [SerializeField] private Ease m_resetToPositionEase = Ease.InOutElastic;
         
         private Vector2 m_intitialPos = Vector2.zero;
         private bool pickedUp = false;
@@ -100,12 +103,15 @@ namespace Platformer
         public void ResetPosition()
         {
             m_toFollow = null;
-            pickedUp = false;
-            transform.position = m_intitialPos;
-            if(TryGetComponent(out Collider2D _collider))
+            var t= transform.DOMove(m_intitialPos, m_timeReset).SetEase(m_resetToPositionEase);
+            t.onComplete = () =>
             {
-                _collider.enabled = true;
-            }
+                if(TryGetComponent(out Collider2D _collider))
+                {
+                    pickedUp = false;
+                    _collider.enabled = true;
+                }
+            };
         }
     }
 }
