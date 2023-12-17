@@ -23,7 +23,7 @@ public class Projectile : MonoBehaviour, IEventListener
 
     private void OnDestroy()
     {
-        DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+        if(DungeonRoomSystem.Instance != null) DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
     }
 
     public void Destroy()

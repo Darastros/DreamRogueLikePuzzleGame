@@ -73,6 +73,7 @@ namespace GameSystems
 
         private void OnPlayerTeleported(Vector3 _pos)
         {
+            if (!this) return;
             if ((_pos - teleportPos.position).sqrMagnitude < 1) ;
             {
                 m_collider2D.isTrigger = false;
