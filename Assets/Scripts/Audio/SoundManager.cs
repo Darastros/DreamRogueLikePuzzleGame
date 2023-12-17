@@ -56,6 +56,8 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip craftCardClip;
     [SerializeField] private AudioClip failedCraftCardClip;
 
+    private AudioSource musicSource;
+
     void Awake()
     {
         _gameObject = gameObject;
@@ -75,6 +77,8 @@ public class SoundManager : MonoBehaviour, IEventListener
     {
         DungeonRoomSystem.Instance.GetEventDispatcher()
             .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        musicSource = GetComponent<AudioSource>();
+        StartMusic();
     }
 
     private void ListenEvent()
@@ -105,9 +109,8 @@ public class SoundManager : MonoBehaviour, IEventListener
         CardGameController.OnTryCraftWithoutCard += ImpossibleAction;
 
         // Game interactions
-        // GameManager.OnGameRestart += Restart;
         GameManager.OnGameLoose += OnDeath;
-        // GameManager.OnGameWin += Win;
+        GameManager.OnGameWin += StopMusic;
         ExitPortal.OnCrossPortal += CrossPortal;
 
         GameManager.OnActivatePlatformerGame += ActivatePlatformer;
@@ -145,6 +148,9 @@ public class SoundManager : MonoBehaviour, IEventListener
         CardGameController.OnTryCraftWithoutCard -= ImpossibleAction;
 
         GameManager.OnGameLoose -= OnDeath;
+        GameManager.OnGameWin -= StopMusic;
+        ExitPortal.OnCrossPortal -= CrossPortal;
+
         GameManager.OnActivatePlatformerGame -= ActivatePlatformer;
         GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformer;
         GameManager.OnActivateRPGGame -= ActivateRpg;
@@ -174,6 +180,16 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayAudio(clip, sfxMixerGroup, pitch, volume);
     }
 
+    private void StartMusic()
+    {
+        musicSource.Play();
+    }
+
+    private void StopMusic()
+    {
+        musicSource.Stop();
+    }
+
     private void Hit(int _newValue, int _delta)
     {
         PlaySfx(damageClip);
@@ -189,7 +205,7 @@ public class SoundManager : MonoBehaviour, IEventListener
         if(_obj.m_from != null)
         {
             PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
-        } 
+        }
     }
 
     private void OnCollectArtifact(int newValue, int delta)
@@ -209,6 +225,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void OnDeath()
     {
+        StopMusic();
         PlayJingle(deathJingleClip);
     }
 
