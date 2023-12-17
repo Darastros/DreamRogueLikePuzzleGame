@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using CardGame;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace UI
 {
     public class CardUI : MonoBehaviour
     {
         [SerializeField] private Card m_data;
+        [SerializeField] private Image m_image;
         private Animator m_animator;
         private int m_posInHand = 1;
         public int posInHand => m_posInHand;
@@ -26,6 +28,7 @@ namespace UI
         {
             m_data = _card;
             m_posInHand = 1;
+            m_image.sprite = _card.sprite;
         }
 
         public void MoveRight()

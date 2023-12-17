@@ -20,7 +20,7 @@ namespace CardGame
         public static Reset OnReset;
         public static Reset OnCraftFailed;
 
-        public delegate void Result(CraftCardResult _result);
+        public delegate void Result(CraftCardResult _result, Vector3 _position);
         public static Result OnCraftSuccess;
 
         void Awake()
@@ -104,8 +104,7 @@ namespace CardGame
                 if(result)
                 {
                     //Debug.Log("Craft : " + result.name);
-                    OnCraftSuccess?.Invoke(result);
-                    result.Apply(transform.position);
+                    OnCraftSuccess?.Invoke(result, transform.position);
                 }
                 else OnCraftFailed?.Invoke();
                 
@@ -122,7 +121,7 @@ namespace CardGame
                 {
                     for (int x = 0; x < m_maxCardsInHand; ++x)
                     {
-                        if((m_hand[x].Type & recipe.conditions[y]) == m_hand[x].Type) result += 1 << y * m_maxCardsInHand + x;
+                        if((m_hand[x].type & recipe.conditions[y]) == m_hand[x].type) result += 1 << y * m_maxCardsInHand + x;
                     }
                 }
                 foreach (long mask in m_masks)

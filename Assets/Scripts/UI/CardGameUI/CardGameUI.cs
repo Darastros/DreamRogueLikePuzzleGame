@@ -56,9 +56,13 @@ namespace UI
             cardUI.InitDataCard(_card);
             m_cards.Add(cardUI);
         }
-        
-        private void CraftSuccess(CraftCardResult _result)
+
+        private CraftCardResult m_result;
+        private Vector3 m_resultPos;
+        private void CraftSuccess(CraftCardResult _result, Vector3 _position)
         {
+            m_result = _result;
+            m_resultPos = _position;
             m_animator.SetTrigger("Success");
             m_successSprite.sprite = _result.sprite;
             m_successText.text = _result.name;
@@ -88,6 +92,11 @@ namespace UI
             {
                 card.Reset();
             }
+        }
+
+        public void Apply()
+        {
+            if(m_result) m_result.Apply(m_resultPos);
         }
     }
 }
