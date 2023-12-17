@@ -195,7 +195,6 @@ namespace MovementControllers
                 {
                     float position = jumpDynamicMax.Evaluate(m_jumpTimer);
                     
-                    Debug.Log("JUMP : "+ position + " " + (transform.position.y - m_jumpInitHeight));
                     float speed = GameManager.deltaTime <= 0.0f ? 0.0f : (position - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
                     m_frameVelocity.y = speed;
                     return;

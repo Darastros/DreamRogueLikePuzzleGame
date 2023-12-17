@@ -28,7 +28,17 @@ namespace GameSystems
     }
     public class DungeonRoomSystem : MonoBehaviour, IEventListener
     {
-        public static DungeonRoomSystem Instance { get; private set; }
+        public static DungeonRoomSystem Instance
+        {
+            get
+            {
+                if (_instance != null) return _instance;
+                _instance = FindObjectOfType<DungeonRoomSystem>();
+                return _instance;
+            }
+            private set => _instance = value;
+        }
+        private static DungeonRoomSystem _instance;
 
         //Events
         private readonly EventDispatcher m_eventDispatcher = new();
@@ -68,18 +78,6 @@ namespace GameSystems
         private static readonly Vector2Int NorthEast = North + East;
         private static readonly Vector2Int NorthWest = North + West;
         
-
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(this);
-                return;
-            }
-
-            Instance = this;
-        }
-
         [ContextMenu("FetchAllRooms")]
         public void RetrieveAllRoomDescriptors()
         {
