@@ -31,13 +31,13 @@ Transform:
   m_Children:
   - {fileID: 1312986990009120091}
   - {fileID: 356985056713589420}
-  - {fileID: 1262354730805921050}
+  - {fileID: 5067772017832599877}
   - {fileID: 5285942033588819180}
   - {fileID: 5550056060330819179}
   - {fileID: 3888996188159924662}
   - {fileID: 5788397350339739716}
   - {fileID: 2191454884015487284}
-  - {fileID: 331875733660696973}
+  - {fileID: 6002049275754718672}
   - {fileID: 6557732207023630273}
   - {fileID: 9036315577495002380}
   - {fileID: 6036674606503002928}
@@ -57,7 +57,7 @@ Transform:
   - {fileID: 8304213336896142261}
   - {fileID: 3216598195349568310}
   - {fileID: 3073495597011081216}
-  - {fileID: 1846370264631595423}
+  - {fileID: 2085213822673919118}
   - {fileID: 1552111293413004709}
   - {fileID: 759463647433100499}
   - {fileID: 370930570292973386}
@@ -249,7 +249,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 178582dfed323434b96bc076100041b1, type: 3}
---- !u!4 &331875733660696973 stripped
+--- !u!4 &6002049275754718672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6327732559516738652, guid: 178582dfed323434b96bc076100041b1, type: 3}
   m_PrefabInstance: {fileID: 331875733660696972}
@@ -621,7 +621,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 178582dfed323434b96bc076100041b1, type: 3}
---- !u!4 &1262354730805921050 stripped
+--- !u!4 &5067772017832599877 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6327732559516738652, guid: 178582dfed323434b96bc076100041b1, type: 3}
   m_PrefabInstance: {fileID: 1262354730805921049}
@@ -745,7 +745,7 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6e5b1d16456a28419ec94ab59023344, type: 3}
---- !u!4 &1846370264631595423 stripped
+--- !u!4 &2085213822673919118 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 391730795980737808, guid: d6e5b1d16456a28419ec94ab59023344, type: 3}
   m_PrefabInstance: {fileID: 1846370264631595422}
@@ -1111,6 +1111,10 @@ PrefabInstance:
     - target: {fileID: 5462831545842034507, guid: aec9349b38d33b544a429781f49f5c6f, type: 3}
       propertyPath: m_Name
       value: 5 Coins
+      objectReference: {fileID: 0}
+    - target: {fileID: 8139193572032233854, guid: aec9349b38d33b544a429781f49f5c6f, type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

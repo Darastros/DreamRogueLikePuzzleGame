@@ -140,7 +140,6 @@ namespace MovementControllers
             m_jumpHold = true;
             m_exitJump = false;
             m_jumpInitHeight = transform.position.y;
-            Debug.Log("BEGIN JUMP : " + m_jumpInitHeight);
             //m_frameVelocity.y = JumpPower;
             Jumped?.Invoke();
         }
@@ -148,7 +147,6 @@ namespace MovementControllers
         private bool m_isTeleporting;
         private void TeleportPlayer(Vector3 _pos)
         {
-            Debug.Log("CHANGE ROOM : " + m_jumpInitHeight + " " + _pos.y + " " + transform.position.y);
             m_jumpInitHeight = m_jumpInitHeight - transform.position.y + _pos.y;
             m_isTeleporting = true;
         }

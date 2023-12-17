@@ -33,7 +33,6 @@ namespace GameSystems
                 TryGetComponent(out m_collider2D);
             m_animator.SetBool(CanSealAnimHash, DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
             m_animator.SetBool(HoverAnimHash, false);
-            m_animator.SetLayerWeight(m_animator.GetLayerIndex("Hover"), 0.0f);
 
             if(DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null)
             {
@@ -77,6 +76,7 @@ namespace GameSystems
 
         private void OnPlayerTeleported(Vector3 _pos)
         {
+            if (!this) return;
             if ((_pos - teleportPos.position).sqrMagnitude < 1) ;
             {
                 m_collider2D.isTrigger = false;
