@@ -119,6 +119,7 @@ namespace Platformer
                 strawBerriesToAdd += platformerObject.strawberriesNumbers;
                 if (platformerObject.lifePoints > 0) PlayerDataManager.life += platformerObject.lifePoints;
                 if (platformerObject.artifact) ++PlayerDataManager.artifact;
+                platformerObject.OnRoomChanged();
             }
             m_strawberries += strawBerriesToAdd;
             if (strawBerriesToAdd > 0) OnGetStrawberries?.Invoke(m_strawberries, strawBerriesToAdd);
