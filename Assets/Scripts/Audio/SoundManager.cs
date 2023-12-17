@@ -37,11 +37,13 @@ public class SoundManager : MonoBehaviour, IEventListener
 
 
     [SerializeField] private AudioClip activatePlatformerClip;
+    [SerializeField] private AudioClip deactivatePlatformerClip;
     [SerializeField] private AudioClip jumpClip;
     [SerializeField] private AudioClip landingClip;
     [SerializeField] private AudioClip collectStrawberryClip;
 
     [SerializeField] private AudioClip activateRpgClip;
+    [SerializeField] private AudioClip deactivateRpgClip;
     [SerializeField] private float coinPitchModifier;
     [SerializeField] private AudioClip rpgCoinClip;
     [SerializeField] private AudioClip rpgKeyClip;
@@ -49,6 +51,7 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip openChestClip;
 
     [SerializeField] private AudioClip activateCardClip;
+    [SerializeField] private AudioClip deactivateCardClip;
     [SerializeField] private AudioClip pickupCardClip;
     [SerializeField] private AudioClip craftCardClip;
     [SerializeField] private AudioClip failedCraftCardClip;
@@ -234,7 +237,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void DeactivatePlatformer()
     {
-        // PlayJingle(activatePlatformerClip, -1f);
+        PlayJingle(deactivatePlatformerClip);
     }
 
     private void Jump()
@@ -285,7 +288,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void DeactivateRpg()
     {
-        // PlayJingle(activateRpgClip, -1f);
+        PlayJingle(deactivateRpgClip);
     }
 
     #endregion
@@ -300,7 +303,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void DeactivateCardGame()
     {
-        // PlayJingle(activateCardClip, -1f);
+        PlayJingle(deactivateCardClip);
     }
 
     private void OnGettingCard(Card card)
