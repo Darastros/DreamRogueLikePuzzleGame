@@ -54,19 +54,23 @@ PrefabInstance:
       objectReference: {fileID: 11400000, guid: 27cab3f01772f9d45af31effad36254d, type: 2}
     - target: {fileID: 2519094212053027673, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Name
-      value: Stone Variant
+      value: Stone
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 09dbe74dd01dac34aa4d4ad66ecabf42, type: 3}
+    - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.b
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.g
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.r
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using GameSystems;
 using UnityEngine;
 
 namespace CardGame
@@ -16,7 +17,12 @@ namespace CardGame
 
         public virtual void Apply(Vector3 _position)
         {
-            if(m_worldItem && m_object) Instantiate(m_object, _position, Quaternion.identity);
+            if(m_worldItem && m_object)
+            {
+                
+                var instance = Instantiate(m_object, _position, Quaternion.identity);
+                instance.transform.SetParent(DungeonRoomSystem.Instance.CurrentRoom.m_runtimeGameScene.transform);
+            }
         }
     }
 }
