@@ -27,7 +27,7 @@ namespace GameSystems
         private static readonly int SealAnimHash = Animator.StringToHash("Seal");
         
         //TODO MATHIEU CLOSE DOOR HERE WHEN TO CLOSE
-        private static readonly int CloseDoorAnimHash = Animator.StringToHash("CloseDoorInstant");
+        private static readonly int CloseDoorAnimHash = Animator.StringToHash("Close");
 
         private void OnEnable()
         {
