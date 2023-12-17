@@ -58,7 +58,10 @@ namespace GameSystems
             if(m_initSequence != null && m_initSequence.active && m_initSequence.IsPlaying()) m_initSequence.Kill();
             m_collider2D.isTrigger = false;
             GameManager.OnTeleportPlayer -= OnPlayerTeleported;
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
+            if(DungeonRoomSystem.Instance != null)
+            {
+                DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
+            }
         }
         
         private void ActivateDoorTrigger()

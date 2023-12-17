@@ -64,8 +64,11 @@ namespace Platformer
             GameManager.OnDeactivatePlatformerGame -= Deactivate;
             m_detector.OnPlatformerObjectEnter -= EnterObject;
             PlayerDataManager.OnHit -= OnHit;
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-        }
+            if (DungeonRoomSystem.Instance != null)
+            {
+                DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
+            }
+        }   
 
         private void EnterObject(PlatformerObject _object)
         {
