@@ -15,7 +15,11 @@ public class Effects : MonoBehaviour
         m_noise = virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
     }
 
-    public IEnumerator ScreenShake(float _intensity, float _sustain, float _release)
+    public void ScreenShake(float _intensity, float _sustain, float _release)
+    {
+        StartCoroutine(ScreenShakeCoroutine(_intensity, _sustain, _release));
+    }
+    public IEnumerator ScreenShakeCoroutine(float _intensity, float _sustain, float _release)
     {
         float elapsed = 0f;
 
@@ -43,7 +47,12 @@ public class Effects : MonoBehaviour
         yield return null;
     }
 
-    public IEnumerator FreezeTime(float _duration)
+    public void FreezeTime(float _duration)
+    {
+        StartCoroutine(FreezeTimeCoroutine(_duration));
+    }
+    
+    public IEnumerator FreezeTimeCoroutine(float _duration)
     {
         Time.timeScale = 0.0001f;
         yield return new WaitForSecondsRealtime(_duration);
