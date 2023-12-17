@@ -50,11 +50,14 @@ public class SoundManager : MonoBehaviour, IEventListener
     [SerializeField] private AudioClip shopBuyClip;
     [SerializeField] private AudioClip openChestClip;
 
+    [SerializeField] private float activationJingleVolume;
     [SerializeField] private AudioClip activateCardClip;
     [SerializeField] private AudioClip deactivateCardClip;
     [SerializeField] private AudioClip pickupCardClip;
     [SerializeField] private AudioClip craftCardClip;
     [SerializeField] private AudioClip failedCraftCardClip;
+
+    private AudioSource musicSource;
 
     void Awake()
     {
@@ -75,6 +78,8 @@ public class SoundManager : MonoBehaviour, IEventListener
     {
         DungeonRoomSystem.Instance.GetEventDispatcher()
             .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        musicSource = GetComponent<AudioSource>();
+        StartMusic();
     }
 
     private void ListenEvent()
@@ -105,9 +110,8 @@ public class SoundManager : MonoBehaviour, IEventListener
         CardGameController.OnTryCraftWithoutCard += ImpossibleAction;
 
         // Game interactions
-        // GameManager.OnGameRestart += Restart;
         GameManager.OnGameLoose += OnDeath;
-        // GameManager.OnGameWin += Win;
+        GameManager.OnGameWin += StopMusic;
         ExitPortal.OnCrossPortal += CrossPortal;
 
         GameManager.OnActivatePlatformerGame += ActivatePlatformer;
@@ -145,6 +149,9 @@ public class SoundManager : MonoBehaviour, IEventListener
         CardGameController.OnTryCraftWithoutCard -= ImpossibleAction;
 
         GameManager.OnGameLoose -= OnDeath;
+        GameManager.OnGameWin -= StopMusic;
+        ExitPortal.OnCrossPortal -= CrossPortal;
+
         GameManager.OnActivatePlatformerGame -= ActivatePlatformer;
         GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformer;
         GameManager.OnActivateRPGGame -= ActivateRpg;
@@ -174,6 +181,16 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayAudio(clip, sfxMixerGroup, pitch, volume);
     }
 
+    private void StartMusic()
+    {
+        musicSource.Play();
+    }
+
+    private void StopMusic()
+    {
+        musicSource.Stop();
+    }
+
     private void Hit(int _newValue, int _delta)
     {
         PlaySfx(damageClip);
@@ -189,7 +206,7 @@ public class SoundManager : MonoBehaviour, IEventListener
         if(_obj.m_from != null)
         {
             PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
-        } 
+        }
     }
 
     private void OnCollectArtifact(int newValue, int delta)
@@ -209,6 +226,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void OnDeath()
     {
+        StopMusic();
         PlayJingle(deathJingleClip);
     }
 
@@ -232,12 +250,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivatePlatformer()
     {
-        PlayJingle(activatePlatformerClip);
+        PlayJingle(activatePlatformerClip, 1f, activationJingleVolume);
     }
 
     public void DeactivatePlatformer()
     {
-        PlayJingle(deactivatePlatformerClip);
+        PlayJingle(deactivatePlatformerClip, 1f, activationJingleVolume);
     }
 
     private void Jump()
@@ -283,12 +301,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivateRpg()
     {
-        PlayJingle(activateRpgClip);
+        PlayJingle(activateRpgClip, 1f, activationJingleVolume);
     }
 
     public void DeactivateRpg()
     {
-        PlayJingle(deactivateRpgClip);
+        PlayJingle(deactivateRpgClip, 1f, activationJingleVolume);
     }
 
     #endregion
@@ -298,12 +316,12 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     public void ActivateCardGame()
     {
-        PlayJingle(activateCardClip);
+        PlayJingle(activateCardClip, 1f, activationJingleVolume);
     }
 
     public void DeactivateCardGame()
     {
-        PlayJingle(deactivateCardClip);
+        PlayJingle(deactivateCardClip, 1f, activationJingleVolume);
     }
 
     private void OnGettingCard(Card card)
