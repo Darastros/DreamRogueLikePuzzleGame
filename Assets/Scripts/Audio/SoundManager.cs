@@ -79,16 +79,21 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayerDataManager.OnUseArtifact += OnSealedRoom;
         PlayerDataManager.OnHit += Hit;
         PlayerDataManager.OnHeal += Heal;
+        // Projectile spawn
 
         RPGController.OnGetCoins += GetRpgCoin;
         RPGController.OnGetKeys += GetRpgKey;
         // open chest
+        // Try open chest without key
         // shop buy
+        // Try buy without enought money
 
         PlatformerController.OnGetStrawberries += OnGetStrawberries;
 
         CardGameController.OnGettingCard += OnGettingCard;
         CardGameController.OnCraftSuccess += OnCardCraft;
+        // Failed craft
+        // Not enougth card to craft
 
         // Game interactions
         // GameManager.OnGameRestart += Restart;
@@ -96,12 +101,12 @@ public class SoundManager : MonoBehaviour, IEventListener
         // GameManager.OnGameWin += Win;
         // ExitPortal.OnCrossPortal += CrossPortal;
 
-        PlatformerController.OnActivate += ActivatePlatformer;
-        PlatformerController.OnDeactivate += DeactivatePlatformer;
-        RPGController.OnActivate += ActivateRpg;
-        RPGController.OnDeactivate += DeactivateRpg;
-        // CardGameController.OnActivate += ActivateCardGame;
-        // CardGameController.OnDeactivate += DeactivateCardGame;
+        GameManager.OnActivatePlatformerGame += ActivatePlatformer;
+        GameManager.OnDeactivatePlatformerGame += DeactivatePlatformer;
+        GameManager.OnActivateRPGGame += ActivateRpg;
+        GameManager.OnDeactivateRPGGame += DeactivateRpg;
+        GameManager.OnActivateCardGame += ActivateCardGame;
+        GameManager.OnDeactivateCardGame += DeactivateCardGame;
     }
 
     private void UnListenEvent()
@@ -122,15 +127,13 @@ public class SoundManager : MonoBehaviour, IEventListener
         CardGameController.OnGettingCard -= OnGettingCard;
         CardGameController.OnCraftSuccess -= OnCardCraft;
 
-        
-
         GameManager.OnGameLoose -= OnDeath;
-        PlatformerController.OnActivate -= ActivatePlatformer;
-        PlatformerController.OnDeactivate -= DeactivatePlatformer;
-        RPGController.OnActivate -= ActivateRpg;
-        RPGController.OnDeactivate -= DeactivateRpg;
-        // CardGameController.OnActivate -= ActivateCG;
-        // CardGameController.OnDeactivate -= DeactivateCG;
+        GameManager.OnActivatePlatformerGame -= ActivatePlatformer;
+        GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformer;
+        GameManager.OnActivateRPGGame -= ActivateRpg;
+        GameManager.OnDeactivateRPGGame -= DeactivateRpg;
+        GameManager.OnActivateCardGame -= ActivateCardGame;
+        GameManager.OnDeactivateCardGame -= DeactivateCardGame;
     }
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
@@ -166,7 +169,10 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void OnRoomChanged(OnRoomChanged _obj)
     {
-        PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
+        if(_obj.m_from != null)
+        {
+            PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
+        } 
     }
 
     private void OnCollectArtifact(int newValue, int delta)
