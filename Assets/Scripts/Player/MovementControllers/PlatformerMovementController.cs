@@ -80,7 +80,7 @@ namespace MovementControllers
         private float m_timeJumpWasPressed;
         private float m_jumpTimer;
         private float m_jumpHoldTimer;
-        private float m_jumpInitHeight;
+        private float m_jumpLasPos;
         
         public Action<bool, float> GroundedChanged;
         public Action Jumped;
@@ -123,7 +123,7 @@ namespace MovementControllers
             m_jumpHoldTimer = 0.0f;
             m_jumpHold = true;
             m_exitJump = false;
-            m_jumpInitHeight = transform.position.y;
+            m_jumpLasPos =0.0f;
             //m_frameVelocity.y = JumpPower;
             Jumped?.Invoke();
         }
@@ -164,8 +164,9 @@ namespace MovementControllers
                 if (m_jumping)
                 {
                     float position = jumpDynamicMax.Evaluate(m_jumpTimer);
-                    float speed = GameManager.deltaTime <= 0.0f ? 0.0f : (position - (transform.position.y - m_jumpInitHeight)) / GameManager.deltaTime;
+                    float speed = GameManager.deltaTime <= 0.0f ? 0.0f : (position - m_jumpLasPos) / GameManager.deltaTime;
                     m_frameVelocity.y = speed;
+                    m_jumpLasPos = position;
                     return;
                 }
             }

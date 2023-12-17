@@ -41,6 +41,11 @@ namespace CardGame
         {
             UnListenEvent();
         }
+        public void Restart()
+        {
+            m_hand = new List<Card>();
+            Deactivate();
+        }
 
         void Start()
         {

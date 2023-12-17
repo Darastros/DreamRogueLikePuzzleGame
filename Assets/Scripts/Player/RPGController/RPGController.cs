@@ -30,6 +30,11 @@ namespace RPG
             UnListenEvent();
         }
 
+        public void Restart()
+        {
+            Deactivate();
+        }
+
         void Start()
         {
             if(GameManager.Instance.RPGActivated) Activate();

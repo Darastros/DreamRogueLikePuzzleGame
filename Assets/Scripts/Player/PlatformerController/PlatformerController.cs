@@ -39,6 +39,11 @@ namespace Platformer
             UnListenEvent();
         }
 
+        public void Restart()
+        {
+            Deactivate();
+        }
+
         void Start()
         {
             if(GameManager.Instance.PlatformerActivated) Activate();
