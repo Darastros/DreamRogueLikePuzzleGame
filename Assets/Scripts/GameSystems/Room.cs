@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using ScriptableObjects;
 using UnityEngine;
 using Object = UnityEngine.Object;
@@ -123,6 +124,11 @@ namespace GameSystems
                     return door;
             }
             return null;
+        }
+
+        public List<Door> GetDoors()
+        {
+            return m_runtimeGameScene.GetComponentsInChildren<Door>().ToList();
         }
     }
 }
