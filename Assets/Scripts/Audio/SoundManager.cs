@@ -334,7 +334,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     private void CraftFailed()
     {
-        PlaySfx(failedCraftCardClip, 1.2f);
+        PlayJingle(failedCraftCardClip, 1.2f);
     }
 
     #endregion
