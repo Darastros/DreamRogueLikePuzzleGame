@@ -79,19 +79,13 @@ namespace GameSystems
             
             if (RoomAboutToBeDestroyed != null)
             {
-                List<Room> leading = new List<Room>();
-                foreach (Room instanciatedNeighbor in DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbors())
-                {
-                    if (DungeonRoomSystem.Instance.IsThereAPathLeadingTo(RoomAboutToBeDestroyed.Coordinate,
-                            instanciatedNeighbor, DungeonRoomSystem.Instance.CurrentRoom))
-                    {
-                        leading.Add(instanciatedNeighbor);
-                    }
-                }
+                var neighbors = DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbors();
+                List<Room> leading = DungeonRoomSystem.Instance.ComputePathLeadingTo(RoomAboutToBeDestroyed, DungeonRoomSystem.Instance.CurrentRoom);
+                var candidates = leading.Where((_room, _i) => neighbors.Contains(_room)).ToList();
 
-                if (leading.Count > 0)
+                if (candidates.Count > 0)
                 {
-                    Room random = leading.GetRandomElem();
+                    Room random = candidates.GetRandomElem();
                     var door = DungeonRoomSystem.Instance.CurrentRoom.GetEntrance(
                         (random.Coordinate - DungeonRoomSystem.Instance.CurrentRoom.Coordinate)
                         .ConvertToRoomEntrance());
