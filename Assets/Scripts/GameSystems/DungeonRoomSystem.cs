@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using PriorityQueue;
 using ScriptableObjects;
 using TMPro;
 using Unity.Mathematics;
@@ -534,6 +535,60 @@ namespace GameSystems
             }
             return result;
         }
+
+        public List<Room> ComputePathLeadingTo(Room _target, Room _from, List<Room> _blackList = null)
+        {
+            
+            //Variables
+            Dictionary<Room, Room> cameFrom = new();
+            Dictionary<Room, int> costSoFar = new();
+
+            List<Room> path = new List<Room>();
+            SimplePriorityQueue<Room> frontiers = new SimplePriorityQueue<Room>();
+            bool found = false;
+
+            cameFrom.Add(_from, _from);
+            costSoFar.Add(_from, 0);
+            Room current;
+            frontiers.Enqueue(_from, 0);
+
+            while (frontiers.TryDequeue(out current))
+            {
+                if(current.Coordinate == _target.Coordinate)
+                {
+                    found = true;
+                    break;
+                }
+
+                foreach (Room neighbor in current.GetInstanciatedNeighbors())
+                {
+                    if(_blackList?.Contains(neighbor) == true)
+                        continue;
+                    
+                    int cost = costSoFar[current] + 1;
+                    if (!costSoFar.ContainsKey(neighbor) || cost < costSoFar[neighbor])
+                    {
+                        costSoFar[neighbor] = cost;
+                        cameFrom[neighbor] = current;
+                        int priority = cost + computeHeuristic(neighbor, _target);
+                        frontiers.Enqueue(neighbor, priority);
+                    }
+                }
+            }
+
+            if (!found) return path;
+            while (current != _from)
+            {
+                path.Add(current);
+                current = cameFrom[current];
+            }
+            return path;
+        }
+
+        private int computeHeuristic(Room _a, Room _b)
+        {
+            return (int)(_b.Coordinate - _a.Coordinate).magnitude;
+        }
         
         public bool IsThereAPathLeadingTo(Vector2Int _targetCoordinates, Room _startingRoom, Room _blackListRoom = null)
         {
@@ -625,6 +680,23 @@ namespace GameSystems
                 debugMap.text = builder.ToString();
             if (debugCoordinate)
                 debugCoordinate.text = m_currentRoom.Coordinate.ToString();
+        }
+    }
+
+    internal struct Node : IComparable<Node>
+    {
+        public int priority;
+        public Room Room;
+
+        public Node(int _priority, Room _room)
+        {
+            priority = _priority;
+            Room = _room;
+        }
+
+        public int CompareTo(Node obj)
+        {
+            return priority.CompareTo(obj.priority);
         }
     }
 }
