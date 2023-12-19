@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -15,7 +16,9 @@ namespace RPG
         public static PickUpItem OnOpenChest;
         public static PickUpItem OnFailOpenChest;
 
-        
+        [SerializeField] public SpriteRenderer renderer;
+        [SerializeField] public Sprite outlineSprite;
+        private Sprite activateSprite;
         [SerializeField] public int keysNumbers = 0;
         [SerializeField] public int coinsNumbers = 0;
         [SerializeField] public int lifePoints = 0;
@@ -27,6 +30,8 @@ namespace RPG
         private void Awake()
         {
             m_animator = GetComponent<Animator>();
+            activateSprite = renderer.sprite;
+            renderer.sprite = outlineSprite;
         }
         
         public void PickUp()
@@ -36,6 +41,28 @@ namespace RPG
             {
                 _rigidbody.isKinematic = true;
             }
+        }
+
+        public void OnEnable()
+        { 
+            GameManager.OnActivateRPGGame += ActivateRPG;
+            GameManager.OnDeactivateRPGGame += DeactivateRPG;
+        }
+
+        public void OnDisable()
+        {
+            GameManager.OnActivateRPGGame -= ActivateRPG;
+            GameManager.OnDeactivateRPGGame -= DeactivateRPG;
+        }
+
+        private void ActivateRPG()
+        {
+            renderer.sprite = activateSprite;
+        }
+
+        private void DeactivateRPG()
+        {
+            renderer.sprite = outlineSprite;
         }
 
         public void Fail()
