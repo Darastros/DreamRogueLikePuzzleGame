@@ -19,6 +19,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         GameManager.OnActivateRPGGame += OnActivateRPGGame;
         GameManager.OnActivateCardGame += OnActivateCardGame;
         GameManager.OnActivatePlatformerGame += OnActivatePlatformerGame;
+        GameManager.OnGameRestart += Restart;
         PlayerDataManager.OnCollectArtifact += OnCollectArtifact;
         Worm.OnWormStartEatingRoom += OnWormStartEatingRoom;
         
@@ -35,10 +36,28 @@ public class TutorialManager : MonoBehaviour, IEventListener
         GameManager.OnActivateRPGGame -= OnActivateRPGGame;
         GameManager.OnActivateCardGame -= OnActivateCardGame;
         GameManager.OnActivatePlatformerGame -= OnActivatePlatformerGame;
+        GameManager.OnGameRestart -= Restart;
         PlayerDataManager.OnCollectArtifact -= OnCollectArtifact;
         Worm.OnWormStartEatingRoom -= OnWormStartEatingRoom;
         
         DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+    }
+
+    private void Restart()
+    {
+        m_artifactTutorial.gameObject.SetActive(false);
+        m_platformerTutorial.gameObject.SetActive(false);
+        m_rpgTutorial.gameObject.SetActive(false);
+        m_cardGameTutorial.gameObject.SetActive(false);
+        m_wormTutorial.gameObject.SetActive(false);
+        
+        m_enableRPG = false;
+        m_enableCardGame = false;
+        m_enablePlatformer = false;
+        m_enableArtifact = false;
+        m_enableWorm = false;
+        m_nbRoom = 0;
+        
     }
 
     private bool m_enableRPG = false;

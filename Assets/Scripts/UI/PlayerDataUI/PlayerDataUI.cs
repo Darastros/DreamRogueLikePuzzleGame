@@ -31,6 +31,8 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnActivateStartGame += AddStartGameRules;
         GameManager.OnDeactivateStartGame += RemoveStartGameRules;
 
+        GameManager.OnGameRestart += Restart;
+
         m_activeRules = new List<Animator>();
         
     }
@@ -50,8 +52,25 @@ public class PlayerDataUI : MonoBehaviour
         GameManager.OnDeactivateRPGGame -= RemoveRPGGameRules;
         GameManager.OnActivateStartGame -= AddStartGameRules;
         GameManager.OnDeactivateStartGame -= RemoveStartGameRules;
+
+        GameManager.OnGameRestart -= Restart;
     }
 
+    public void Restart()
+    {
+        m_RPGKeyPart.ResetTrigger("Activate");
+        m_RPGKeyPart.SetTrigger("Deactivate");
+        
+        m_cardGameKeyPart.ResetTrigger("Activate");
+        m_cardGameKeyPart.SetTrigger("Deactivate");
+        
+        m_platformerKeyPart.ResetTrigger("Activate");
+        m_platformerKeyPart.SetTrigger("Deactivate");
+        
+        UpdateLifeBar(m_hearts.Count);
+        m_artifactNumberText.text = "01";
+        
+    }
     private void FixedUpdate()
     {
         UpdateRulesPos();

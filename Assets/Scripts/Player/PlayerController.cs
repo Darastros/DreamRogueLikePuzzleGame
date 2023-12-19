@@ -86,6 +86,7 @@ public class PlayerController : MonoBehaviour
         m_dataManager.Restart();
         m_rigidbody.bodyType = RigidbodyType2D.Dynamic;
         m_rigidbody.velocity = Vector2.zero;
+        m_animator.SetTrigger("Restart");
     }
     
     private void UpdateMovement()
