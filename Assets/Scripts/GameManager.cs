@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
         if (m_gameStart && !m_gamePaused)
         {
             m_gamePaused = true;
-            Time.timeScale = 0.001f;
+            Time.timeScale = 0.0f;
             OnGamePause?.Invoke();
         }
     }

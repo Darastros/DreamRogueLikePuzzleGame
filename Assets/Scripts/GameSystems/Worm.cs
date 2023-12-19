@@ -11,6 +11,10 @@ namespace GameSystems
     public class Worm : MonoBehaviour, IEventListener
     {
         public EventDispatcher EventDispatcher { get; private set; } = new();
+        // Events
+        public delegate void WormEvent();
+    
+        public static WormEvent OnWormStartEatingRoom;
         
         [SerializeField] private int minRoomThresholdForWormToAppear = 30;
         [SerializeField] private float timeUntilRoomDestroyed = 30f;
@@ -100,6 +104,7 @@ namespace GameSystems
             RoomAboutToBeDestroyed = _roomToDestroy;
             DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
             EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
+            OnWormStartEatingRoom?.Invoke();
             UpdateWormIndicator();
             yield return new WaitForSeconds(timeUntilRoomDestroyed);
             DungeonRoomSystem.Instance.CloseRoom(_roomToDestroy.Coordinate);

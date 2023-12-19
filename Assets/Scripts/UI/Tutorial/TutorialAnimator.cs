@@ -41,6 +41,7 @@ public class TutorialAnimator : MonoBehaviour
     public void GameResume()
     {
         GameManager.Instance.Resume();
+        gameObject.SetActive(false);
     }
     
     
