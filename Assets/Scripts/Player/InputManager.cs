@@ -7,16 +7,16 @@ using UnityEngine.InputSystem;
 
 namespace Player
 {
-    public class PlayerInputManager : MonoBehaviour
+    public class InputManager : MonoBehaviour
     {
-        private static PlayerInputManager m_instance;
-        public static PlayerInputManager instance
+        private static InputManager m_instance;
+        public static InputManager instance
         {
             get
             {
                 if (!m_instance)
                 {
-                    m_instance = FindObjectOfType<PlayerInputManager>();
+                    m_instance = FindObjectOfType<InputManager>();
                 }
                 return m_instance;
             }
@@ -54,7 +54,8 @@ namespace Player
             if (_ctx.performed)
             {
                 OnJump?.Invoke();
-                platformerController.Jump(_ctx.ReadValueAsButton());
+                if(!GameManager.Instance.gamePaused && GameManager.Instance.gameStart) 
+                    platformerController.Jump(_ctx.ReadValueAsButton());
             }
         }
         public void OnCraftInput(InputAction.CallbackContext _ctx)
@@ -62,7 +63,8 @@ namespace Player
             if (_ctx.performed)
             {
                 OnCraft?.Invoke();
-                m_cardGameController.Craft();
+                if(!GameManager.Instance.gamePaused && GameManager.Instance.gameStart) 
+                    m_cardGameController.Craft();
             }
         }
 

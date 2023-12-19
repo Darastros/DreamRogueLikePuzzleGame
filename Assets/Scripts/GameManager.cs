@@ -165,7 +165,9 @@ public class GameManager : MonoBehaviour
     public static TeleportPlayer OnTeleportPlayer;
 
     private bool m_gameStart = true;
+    public bool gameStart => m_gameStart;
     private bool m_gamePaused = false;
+    public bool gamePaused => m_gamePaused;
 
     private PlayerController m_playerController;
     public PlayerController PlayerController => m_playerController;
@@ -209,6 +211,7 @@ public class GameManager : MonoBehaviour
         if (m_gameStart && !m_gamePaused)
         {
             m_gamePaused = true;
+            Time.timeScale = 0.001f;
             OnGamePause?.Invoke();
         }
     }
@@ -218,6 +221,7 @@ public class GameManager : MonoBehaviour
         if (m_gameStart && m_gamePaused)
         {
             m_gamePaused = false;
+            Time.timeScale = 1.0f;
             OnGameResume?.Invoke();
         }
     }

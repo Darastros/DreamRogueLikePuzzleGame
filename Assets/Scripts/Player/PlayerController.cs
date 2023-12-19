@@ -93,8 +93,8 @@ public class PlayerController : MonoBehaviour
         if(m_rigidbody.velocity.x > 0.6f) m_spriteParent.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         else if(m_rigidbody.velocity.x < -0.6f) m_spriteParent.localScale = new Vector3(-1.0f, 1.0f, 1.0f);
         
-        m_animator.SetFloat("moveX", PlayerInputManager.instance.moveInput.x);
-        m_animator.SetFloat("moveY", PlayerInputManager.instance.moveInput.y);
+        m_animator.SetFloat("moveX", InputManager.instance.moveInput.x);
+        m_animator.SetFloat("moveY", InputManager.instance.moveInput.y);
         m_animator.SetBool("isOnGround", m_platformerController.IsOnGround());
     }
 
