@@ -47,6 +47,8 @@ namespace RPG
         { 
             GameManager.OnActivateRPGGame += ActivateRPG;
             GameManager.OnDeactivateRPGGame += DeactivateRPG;
+            if(GameManager.Instance.RPGActivated) ActivateRPG();
+            else DeactivateRPG();
         }
 
         public void OnDisable()
