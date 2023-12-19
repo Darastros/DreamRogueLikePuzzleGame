@@ -134,6 +134,7 @@ public class GameManager : MonoBehaviour
     
     public void AddStartGameToStack()
     {
+        return;
         if (!m_startGameRule)
         {
             m_startGameRule = true;
@@ -143,6 +144,7 @@ public class GameManager : MonoBehaviour
 
     public void RemoveStartGameFromStack()
     {
+        return;
         if (!m_startGameRule) return;
         m_startGameRule = false;
         LooseGame();

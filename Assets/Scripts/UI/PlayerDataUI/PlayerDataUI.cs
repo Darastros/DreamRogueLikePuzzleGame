@@ -153,12 +153,12 @@ public class PlayerDataUI : MonoBehaviour
     private List<Animator> m_activeRules;
     private void AddStartGameRules()
     {
-        ActivateRule(m_startGameRulesExplain);
+        //ActivateRule(m_startGameRulesExplain);
     }
 
     private void RemoveStartGameRules()
     {
-        DeactivateRule(m_startGameRulesExplain);
+        //DeactivateRule(m_startGameRulesExplain);
     }
 
     [SerializeField] private Animator m_cardGameRulesExplain;

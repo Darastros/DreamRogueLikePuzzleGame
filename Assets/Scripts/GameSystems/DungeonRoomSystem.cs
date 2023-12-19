@@ -361,7 +361,7 @@ namespace GameSystems
                 {
                     if(m_runtimeRooms.TryGetValue(valueNeighborsCoordinate, out Room neighbours))
                     {
-                        if (!IsThereAPathLeadingTo(Vector2Int.zero, neighbours))
+                        if (!IsThereAPathLeadingTo(m_currentRoom.Coordinate, neighbours))
                         {
                             DestroyRoom(neighbours.Coordinate);
                         }
