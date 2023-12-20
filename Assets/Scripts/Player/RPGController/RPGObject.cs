@@ -30,6 +30,7 @@ namespace RPG
         private void Awake()
         {
             m_animator = GetComponent<Animator>();
+            if (!outlineSprite) return;
             activateSprite = renderer.sprite;
             renderer.sprite = outlineSprite;
         }
@@ -45,6 +46,7 @@ namespace RPG
 
         public void OnEnable()
         { 
+            if (!outlineSprite) return;
             GameManager.OnActivateRPGGame += ActivateRPG;
             GameManager.OnDeactivateRPGGame += DeactivateRPG;
             if(GameManager.Instance.RPGActivated) ActivateRPG();
@@ -53,6 +55,7 @@ namespace RPG
 
         public void OnDisable()
         {
+            if (!outlineSprite) return;
             GameManager.OnActivateRPGGame -= ActivateRPG;
             GameManager.OnDeactivateRPGGame -= DeactivateRPG;
         }
