@@ -13,6 +13,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
     [SerializeField] private TutorialAnimator m_rpgTutorial;
     [SerializeField] private TutorialAnimator m_cardGameTutorial;
     [SerializeField] private TutorialAnimator m_wormTutorial;
+    [SerializeField] private TutorialAnimator m_portalTutorial;
     
     void OnEnable()
     {
@@ -56,6 +57,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         m_enablePlatformer = false;
         m_enableArtifact = false;
         m_enableWorm = false;
+        m_enablePortal = false;
         m_nbRoom = 0;
         
     }
@@ -95,6 +97,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
     
     private int m_nbRoom = 0;
     private bool m_enableArtifact = false;
+    private bool m_enablePortal = false;
     private void OnRoomChanged(OnRoomChanged obj)
     {
         ++m_nbRoom;
@@ -103,6 +106,13 @@ public class TutorialManager : MonoBehaviour, IEventListener
             m_artifactTutorial.gameObject.SetActive(true);
             m_artifactTutorial.Appear();
             m_enableArtifact = true;
+        }
+        if(m_nbRoom == 2 && !m_enablePortal)
+        {
+            m_portalTutorial.gameObject.SetActive(true);
+            m_portalTutorial.Appear();
+            m_enablePortal = true;
+            
         }
     }
     
