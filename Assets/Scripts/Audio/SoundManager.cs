@@ -1,159 +1,30 @@
 using System;
-using CardGame;
-using GameSystems;
-using Platformer;
-using RPG;
 using UnityEngine;
 using UnityEngine.Audio;
-using Utils;
-using Random = UnityEngine.Random;
 
-public class SoundManager : MonoBehaviour, IEventListener
+public abstract class SoundManager : MonoBehaviour
 {
-    [Header("Controllers")]
-    [SerializeField] private PlatformerController m_platformerController;
-
     [Header("Audio settings")]
-    [SerializeField] private AudioMixerGroup sfxMixerGroup;
-    [SerializeField] private AudioMixerGroup jingleMixerGroup;
-    [SerializeField] private float minPitch;
-    [SerializeField] private float maxPitch;
-
-    [Header("Audio clips")]
-    [SerializeField] private AudioClip[] stepClips;
-    [SerializeField] private AudioClip damageClip;
-    [SerializeField] private AudioClip healClip;
-    [SerializeField] private AudioClip unlockDoorClip;
-    [SerializeField] private AudioClip enteringDoorClip;
-    [SerializeField] private AudioClip collectArtifactClip;
-    [SerializeField] private AudioClip sealRoomClip;
-    [SerializeField] private AudioClip deathJingleClip;
-    [SerializeField] private AudioClip portalJingleClip;
-    [SerializeField] private AudioClip projectileSpawnClip;
+    [SerializeField] protected AudioMixerGroup sfxMixerGroup;
+    [SerializeField] protected AudioMixerGroup jingleMixerGroup;
+    [SerializeField] protected float minRandomPitch = 0.9f;
+    [SerializeField] protected float maxRandomPitch = 1.1f;
+    [SerializeField] protected float activationJingleVolume = 0.3f;
     [SerializeField] private AudioClip errorClip;
-    [SerializeField] private AudioClip activateKeyPartClip;
 
-
-    [SerializeField] private AudioClip activatePlatformerClip;
-    [SerializeField] private AudioClip deactivatePlatformerClip;
-    [SerializeField] private AudioClip jumpClip;
-    [SerializeField] private AudioClip landingClip;
-    [SerializeField] private AudioClip collectStrawberryClip;
-
-    [SerializeField] private AudioClip activateRpgClip;
-    [SerializeField] private AudioClip deactivateRpgClip;
-    [SerializeField] private float coinPitchModifier;
-    [SerializeField] private AudioClip rpgCoinClip;
-    [SerializeField] private AudioClip rpgKeyClip;
-    [SerializeField] private AudioClip shopBuyClip;
-    [SerializeField] private AudioClip openChestClip;
-
-    [SerializeField] private float activationJingleVolume;
-    [SerializeField] private AudioClip activateCardClip;
-    [SerializeField] private AudioClip deactivateCardClip;
-    [SerializeField] private AudioClip pickupCardClip;
-    [SerializeField] private AudioClip craftCardClip;
-    [SerializeField] private AudioClip failedCraftCardClip;
-
-    private AudioSource musicSource;
-
-
-    void OnEnable()
+    protected void OnEnable()
     {
         ListenEvent();
     }
 
-    void OnDisable()
+    protected void OnDisable()
     {
         UnListenEvent();
     }
 
-    void Start()
-    {
-        DungeonRoomSystem.EventDispatcher?
-            .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
-        musicSource = GetComponent<AudioSource>();
-        StartMusic();
-    }
+    protected abstract void ListenEvent();
 
-    private void ListenEvent()
-    {
-        // Player interactions
-        PlayerDataManager.OnActivateKeyPart += ActivateKeyPart;
-        PlayerDataManager.OnCollectArtifact += OnCollectArtifact;
-        PlayerDataManager.OnUseArtifact += OnSealedRoom;
-        PlayerDataManager.OnHit += Hit;
-        PlayerDataManager.OnHeal += Heal;
-        Spawner.OnSpawn += OnProjectileSpawn;
-        //Projectile.OnHit += 
-
-        RPGController.OnGetCoins += GetRpgCoin;
-        RPGController.OnGetKeys += GetRpgKey;
-        RPGObject.OnOpenChest += OpenChest;
-        RPGObject.OnFailOpenChest += ImpossibleAction;
-        RPGObject.OnBuyItem += BuyItem;
-        RPGObject.OnFailBuyItem += ImpossibleAction;
-
-        PlatformerController.OnGetStrawberries += OnGetStrawberries;
-        m_platformerController.platformerMovementController.Jumped += Jump;
-        m_platformerController.platformerMovementController.GroundedChanged += GroundedChanged;
-
-        CardGameController.OnGettingCard += OnGettingCard;
-        CardGameController.OnCraftSuccess += OnCardCraft;
-        CardGameController.OnCraftFailed += CraftFailed;
-        CardGameController.OnTryCraftWithoutCard += ImpossibleAction;
-
-        // Game interactions
-        GameManager.OnGameLoose += OnDeath;
-        GameManager.OnGameWin += StopMusic;
-        ExitPortal.OnCrossPortal += CrossPortal;
-
-        GameManager.OnActivatePlatformerGame += ActivatePlatformer;
-        GameManager.OnDeactivatePlatformerGame += DeactivatePlatformer;
-        GameManager.OnActivateRPGGame += ActivateRpg;
-        GameManager.OnDeactivateRPGGame += DeactivateRpg;
-        GameManager.OnActivateCardGame += ActivateCardGame;
-        GameManager.OnDeactivateCardGame += DeactivateCardGame;
-    }
-
-    private void UnListenEvent()
-    {
-        PlayerDataManager.OnActivateKeyPart -= ActivateKeyPart;
-        PlayerDataManager.OnCollectArtifact -= OnCollectArtifact;
-        PlayerDataManager.OnUseArtifact -= OnSealedRoom;
-        PlayerDataManager.OnHit -= Hit;
-        PlayerDataManager.OnHeal -= Heal;
-        DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
-        
-        Spawner.OnSpawn -= OnProjectileSpawn;
-
-        RPGController.OnGetCoins -= GetRpgCoin;
-        RPGController.OnGetKeys -= GetRpgKey;
-        RPGObject.OnOpenChest -= OpenChest;
-        RPGObject.OnFailOpenChest -= ImpossibleAction;
-        RPGObject.OnBuyItem -= BuyItem;
-        RPGObject.OnFailBuyItem -= ImpossibleAction;
-
-        PlatformerController.OnGetStrawberries -= OnGetStrawberries;
-        m_platformerController.platformerMovementController.Jumped -= Jump;
-        m_platformerController.platformerMovementController.GroundedChanged -= GroundedChanged;
-
-        CardGameController.OnGettingCard -= OnGettingCard;
-        CardGameController.OnCraftSuccess -= OnCardCraft;
-        CardGameController.OnCraftFailed -= CraftFailed;
-        CardGameController.OnTryCraftWithoutCard -= ImpossibleAction;
-
-        GameManager.OnGameLoose -= OnDeath;
-        GameManager.OnGameWin -= StopMusic;
-        ExitPortal.OnCrossPortal -= CrossPortal;
-
-        GameManager.OnActivatePlatformerGame -= ActivatePlatformer;
-        GameManager.OnDeactivatePlatformerGame -= DeactivatePlatformer;
-        GameManager.OnActivateRPGGame -= ActivateRpg;
-        GameManager.OnDeactivateRPGGame -= DeactivateRpg;
-        GameManager.OnActivateCardGame -= ActivateCardGame;
-        GameManager.OnDeactivateCardGame -= DeactivateCardGame;
-    }
+    protected abstract void UnListenEvent();
 
     public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
     {
@@ -177,168 +48,8 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayAudio(clip, sfxMixerGroup, pitch, volume);
     }
 
-    private void StartMusic()
-    {
-        musicSource.Play();
-    }
-
-    private void StopMusic()
-    {
-        musicSource.Stop();
-    }
-
-    private void Hit(int _newValue, int _delta)
-    {
-        PlaySfx(damageClip);
-    }
-
-    private void Heal(int _newValue, int _delta)
-    {
-        PlaySfx(healClip);
-    }
-
-    private void OnRoomChanged(OnRoomChanged _obj)
-    {
-        if(_obj.m_from != null)
-        {
-            PlaySfx(enteringDoorClip, Random.Range(minPitch, maxPitch));
-        }
-    }
-
-    private void OnCollectArtifact(int newValue, int delta)
-    {
-        PlaySfx(collectArtifactClip, Random.Range(minPitch, maxPitch));
-    }
-
-    private void OnSealedRoom(int newValue, int delta)
-    {
-        PlaySfx(sealRoomClip, Random.Range(minPitch, maxPitch));
-    }
-
-    private void OnProjectileSpawn()
-    {
-        PlaySfx(projectileSpawnClip, Random.Range(minPitch, maxPitch));
-    }
-
-    private void OnDeath()
-    {
-        StopMusic();
-        PlayJingle(deathJingleClip);
-    }
-
-    private void CrossPortal(Vector3 _center)
-    {
-        PlayJingle(portalJingleClip, 1f, 0.5f);
-    }
-
-    private void ActivateKeyPart(GameRuleType _part)
-    {
-        PlayJingle(activateKeyPartClip);
-    }
-
-    private void ImpossibleAction()
+    protected void ImpossibleAction()
     {
         PlaySfx(errorClip);
-    }
-
-    // Plateformer
-    #region platformer
-
-    public void ActivatePlatformer()
-    {
-        PlayJingle(activatePlatformerClip, 1f, activationJingleVolume);
-    }
-
-    public void DeactivatePlatformer()
-    {
-        PlayJingle(deactivatePlatformerClip, 1f, activationJingleVolume);
-    }
-
-    private void Jump()
-    {
-        PlaySfx(jumpClip, Random.Range(minPitch, maxPitch));
-    }
-
-    private void GroundedChanged(bool grounded, float velocity)
-    {
-        if (grounded)
-            PlaySfx(landingClip, Random.Range(minPitch, maxPitch));
-    }
-
-    private void OnGetStrawberries(int total, int number)
-    {
-        PlaySfx(collectStrawberryClip);
-    }
-
-    #endregion
-    
-    // RPG
-    #region RPG
-
-    private void GetRpgCoin(int total, int number)
-    {
-        PlaySfx(rpgCoinClip, 1f + total * coinPitchModifier);
-    }
-
-    private void GetRpgKey(int total, int number)
-    {
-        PlaySfx(rpgKeyClip);
-    }
-
-    private void OpenChest()
-    {
-        PlaySfx(openChestClip);
-    }
-
-    private void BuyItem()
-    {
-        PlaySfx(shopBuyClip);
-    }
-
-    public void ActivateRpg()
-    {
-        PlayJingle(activateRpgClip, 1f, activationJingleVolume);
-    }
-
-    public void DeactivateRpg()
-    {
-        PlayJingle(deactivateRpgClip, 1f, activationJingleVolume);
-    }
-
-    #endregion
-
-    // Card game
-    #region Cardgame
-
-    public void ActivateCardGame()
-    {
-        PlayJingle(activateCardClip, 1f, activationJingleVolume);
-    }
-
-    public void DeactivateCardGame()
-    {
-        PlayJingle(deactivateCardClip, 1f, activationJingleVolume);
-    }
-
-    private void OnGettingCard(Card card)
-    {
-        PlaySfx(pickupCardClip);
-    }
-
-    private void OnCardCraft(CraftCardResult result, Vector3 position)
-    {
-        PlayJingle(craftCardClip, 1.2f);
-    }
-
-    private void CraftFailed()
-    {
-        PlayJingle(failedCraftCardClip, 1.2f);
-    }
-
-    #endregion
-
-    void Update()
-    {
-        
     }
 }
