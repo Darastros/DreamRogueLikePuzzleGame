@@ -70,7 +70,7 @@ public class SoundManager : MonoBehaviour, IEventListener
 
     void Start()
     {
-        DungeonRoomSystem.Instance.GetEventDispatcher()
+        DungeonRoomSystem.EventDispatcher?
             .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         musicSource = GetComponent<AudioSource>();
         StartMusic();
@@ -123,10 +123,8 @@ public class SoundManager : MonoBehaviour, IEventListener
         PlayerDataManager.OnUseArtifact -= OnSealedRoom;
         PlayerDataManager.OnHit -= Hit;
         PlayerDataManager.OnHeal -= Heal;
-        if (DungeonRoomSystem.Instance != null)
-        {
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-        }
+        DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
+        
         Spawner.OnSpawn -= OnProjectileSpawn;
 
         RPGController.OnGetCoins -= GetRpgCoin;
