@@ -300,15 +300,19 @@ namespace GameSystems
         
         public void ResetMap()
         {
-            OnNewRoomAppear(m_runtimeRooms[Vector2Int.zero], RoomEntrance.South);
-            CloseRoom(Vector2Int.up);
-            CloseRoom(Vector2Int.down);
-            CloseRoom(Vector2Int.right);
-            CloseRoom(Vector2Int.left);
-            foreach (Door door in m_runtimeRooms[Vector2Int.zero].GetDoors())
+            m_currentRoom = null;
+            foreach (var roomCoordinate in m_runtimeRooms.Keys.ToList())
             {
-                door.ForceClose();
+                if (m_runtimeRooms.Remove(roomCoordinate, out Room room))
+                {
+                    room.Destroy();
+                }
             }
+
+            Room newRoom = new Room(0, 0, startRoom.GetRandomElem());
+            m_runtimeRooms.Add(newRoom.Coordinate, newRoom);
+            OnNewRoomAppear(newRoom, RoomEntrance.None);
+            GameManager.Instance.PlayerController.transform.position = Vector2.zero;
         }
         
         public void CloseRoom(RoomEntrance _whichEntrance)
