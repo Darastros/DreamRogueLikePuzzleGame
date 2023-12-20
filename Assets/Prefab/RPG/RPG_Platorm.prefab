@@ -67,18 +67,18 @@ PrefabInstance:
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: b95acf682295c5348928e3e55b14e628, type: 3}
+      objectReference: {fileID: 21300000, guid: d60a8a74712ed4e45bc666b114f9ec43, type: 3}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.b
-      value: 0.1792453
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.g
-      value: 0.1792453
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5885459252468852869, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Color.r
-      value: 0.1792453
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6206407197875605219, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       propertyPath: m_Layer
@@ -86,12 +86,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1792989157564633734, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
-    m_RemovedGameObjects: []
+    - {fileID: 4754173620793741926, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 6206407197875605219, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 2519094212053027673, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3505444314262452035}
+      addedObject: {fileID: 7844626542793659081}
   m_SourcePrefab: {fileID: 100100000, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
 --- !u!212 &288031022455678466 stripped
 SpriteRenderer:
@@ -103,7 +105,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2519094212053027673, guid: c1ce5d3f0c46c8446bfbf45f234d6990, type: 3}
   m_PrefabInstance: {fileID: 5931822014459432583}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &3505444314262452035
+--- !u!114 &7844626542793659081
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -112,13 +114,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8117613428465173982}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba0b45a9c4f51d34abc500018999c997, type: 3}
+  m_Script: {fileID: 11500000, guid: ab0aace735f83a6439b6e3528ce10862, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  renderer: {fileID: 288031022455678466}
-  outlineSprite: {fileID: 21300000, guid: 2f9996fc1e2e0414284ed6ddd8c52d05, type: 3}
-  keysNumbers: 0
-  coinsNumbers: 0
-  lifePoints: 0
-  artifact: 0
-  portalPart: 0
+  spriteRenderer: {fileID: 288031022455678466}
+  outlineSprite: {fileID: 21300000, guid: 4aed467295a043d47800719dd3cdff36, type: 3}
