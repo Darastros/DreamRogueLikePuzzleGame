@@ -74,6 +74,7 @@ namespace GameSystems
             {
                 m_runtimeGameScene.SetActive(true);
             }
+            m_runtimeGameScene.GetComponent<RoomObject>().ActivateWall(m_roomDescriptor.m_entrances);
         }
 
         public void HideRoom()
