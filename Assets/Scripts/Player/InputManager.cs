@@ -31,7 +31,6 @@ namespace Player
         [SerializeField] private CardGameController m_cardGameController;
         [SerializeField] private DetectDoor m_detectDoor;
         [SerializeField] public LayerMask PlayerLayer;
-        [SerializeField] private float m_useRadius = 1f;
 
         public Vector2 moveInput;
         private void OnValidate()

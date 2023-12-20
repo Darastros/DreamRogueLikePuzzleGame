@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour, IEventListener
     
     private void Start()
     {
-        DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, _changed => Destroy(gameObject));
+        DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, _changed => Destroy(gameObject));
     }
 
     private void OnTriggerEnter2D(Collider2D _other)
@@ -23,10 +23,7 @@ public class Projectile : MonoBehaviour, IEventListener
 
     private void OnDestroy()
     {
-        if (DungeonRoomSystem.Instance != null)
-        {
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-        }
+        DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
     }
 
     public void Destroy()

@@ -28,7 +28,7 @@ namespace GameSystems
 
         private void OnEnable()
         {
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnterRoom);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnterRoom);
             if(m_collider2D == null)
                 TryGetComponent(out m_collider2D);
             m_animator.SetBool(CanSealAnimHash, DungeonRoomSystem.Instance.CurrentRoom.GetInstanciatedNeighbor(whichEntrance) != null && PlayerDataManager.artifact > 0);
@@ -59,7 +59,7 @@ namespace GameSystems
             GameManager.OnTeleportPlayer -= OnPlayerTeleported;
             if(DungeonRoomSystem.Instance != null)
             {
-                DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<EventPlayerEnteredRoom>(this);
+                DungeonRoomSystem.EventDispatcher?.UnregisterEvent<EventPlayerEnteredRoom>(this);
             }
         }
         
@@ -77,7 +77,7 @@ namespace GameSystems
         private void OnPlayerTeleported(Vector3 _pos)
         {
             if (!this) return;
-            if ((_pos - teleportPos.position).sqrMagnitude < 1) ;
+            if ((_pos - teleportPos.position).sqrMagnitude < 1)
             {
                 m_collider2D.isTrigger = false;
                 ForceClose();
@@ -115,7 +115,7 @@ namespace GameSystems
         {
             if (_other.CompareTag("Player"))
             {
-                DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<OnPlayerOpenDoor>(whichEntrance);
+                DungeonRoomSystem.EventDispatcher?.SendEvent<OnPlayerOpenDoor>(whichEntrance);
             }
         }
 

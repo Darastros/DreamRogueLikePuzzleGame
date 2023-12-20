@@ -46,7 +46,8 @@ namespace GameSystems
 
         //Events
         private readonly EventDispatcher m_eventDispatcher = new();
-        public EventDispatcher GetEventDispatcher() => m_eventDispatcher;
+        private EventDispatcher GetEventDispatcher() => m_eventDispatcher;
+        public static EventDispatcher EventDispatcher => Instance != null ? Instance.GetEventDispatcher() : null;
 
         //Settings
         public List<RoomDescriptor> roomPool;

@@ -56,7 +56,7 @@ namespace Platformer
             GameManager.OnDeactivatePlatformerGame += Deactivate;
             m_detector.OnPlatformerObjectEnter += EnterObject;
             PlayerDataManager.OnHit += OnHit;
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         }
         private void UnListenEvent()
         {
@@ -64,10 +64,8 @@ namespace Platformer
             GameManager.OnDeactivatePlatformerGame -= Deactivate;
             m_detector.OnPlatformerObjectEnter -= EnterObject;
             PlayerDataManager.OnHit -= OnHit;
-            if (DungeonRoomSystem.Instance != null)
-            {
-                DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-            }
+            DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
+            
         }   
 
         private void EnterObject(PlatformerObject _object)
