@@ -1,6 +1,5 @@
-﻿using System;
-using CardGame;
-using MovementControllers;
+﻿using CardGame;
+using GameSystems;
 using Platformer;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -73,6 +72,18 @@ namespace Player
             {
                 OnUse?.Invoke();
                 m_detectDoor.Use();
+            }
+        }
+        
+        public void OnShowmapInput(InputAction.CallbackContext _ctx)
+        {
+            if (_ctx.performed)
+            {
+                DungeonRoomSystem.EventDispatcher?.SendEvent<ShowBigMap>();
+            }
+            else if (_ctx.canceled)
+            {
+                DungeonRoomSystem.EventDispatcher?.SendEvent<HideBigMap>();
             }
         }
     }

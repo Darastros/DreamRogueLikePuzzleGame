@@ -243,7 +243,7 @@ MonoBehaviour:
   PlayerLayer:
     serializedVersion: 2
     m_Bits: 70
-  m_useRadius: 1
+  moveInput: {x: 0, y: 0}
 --- !u!114 &5324761998746901579
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,6 +420,38 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 70fae0ad-ce5d-4ee8-9154-c17ee93bd7cc
     m_ActionName: TopDown/Use[/XInputControllerWindows/buttonWest,/Keyboard/q]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8060540606002898561}
+        m_TargetAssemblyTypeName: Player.InputManager, Assembly-CSharp
+        m_MethodName: OnShowmapInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 56be34e4-b50d-46ee-b579-144bc58f0d51
+    m_ActionName: TopDown/ShowMap[/XInputControllerWindows/select,/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8060540606002898561}
+        m_TargetAssemblyTypeName: Player.InputManager, Assembly-CSharp
+        m_MethodName: OnShowmapInput
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 2e9e3aeb-d252-4396-9888-e7e4027d5031
+    m_ActionName: Platformer/ShowMap[/XInputControllerWindows/select,/Keyboard/space]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: TopDown

@@ -37,6 +37,20 @@ namespace GameSystems
     }
     
     [Serializable]
+    public class ShowBigMap : Event
+    {
+        public ShowBigMap()
+        {}
+    }
+    
+    [Serializable]
+    public class HideBigMap : Event
+    {
+        public HideBigMap()
+        {}
+    }
+    
+    [Serializable]
     public class EventPlayerEnteredRoom : Event
     {
         public RoomEntrance door;
