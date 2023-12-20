@@ -17,7 +17,7 @@ namespace GameSystems
         public static WormEvent OnWormStartEatingRoom;
         
         [SerializeField] private int minRoomThresholdForWormToAppear = 30;
-        [SerializeField] private float timeUntilRoomDestroyed = 30f;
+        [SerializeField] public float timeUntilRoomDestroyed = 30f;
         [SerializeField] private float newTimerIfRoomSaved = 120f;
         [SerializeField] private float newTimerIfRoomLost = 100f;
         [SerializeField] private bool forceMinRoomToDestroyOthers = false;
@@ -27,8 +27,20 @@ namespace GameSystems
 
         [SerializeField] private GameObject m_wormIndicatorPrefab;
         private GameObject m_wormIndicatorRuntime;
+        
+        private Room m_roomAboutToBeDestroyed = null;
+        public float TimeStampWormStartEatRoom { get; private set; }
 
-        public Room RoomAboutToBeDestroyed { get; private set; } = null;
+        public Room RoomAboutToBeDestroyed
+        {
+            get => m_roomAboutToBeDestroyed;
+            private set
+            {
+                if(value != null)
+                    TimeStampWormStartEatRoom = Time.time;
+                m_roomAboutToBeDestroyed = value;
+            }
+        }
 
         private void Start()
         {
@@ -45,7 +57,7 @@ namespace GameSystems
 
         private void OnRoomChanged(OnRoomChanged _obj)
         {
-            if (m_wormCoroutine != null && RoomAboutToBeDestroyed.Coordinate == _obj.m_to.Coordinate)
+            if (m_wormCoroutine != null && RoomAboutToBeDestroyed?.Coordinate == _obj.m_to.Coordinate)
             {
                 StopCoroutine(m_wormCoroutine);
                 m_wormCoroutine = null;
@@ -58,8 +70,11 @@ namespace GameSystems
             {
                 if (!m_wormAppeared)
                 {
+                    var roomSelected = GetRoomAtTheEdgeV2();
+                    if(roomSelected == null)
+                        return;
                     m_wormAppeared = true;
-                    m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
+                    m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(roomSelected));
                 }
             }
         }
@@ -115,11 +130,12 @@ namespace GameSystems
         private IEnumerator Reset(float _newTimer)
         {
             yield return new WaitForSeconds(_newTimer);
-            if (!forceMinRoomToDestroyOthers ||(forceMinRoomToDestroyOthers && DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear))
+            var roomSelected = GetRoomAtTheEdgeV2();
+            if (roomSelected != null && (!forceMinRoomToDestroyOthers ||(forceMinRoomToDestroyOthers && DungeonRoomSystem.Instance.CurrentRooms.Count >= minRoomThresholdForWormToAppear)))
             {
-                m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(GetRoomAtTheEdgeV2()));
+                m_wormCoroutine = StartCoroutine(DestroyRoomCoroutine(roomSelected));
             }
-            else if(forceMinRoomToDestroyOthers)
+            else if(roomSelected == null || forceMinRoomToDestroyOthers)
             {
                 EventDispatcher.SendEvent<OnWormLeft>();
                 m_wormAppeared = false;
@@ -180,7 +196,7 @@ namespace GameSystems
                 
                 foreach (Room instanciatedNeighbor in neighbors)
                 {
-                    neighborHaveLinkToStartRoom = neighborHaveLinkToStartRoom && DungeonRoomSystem.Instance.IsThereAPathLeadingTo(Vector2Int.zero, instanciatedNeighbor, room);
+                    neighborHaveLinkToStartRoom = neighborHaveLinkToStartRoom && DungeonRoomSystem.Instance.IsThereAPathLeadingTo(curCoordinate, instanciatedNeighbor, room);
                 }
                 if(neighborHaveLinkToStartRoom && coordinate != curCoordinate)
                     candidates.Add(room);
