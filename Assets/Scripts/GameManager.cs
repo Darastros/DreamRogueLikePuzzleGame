@@ -189,12 +189,27 @@ public class GameManager : MonoBehaviour
         ExitPortal.OnCrossPortal -= WinGame;
     }
 
+    #if UNITY_EDITOR
+    [MenuItem("GameManager/Force Win")]
+    private static void DebugForceWin()
+    {
+        Instance.WinGame(Vector3.zero);
+    }
+    #endif
+    
     private void WinGame(Vector3 _center)
     {
         OnGameWin?.Invoke();
         m_gameStart = false;
     }
-
+    
+    #if UNITY_EDITOR
+        [MenuItem("GameManager/Force Loose")]
+        private static void DebugForceLose()
+        {
+            Instance.LooseGame();
+        }
+    #endif
     private void LooseGame()
     {
         OnGameLoose?.Invoke();

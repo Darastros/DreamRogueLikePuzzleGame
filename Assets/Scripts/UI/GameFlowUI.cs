@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GameFlowUI : MonoBehaviour
@@ -38,5 +35,9 @@ public class GameFlowUI : MonoBehaviour
     private void GameLoose()
     {
         m_animator.SetTrigger("Loose");
+    }
+    public void OnClickRestart()
+    {
+        GameManager.Instance.Restart();
     }
 }
