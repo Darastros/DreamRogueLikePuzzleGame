@@ -34,15 +34,13 @@ namespace GameSystems
         {
             Debug.Assert(GameManager.Instance.Worm == null, "MULTIPLE WORMS ON THE SCENE, IT'S NOT SUPPORTED");
             GameManager.Instance.Worm = this;
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnteredRoom);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<EventPlayerEnteredRoom>(this, OnPlayerEnteredRoom);
         }
 
         private void OnDestroy()
         {
-            if(DungeonRoomSystem.Instance == null)
-                return;
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterAllEvents(this);
+            DungeonRoomSystem.EventDispatcher?.UnregisterAllEvents(this);
         }
 
         private void OnRoomChanged(OnRoomChanged _obj)
@@ -102,7 +100,7 @@ namespace GameSystems
         private IEnumerator DestroyRoomCoroutine(Room _roomToDestroy)
         {
             RoomAboutToBeDestroyed = _roomToDestroy;
-            DungeonRoomSystem.Instance.GetEventDispatcher().SendEvent<ForceRefreshMap>();
+            DungeonRoomSystem.EventDispatcher?.SendEvent<ForceRefreshMap>();
             EventDispatcher.SendEvent<OnWormStartEatingRoom>(_roomToDestroy);
             OnWormStartEatingRoom?.Invoke();
             UpdateWormIndicator();

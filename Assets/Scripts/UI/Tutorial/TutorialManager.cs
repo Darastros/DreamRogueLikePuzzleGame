@@ -29,7 +29,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         m_cardGameTutorial.gameObject.SetActive(false);
         m_wormTutorial.gameObject.SetActive(false);
         
-        DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
     }
     private void OnDisable()
     {
@@ -40,7 +40,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         PlayerDataManager.OnCollectArtifact -= OnCollectArtifact;
         Worm.OnWormStartEatingRoom -= OnWormStartEatingRoom;
         
-        DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
     }
 
     private void Restart()

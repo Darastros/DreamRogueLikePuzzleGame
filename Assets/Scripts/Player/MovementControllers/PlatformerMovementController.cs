@@ -106,14 +106,14 @@ namespace MovementControllers
         private void OnEnable()
         {
             GameManager.OnTeleportPlayer += TeleportPlayer;
-            //DungeonRoomSystem.Instance.GetEventDispatcher()
+            //DungeonRoomSystem.EventDispatcher?
             //    .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         }
 
         private void OnDisable()
         {
             GameManager.OnTeleportPlayer -= TeleportPlayer;
-            //DungeonRoomSystem.Instance.GetEventDispatcher()
+            //DungeonRoomSystem.EventDispatcher?
             //    .RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
         }
         

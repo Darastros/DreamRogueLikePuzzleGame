@@ -19,17 +19,16 @@ namespace UI
 
         private void Start()
         {
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
-            DungeonRoomSystem.Instance.GetEventDispatcher().RegisterEvent<ForceRefreshMap>(this, ForceRefreshMap);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+            DungeonRoomSystem.EventDispatcher?.RegisterEvent<ForceRefreshMap>(this, ForceRefreshMap);
             
             RefreshMap();
         }
 
         private void OnDestroy()
         {
-            if(DungeonRoomSystem.Instance == null) return;
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<OnRoomChanged>(this);
-            DungeonRoomSystem.Instance.GetEventDispatcher().UnregisterEvent<ForceRefreshMap>(this);
+            DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
+            DungeonRoomSystem.EventDispatcher?.UnregisterEvent<ForceRefreshMap>(this);
         }
 
         private void OnRoomChanged(OnRoomChanged _obj)
