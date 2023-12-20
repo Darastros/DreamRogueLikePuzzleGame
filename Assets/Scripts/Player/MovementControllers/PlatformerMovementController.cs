@@ -78,10 +78,12 @@ namespace MovementControllers
         private bool m_endedJumpEarly;
         private bool m_jumpToConsume;
         private bool m_jumpHold;
+#pragma warning disable CS0414 // Field is assigned but its value is never used
         private bool m_exitJump;
+        private float m_jumpHoldTimer;
+#pragma warning restore CS0414 // Field is assigned but its value is never used
         private float m_timeJumpWasPressed;
         private float m_jumpTimer;
-        private float m_jumpHoldTimer;
         private float m_jumpInitHeight;
         
         public Action<bool, float> GroundedChanged;

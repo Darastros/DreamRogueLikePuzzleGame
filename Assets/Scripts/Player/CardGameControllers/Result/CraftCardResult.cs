@@ -9,7 +9,7 @@ namespace CardGame
     public class CraftCardResult : ScriptableObject
     {
         [SerializeField] private string m_name;
-        public string name => m_name;
+        public string Name => m_name;
         [SerializeField] private Sprite m_sprite;
         public Sprite sprite => m_sprite;
         [SerializeField] private bool m_worldItem = false;

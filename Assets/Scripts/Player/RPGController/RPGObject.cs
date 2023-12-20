@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace RPG
 {
@@ -16,7 +17,7 @@ namespace RPG
         public static PickUpItem OnOpenChest;
         public static PickUpItem OnFailOpenChest;
 
-        [SerializeField] public SpriteRenderer renderer;
+        [FormerlySerializedAs("renderer")] [SerializeField] public SpriteRenderer spriteRenderer;
         [SerializeField] public Sprite outlineSprite;
         private Sprite activateSprite;
         [SerializeField] public int keysNumbers = 0;
@@ -31,8 +32,8 @@ namespace RPG
         {
             m_animator = GetComponent<Animator>();
             if (!outlineSprite) return;
-            activateSprite = renderer.sprite;
-            renderer.sprite = outlineSprite;
+            activateSprite = spriteRenderer.sprite;
+            spriteRenderer.sprite = outlineSprite;
         }
         
         public void PickUp()
@@ -62,12 +63,12 @@ namespace RPG
 
         private void ActivateRPG()
         {
-            renderer.sprite = activateSprite;
+            spriteRenderer.sprite = activateSprite;
         }
 
         private void DeactivateRPG()
         {
-            renderer.sprite = outlineSprite;
+            spriteRenderer.sprite = outlineSprite;
         }
 
         public void Fail()
