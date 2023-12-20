@@ -65,7 +65,7 @@ namespace UI
             m_resultPos = _position;
             m_animator.SetTrigger("Success");
             m_successSprite.sprite = _result.sprite;
-            m_successText.text = _result.name;
+            m_successText.text = _result.Name;
             m_cards.RemoveAll(x => x == null);
             foreach (var card in m_cards)
             {

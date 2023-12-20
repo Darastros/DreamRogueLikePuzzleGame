@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
     
     // Game rule variables
     private bool m_startGameRule= false;
+    public bool isStartRoomRuleActivated = false;
     
     private uint m_platformerRuleStack = 0;
     public bool PlatformerActivated => m_platformerRuleStack > 0;
@@ -134,8 +135,7 @@ public class GameManager : MonoBehaviour
     
     public void AddStartGameToStack()
     {
-        return;
-        if (!m_startGameRule)
+        if (isStartRoomRuleActivated && !m_startGameRule)
         {
             m_startGameRule = true;
             OnActivateStartGame.Invoke();
@@ -144,8 +144,7 @@ public class GameManager : MonoBehaviour
 
     public void RemoveStartGameFromStack()
     {
-        return;
-        if (!m_startGameRule) return;
+        if (!isStartRoomRuleActivated || !m_startGameRule) return;
         m_startGameRule = false;
         LooseGame();
         OnDeactivateStartGame.Invoke();
