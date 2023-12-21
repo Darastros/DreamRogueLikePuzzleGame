@@ -17,6 +17,7 @@ public class GlobalSoundManager : SoundManager, IEventListener
     [SerializeField] private AudioClip deathJingleClip;
     [SerializeField] private AudioClip portalJingleClip;
     [SerializeField] private AudioClip projectileSpawnClip;
+    [SerializeField] private AudioClip projectileHitClip;
     [SerializeField] private AudioClip activateKeyPartClip;
 
 
@@ -39,7 +40,7 @@ public class GlobalSoundManager : SoundManager, IEventListener
         PlayerDataManager.OnHit += Hit;
         PlayerDataManager.OnHeal += Heal;
         Spawner.OnSpawn += OnProjectileSpawn;
-        //Projectile.OnHit += 
+        Projectile.OnHit += OnProjectileHit;
 
         // Game interactions
         GameManager.OnGameLoose += OnDeath;
@@ -57,11 +58,17 @@ public class GlobalSoundManager : SoundManager, IEventListener
         PlayerDataManager.OnHeal -= Heal;
         DungeonRoomSystem.EventDispatcher?.UnregisterEvent<OnRoomChanged>(this);
         Spawner.OnSpawn -= OnProjectileSpawn;
+        Projectile.OnHit -= OnProjectileHit;
 
         GameManager.OnGameLoose -= OnDeath;
         GameManager.OnGameWin -= StopMusic;
         GameManager.OnGameRestart -= StartMusic;
         ExitPortal.OnCrossPortal -= CrossPortal;
+    }
+
+    private void OnProjectileHit()
+    {
+        PlaySfx(projectileHitClip, Random.Range(0.5f, 1.5f), 1.0f);
     }
 
     private void StartMusic()
@@ -95,12 +102,12 @@ public class GlobalSoundManager : SoundManager, IEventListener
 
     private void OnCollectArtifact(int newValue, int delta)
     {
-        PlaySfx(collectArtifactClip, Random.Range(minRandomPitch, maxRandomPitch));
+        PlaySfx(collectArtifactClip, Random.Range(minRandomPitch, maxRandomPitch), delay: 0.2f);
     }
 
     private void OnSealedRoom(int newValue, int delta)
     {
-        PlaySfx(sealRoomClip, Random.Range(minRandomPitch, maxRandomPitch));
+        PlaySfx(sealRoomClip, Random.Range(minRandomPitch, maxRandomPitch), 0.7f);
     }
 
     private void OnProjectileSpawn()

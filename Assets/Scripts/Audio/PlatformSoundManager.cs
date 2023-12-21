@@ -48,7 +48,7 @@ public class PlatformSoundManager : SoundManager
     private void GroundedChanged(bool grounded, float velocity)
     {
         if (grounded)
-            PlaySfx(landingClip, Random.Range(minRandomPitch, maxRandomPitch));
+            PlaySfx(landingClip, Random.Range(minRandomPitch, maxRandomPitch), 0.45f);
     }
 
     private void OnGetStrawberries(int total, int number)

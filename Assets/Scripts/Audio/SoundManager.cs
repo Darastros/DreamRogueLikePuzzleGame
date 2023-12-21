@@ -26,7 +26,7 @@ public abstract class SoundManager : MonoBehaviour
 
     protected abstract void UnListenEvent();
 
-    public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f)
+    public void PlayAudio(AudioClip clip, AudioMixerGroup mixerGroup, float pitch = 1f, float volume = 1f, float delay = 0f)
     {
         if (!this) return;
         AudioSource audioSource = gameObject.AddComponent<AudioSource>();
@@ -34,22 +34,22 @@ public abstract class SoundManager : MonoBehaviour
         audioSource.pitch = pitch;
         audioSource.volume = volume;
         audioSource.clip = clip;
-        audioSource.Play();
-        Destroy(audioSource, clip.length / Math.Abs(audioSource.pitch));
+        audioSource.PlayDelayed(delay);
+        Destroy(audioSource, clip.length / Math.Abs(audioSource.pitch) + delay);
     }
 
-    public void PlayJingle(AudioClip clip, float pitch = 1f, float volume = 1f)
+    public void PlayJingle(AudioClip clip, float pitch = 1f, float volume = 1f, float delay = 0f)
     {
         PlayAudio(clip, jingleMixerGroup, pitch, volume);
     }
 
-    public void PlaySfx(AudioClip clip, float pitch = 1f, float volume = 1f)
+    public void PlaySfx(AudioClip clip, float pitch = 1f, float volume = 1f, float delay = 0f)
     {
         PlayAudio(clip, sfxMixerGroup, pitch, volume);
     }
 
     protected void ImpossibleAction()
     {
-        PlaySfx(errorClip);
+        PlaySfx(errorClip, volume: 0.4f);
     }
 }

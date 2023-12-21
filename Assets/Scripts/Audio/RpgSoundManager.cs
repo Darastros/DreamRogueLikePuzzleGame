@@ -20,7 +20,7 @@ public class RpgSoundManager : SoundManager
         RPGController.OnGetKeys += GetRpgKey;
         RPGObject.OnOpenChest += OpenChest;
         RPGObject.OnFailOpenChest += ImpossibleAction;
-        RPGObject.OnBuyItem += BuyItem;
+        // RPGObject.OnBuyItem += BuyItem;
         RPGObject.OnFailBuyItem += ImpossibleAction;
     }
 
@@ -33,18 +33,20 @@ public class RpgSoundManager : SoundManager
         RPGController.OnGetKeys -= GetRpgKey;
         RPGObject.OnOpenChest -= OpenChest;
         RPGObject.OnFailOpenChest -= ImpossibleAction;
-        RPGObject.OnBuyItem -= BuyItem;
+        // RPGObject.OnBuyItem -= BuyItem;
         RPGObject.OnFailBuyItem -= ImpossibleAction;
     }
 
     private void GetRpgCoin(int total, int number)
     {
-        PlaySfx(rpgCoinClip, 1f + total * coinPitchModifier);
+        if (number > 0)
+            PlaySfx(rpgCoinClip, 1f + total * coinPitchModifier);
     }
 
     private void GetRpgKey(int total, int number)
     {
-        PlaySfx(rpgKeyClip);
+        if (number > 0)
+            PlaySfx(rpgKeyClip, volume: 0.4f);
     }
 
     private void OpenChest()
