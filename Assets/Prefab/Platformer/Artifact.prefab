@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6998185116683299430}
   - component: {fileID: 4530325344712939803}
   - component: {fileID: -8102595347072278871}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Artifact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,7 +134,7 @@ MonoBehaviour:
   strawberriesNumbers: 0
   lifePoints: 0
   artifact: 1
-  needNextRoomToBeActivated: 1
+  needNextRoomToBeActivated: 0
   velocity: 5
   distanceWithPlayer: 1
   distanceBetweenObjects: 0.75
@@ -150,7 +150,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7909867682544799785}
   - component: {fileID: 1744788970310356809}
-  m_Layer: 9
+  m_Layer: 11
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
