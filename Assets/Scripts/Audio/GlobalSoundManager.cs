@@ -1,4 +1,3 @@
-using System;
 using GameSystems;
 using UnityEngine;
 using Utils;
@@ -83,12 +82,12 @@ public class GlobalSoundManager : SoundManager, IEventListener
 
     private void Hit(int _newValue, int _delta)
     {
-        PlaySfx(damageClip);
+        PlaySfx(damageClip, volume: 0.6f);
     }
 
     private void Heal(int _newValue, int _delta)
     {
-        PlaySfx(healClip);
+        PlaySfx(healClip, volume: 0.3f);
     }
 
     private void OnRoomChanged(OnRoomChanged _obj)
