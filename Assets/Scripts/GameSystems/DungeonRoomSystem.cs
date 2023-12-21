@@ -279,7 +279,7 @@ namespace GameSystems
         private int m_lastRPGRoom = 3;
         private int m_lastPlatformerRoom = -2;
         private int m_lastCardGameRoom = 0;
-        private List<RoomDescriptor> m_alreadyHaveCardGameRooms;
+        [SerializeField] private List<RoomDescriptor> m_alreadyHaveCardGameRooms;
         private void OnDeactivateRPGGame()
         {
             m_lastRPGRoom = 0;
@@ -287,7 +287,7 @@ namespace GameSystems
 
         private void OnDeactivateCardGame()
         {
-            m_lastCardGameRoom = 0;
+            m_lastCardGameRoom = -2;
             m_alreadyHaveCardGameRooms = new List<RoomDescriptor>();
         }
 
@@ -313,9 +313,10 @@ namespace GameSystems
             
             Debug.Log("Platformer :" + m_lastPlatformerRoom + " CardGame :" + m_lastCardGameRoom + " RPG :" + m_lastRPGRoom);
             { // Get only card type
-                //List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame) == m_lastCardGameRoom >= 5);
-                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame));
-                availableRoomsType = availableRoomsType.FindAll(_room => m_alreadyHaveCardGameRooms.Exists(_cardGame => _cardGame != _room));
+                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame) == m_lastCardGameRoom >= 5);
+                if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
+                
+                availableRoomsType = availableRooms.FindAll(_room => m_alreadyHaveCardGameRooms.Exists(_cardGame => _cardGame != _room));
                 if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
             }
             { // Get only plat type
