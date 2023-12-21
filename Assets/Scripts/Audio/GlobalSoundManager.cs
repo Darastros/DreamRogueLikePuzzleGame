@@ -101,7 +101,7 @@ public class GlobalSoundManager : SoundManager, IEventListener
 
     private void OnCollectArtifact(int newValue, int delta)
     {
-        PlaySfx(collectArtifactClip, Random.Range(minRandomPitch, maxRandomPitch), delay: 0.2f);
+        PlaySfx(collectArtifactClip, Random.Range(minRandomPitch, maxRandomPitch), volume: 0.4f, delay: 0.2f);
     }
 
     private void OnSealedRoom(int newValue, int delta)
