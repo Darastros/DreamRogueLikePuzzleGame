@@ -1,4 +1,3 @@
-using System;
 using GameSystems;
 using UnityEngine;
 using Utils;
@@ -19,7 +18,7 @@ public class GlobalSoundManager : SoundManager, IEventListener
     [SerializeField] private AudioClip projectileSpawnClip;
     [SerializeField] private AudioClip projectileHitClip;
     [SerializeField] private AudioClip activateKeyPartClip;
-    [SerializeField] private bool manualAudioDuckingEnabled;
+
 
     private AudioSource musicSource;
 
@@ -73,7 +72,6 @@ public class GlobalSoundManager : SoundManager, IEventListener
 
     private void StartMusic()
     {
-        lastJingleTime = 0f;
         musicSource.Play();
     }
 
@@ -130,14 +128,5 @@ public class GlobalSoundManager : SoundManager, IEventListener
     private void ActivateKeyPart(GameRuleType _part)
     {
         PlayJingle(activateKeyPartClip);
-    }
-
-    void Update()
-    {
-        if (manualAudioDuckingEnabled)
-        {
-            lastJingleTime = Math.Max(0, lastJingleTime - Time.unscaledDeltaTime);
-            musicSource.volume = lastJingleTime <= 0 ? 1.0f : 0f;
-        }
     }
 }
