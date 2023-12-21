@@ -1,7 +1,4 @@
-﻿using System;
-using Player;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace MovementControllers
 {

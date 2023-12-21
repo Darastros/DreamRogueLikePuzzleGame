@@ -1,13 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using CardGame;
-using DG.Tweening;
 using GameSystems;
-using MovementControllers;
 using Platformer;
 using Player;
 using RPG;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour

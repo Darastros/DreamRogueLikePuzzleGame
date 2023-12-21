@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using GameSystems;
 using UnityEngine;
-using UnityEngine.UIElements;
 using Utils;
 
 public class TutorialManager : MonoBehaviour, IEventListener

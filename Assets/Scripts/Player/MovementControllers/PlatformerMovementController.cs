@@ -1,6 +1,4 @@
 ﻿using System;
-using GameSystems;
-using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 
