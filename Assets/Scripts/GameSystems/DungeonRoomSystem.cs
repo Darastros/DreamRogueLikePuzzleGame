@@ -111,11 +111,22 @@ namespace GameSystems
                 }
             }
         }
-
+        void OnEnable()
+        {
+            GameManager.OnDeactivateRPGGame += OnDeactivateRPGGame;
+            GameManager.OnDeactivateCardGame += OnDeactivateCardGame;
+            GameManager.OnDeactivatePlatformerGame += OnDeactivatePlatformerGame;
+        }
+        private void OnDisable()
+        {
+            GameManager.OnDeactivateRPGGame -= OnDeactivateRPGGame;
+            GameManager.OnDeactivateCardGame -= OnDeactivateCardGame;
+            GameManager.OnDeactivatePlatformerGame -= OnDeactivatePlatformerGame;
+        }
         private void Start()
         {
             Resources.LoadAll<RoomDescriptor>("Rooms");
-
+            m_alreadyHaveCardGameRooms = new List<RoomDescriptor>();
             if (startRoom.Count > 0)
             {
                 Room newRoom = new Room(0, 0, startRoom.GetRandomElem());
@@ -264,8 +275,32 @@ namespace GameSystems
             m_eventDispatcher.UnregisterAllEvents(this);
         }
 
+
+        private int m_lastRPGRoom = 3;
+        private int m_lastPlatformerRoom = -2;
+        private int m_lastCardGameRoom = 0;
+        private List<RoomDescriptor> m_alreadyHaveCardGameRooms;
+        private void OnDeactivateRPGGame()
+        {
+            m_lastRPGRoom = 0;
+        }
+
+        private void OnDeactivateCardGame()
+        {
+            m_lastCardGameRoom = 0;
+            m_alreadyHaveCardGameRooms = new List<RoomDescriptor>();
+        }
+
+        private void OnDeactivatePlatformerGame()
+        {
+            m_lastPlatformerRoom = -5;
+        }
         private Room GenerateRoom(int _x, int _y, List<RoomDescriptor> _pool)
         {
+            ++m_lastRPGRoom;
+            ++m_lastPlatformerRoom;
+            ++m_lastCardGameRoom;
+            
             GetNeededEntranceConstraints(out var neededEntrances, out var forbiddenEntrances, _x, _y);
             List<RoomDescriptor> availableRooms = new List<RoomDescriptor>();
                 
@@ -276,7 +311,24 @@ namespace GameSystems
                 if (availableRoomsExceptFour.Count > 0) availableRooms = availableRoomsExceptFour;
             }
             
-            
+            Debug.Log("Platformer :" + m_lastPlatformerRoom + " CardGame :" + m_lastCardGameRoom + " RPG :" + m_lastRPGRoom);
+            { // Get only card type
+                //List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame) == m_lastCardGameRoom >= 5);
+                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame));
+                availableRoomsType = availableRoomsType.FindAll(_room => m_alreadyHaveCardGameRooms.Exists(_cardGame => _cardGame != _room));
+                if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
+            }
+            { // Get only plat type
+                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room =>
+                    (_room.m_gameRuleType == GameRuleType.Platformer) == m_lastPlatformerRoom >= 3);
+                if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
+            }
+            { // Get only rpg type
+                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room =>
+                    (_room.m_gameRuleType == GameRuleType.RPG) == m_lastRPGRoom >= 5);
+                if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
+            }
+
             { // Remove current
                 List<RoomDescriptor> availableRoomsExceptCurrent = availableRooms.FindAll(_room => CurrentRoom.m_roomDescriptor != _room);
                 if (availableRoomsExceptCurrent.Count > 0) availableRooms = availableRoomsExceptCurrent;
@@ -288,6 +340,14 @@ namespace GameSystems
             {
                 var selectedRoom = weightedList.Next();
                 var newRoom = new Room(_x, _y, selectedRoom);
+                if (selectedRoom.m_gameRuleType == GameRuleType.Platformer) m_lastPlatformerRoom = 0;
+                else if (selectedRoom.m_gameRuleType == GameRuleType.RPG) m_lastRPGRoom = 0;
+                else if (selectedRoom.m_gameRuleType == GameRuleType.CardGame)
+                {
+                    m_alreadyHaveCardGameRooms.Add(selectedRoom);
+                    m_lastCardGameRoom = 0;
+                }
+                
                 return newRoom;
             }
 
@@ -306,6 +366,10 @@ namespace GameSystems
         
         public void ResetMap()
         {
+            m_lastRPGRoom = 3;
+            m_lastPlatformerRoom = -2;
+            m_lastCardGameRoom = 0;
+            m_alreadyHaveCardGameRooms = new List<RoomDescriptor>();
             m_currentRoom = null;
             foreach (var roomCoordinate in m_runtimeRooms.Keys.ToList())
             {
