@@ -1157,6 +1157,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SoundManager
       objectReference: {fileID: 0}
+    - target: {fileID: 3961952777153527574, guid: 8942e6614b417214aa62f7e31e01a8ac, type: 3}
+      propertyPath: m_platformerController
+      value: 
+      objectReference: {fileID: 239007400}
     - target: {fileID: 7964974795374742290, guid: 8942e6614b417214aa62f7e31e01a8ac, type: 3}
       propertyPath: m_platformerController
       value: 
@@ -2562,150 +2566,6 @@ PrefabInstance:
       propertyPath: debugCoordinate
       value: 
       objectReference: {fileID: 367706531}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.size
-      value: 36
-      objectReference: {fileID: 0}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[0]
-      value: 
-      objectReference: {fileID: 11400000, guid: 907adde60cca55143ab2cc9456b08269, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[1]
-      value: 
-      objectReference: {fileID: 11400000, guid: 2325c78d5867ad2418d409371b50e917, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[2]
-      value: 
-      objectReference: {fileID: 11400000, guid: d380cdfe20de1344caa4406a1df925c3, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[3]
-      value: 
-      objectReference: {fileID: 11400000, guid: 346c94768096f3e46b5d328bf57345e3, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[4]
-      value: 
-      objectReference: {fileID: 11400000, guid: 35a2dfd7f12a39343bb710aa4bf50e2e, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[5]
-      value: 
-      objectReference: {fileID: 11400000, guid: 75c662c7414da6d4a8ee2ac319337d80, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[6]
-      value: 
-      objectReference: {fileID: 11400000, guid: 95ac80c5604dde649a8656ff59decc1f, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[7]
-      value: 
-      objectReference: {fileID: 11400000, guid: a57974a1b1572e948a57e7139625c800, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[8]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4781ceec5844471429e75b8db5b1044f, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[9]
-      value: 
-      objectReference: {fileID: 11400000, guid: a70486f405d966848bbabacb1904e852, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[10]
-      value: 
-      objectReference: {fileID: 11400000, guid: 384c93394f61ff945be3005f9755a10a, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[11]
-      value: 
-      objectReference: {fileID: 11400000, guid: b9740b07616a61947b5006b0aad17513, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[12]
-      value: 
-      objectReference: {fileID: 11400000, guid: e9043dfc5df9e4745926b508e39975d1, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[13]
-      value: 
-      objectReference: {fileID: 11400000, guid: 0b67fd7cddbb7304cb91f736bb55bc85, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[14]
-      value: 
-      objectReference: {fileID: 11400000, guid: 2b56c8207644f8244855e648664023c6, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[15]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3b9b3e483bc22874f87e28fa4aac26f3, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[16]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5b6f147305564b140a12bad9bf85a510, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[17]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8bd0dda57da5cf844b1af1062864a10a, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[18]
-      value: 
-      objectReference: {fileID: 11400000, guid: 1c93f780ab619b4438dc7461a2ec151f, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[19]
-      value: 
-      objectReference: {fileID: 11400000, guid: bc6baf658238f6d41aa093036a10a404, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[21]
-      value: 
-      objectReference: {fileID: 11400000, guid: 4d03592c8dbbdd94b9dbc958fa1c0caf, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[22]
-      value: 
-      objectReference: {fileID: 11400000, guid: 5e6df5749319b8943af637c7bfa9bf36, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[23]
-      value: 
-      objectReference: {fileID: 11400000, guid: cf0c6c9fe2984a447b56247a5ff7d74e, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[24]
-      value: 
-      objectReference: {fileID: 11400000, guid: b003169f136c21a409dcc13e95322200, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[25]
-      value: 
-      objectReference: {fileID: 11400000, guid: 324eb1b53c2a567498b79120b773caf0, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[26]
-      value: 
-      objectReference: {fileID: 11400000, guid: 8f64fe9d7bd773a4a938970918b89793, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[27]
-      value: 
-      objectReference: {fileID: 11400000, guid: d602875bb01f1834880976e7b5585d6e, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[28]
-      value: 
-      objectReference: {fileID: 11400000, guid: b674007ddfdc69144b8df31a327ee948, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[29]
-      value: 
-      objectReference: {fileID: 11400000, guid: 6f2b56e7de34e6946910ab98f1bc3abe, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[30]
-      value: 
-      objectReference: {fileID: 11400000, guid: 3c61bcc51e0fd6d479ec816a98aa346a, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[31]
-      value: 
-      objectReference: {fileID: 11400000, guid: ce5cd638cc27ed149a7dd56f05a28a41, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[32]
-      value: 
-      objectReference: {fileID: 11400000, guid: 70cd1b089661f49478785e3ca1c7fde2, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[33]
-      value: 
-      objectReference: {fileID: 11400000, guid: cb302088e3efcd0489e14259ee664e60, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[34]
-      value: 
-      objectReference: {fileID: 11400000, guid: 26f2c9b59d8cb0f4ca7a9f258fb06399, type: 2}
-    - target: {fileID: 9094133790132113952, guid: b9f4458f547ecc54aa16432079a20112, type: 3}
-      propertyPath: roomPool.Array.data[35]
-      value: 
-      objectReference: {fileID: 11400000, guid: f003c28a021f2c54fa4929c295f5c842, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

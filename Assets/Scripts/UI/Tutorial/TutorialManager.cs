@@ -14,7 +14,8 @@ public class TutorialManager : MonoBehaviour, IEventListener
     [SerializeField] private TutorialAnimator m_cardGameTutorial;
     [SerializeField] private TutorialAnimator m_wormTutorial;
     [SerializeField] private TutorialAnimator m_portalTutorial;
-    
+
+    private List<TutorialAnimator> m_tutorialsToDraw;
     void OnEnable()
     {
         GameManager.OnActivateRPGGame += OnActivateRPGGame;
@@ -31,6 +32,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         m_wormTutorial.gameObject.SetActive(false);
         
         DungeonRoomSystem.EventDispatcher?.RegisterEvent<OnRoomChanged>(this, OnRoomChanged);
+        Restart();
     }
     private void OnDisable()
     {
@@ -59,7 +61,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
         m_enableWorm = false;
         m_enablePortal = false;
         m_nbRoom = 0;
-        
+        m_tutorialsToDraw = new List<TutorialAnimator>();
     }
 
     private bool m_enableRPG = false;
@@ -67,9 +69,8 @@ public class TutorialManager : MonoBehaviour, IEventListener
     {
         if (!m_enableRPG)
         {
-            m_rpgTutorial.gameObject.SetActive(true);
+            m_tutorialsToDraw.Add(m_rpgTutorial);
             m_enableRPG = true;
-            m_rpgTutorial.Appear();
         }
     }
 
@@ -78,9 +79,8 @@ public class TutorialManager : MonoBehaviour, IEventListener
     {
         if (!m_enableCardGame)
         {
-            m_cardGameTutorial.gameObject.SetActive(true);
+            m_tutorialsToDraw.Add(m_cardGameTutorial);
             m_enableCardGame = true;
-            m_cardGameTutorial.Appear();
         }
     }
 
@@ -89,9 +89,8 @@ public class TutorialManager : MonoBehaviour, IEventListener
     {
         if (!m_enablePlatformer)
         {
-            m_platformerTutorial.gameObject.SetActive(true);
+            m_tutorialsToDraw.Add(m_platformerTutorial);
             m_enablePlatformer = true;
-            m_platformerTutorial.Appear();
         }
     }
     
@@ -103,14 +102,12 @@ public class TutorialManager : MonoBehaviour, IEventListener
         ++m_nbRoom;
         if (m_nbRoom >= 5 && !m_enableArtifact)
         {
-            m_artifactTutorial.gameObject.SetActive(true);
-            m_artifactTutorial.Appear();
+            m_tutorialsToDraw.Add(m_artifactTutorial);
             m_enableArtifact = true;
         }
         if(m_nbRoom == 2 && !m_enablePortal)
         {
-            m_portalTutorial.gameObject.SetActive(true);
-            m_portalTutorial.Appear();
+            m_tutorialsToDraw.Add(m_portalTutorial);
             m_enablePortal = true;
             
         }
@@ -120,8 +117,7 @@ public class TutorialManager : MonoBehaviour, IEventListener
     {
         if (!m_enableArtifact)
         {
-            m_artifactTutorial.gameObject.SetActive(true);
-            m_artifactTutorial.Appear();
+            m_tutorialsToDraw.Add(m_artifactTutorial);
             m_enableArtifact = true;
         }
     }
@@ -133,9 +129,18 @@ public class TutorialManager : MonoBehaviour, IEventListener
         Debug.Log("Worm start eating");
         if (!m_enableWorm)
         {
-            m_wormTutorial.gameObject.SetActive(true);
-            m_wormTutorial.Appear();
+            m_tutorialsToDraw.Add(m_wormTutorial);
             m_enableWorm = true;
+        }
+    }
+
+    private void Update()
+    {
+        if (!GameManager.Instance.gamePaused && m_tutorialsToDraw.Count > 0)
+        {
+            m_tutorialsToDraw[0].gameObject.SetActive(true);
+            m_tutorialsToDraw[0].Appear();
+            m_tutorialsToDraw.RemoveAt(0);
         }
     }
 

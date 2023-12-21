@@ -161,6 +161,7 @@ namespace GameSystems
             if (m_runtimeRooms.TryGetValue(where, out Room newRoom))
             {
                 OnNewRoomAppear(newRoom, _obj.entrance);
+                return;
             }
             else if(!m_runtimeRooms.Any(_pair => _pair.Value.m_roomDescriptor.m_registerToExitPool)) // If no exit room, first next room to be exit room
             {
@@ -170,16 +171,10 @@ namespace GameSystems
                     Debug.Assert(newRoom.IsValid(), "Generated room is invalid");
                     m_runtimeRooms.Add(newRoom.Coordinate, newRoom);
                     OnNewRoomAppear(newRoom, _obj.entrance);
-                }
-                else
-                {
-                    Debug.LogError($"Failed to generate the EXIT ROOM! at position: {where} \n" +
-                                   $"INFO Room in exit pool =: {exitRoom.Count}\n" +
-                                   $"INFO Room in start pool =: {startRoom.Count}\n" +
-                                   $"INFO Room in Usual pool =: {roomPool.Count}\n");
+                    return;
                 }
             }
-            else
+            
             {
                 newRoom = GenerateRoom(where.x, where.y, roomPool);
                 if (newRoom != null)
@@ -284,8 +279,7 @@ namespace GameSystems
                 return newRoom;
             }
 
-            Debug.LogErrorFormat("Cannot find any room that meets the {0} with those forbidden entrances {1}",
-                neededEntrances, forbiddenEntrances);
+            Debug.LogErrorFormat("Cannot find any room that meets the {0} with those forbidden entrances {1}", neededEntrances, forbiddenEntrances);
             return null;
         }
 
