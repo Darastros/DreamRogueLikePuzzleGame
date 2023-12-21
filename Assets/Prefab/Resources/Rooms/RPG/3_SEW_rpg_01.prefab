@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7763448021589907165
+--- !u!1 &7085356354009384270
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,8 +8,8 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7524908362423439677}
-  - component: {fileID: 8419376904003364694}
+  - component: {fileID: 1779651465427011931}
+  - component: {fileID: 8043664701586021858}
   m_Layer: 0
   m_Name: Shop_isaac_ref
   m_TagString: Untagged
@@ -17,28 +17,28 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7524908362423439677
+--- !u!4 &1779651465427011931
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7763448021589907165}
+  m_GameObject: {fileID: 7085356354009384270}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 7232427386943131216}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &8419376904003364694
+--- !u!212 &8043664701586021858
 SpriteRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7763448021589907165}
+  m_GameObject: {fileID: 7085356354009384270}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -389,7 +389,7 @@ PrefabInstance:
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4155039022220063151, guid: ecff147a44b2799498305487a45e85f4, type: 3}
       insertIndex: 0
-      addedObject: {fileID: 7524908362423439677}
+      addedObject: {fileID: 1779651465427011931}
     - targetCorrespondingSourceObject: {fileID: 4155039022220063151, guid: ecff147a44b2799498305487a45e85f4, type: 3}
       insertIndex: 1
       addedObject: {fileID: 2753151003843517597}

@@ -313,7 +313,7 @@ namespace GameSystems
             
             Debug.Log("Platformer :" + m_lastPlatformerRoom + " CardGame :" + m_lastCardGameRoom + " RPG :" + m_lastRPGRoom);
             { // Get only card type
-                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame) == m_lastCardGameRoom >= 5);
+                List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room => (_room.m_gameRuleType == GameRuleType.CardGame) == m_lastCardGameRoom >= 3);
                 if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
                 
                 availableRoomsType = availableRooms.FindAll(_room => m_alreadyHaveCardGameRooms.Exists(_cardGame => _cardGame != _room));
@@ -321,7 +321,7 @@ namespace GameSystems
             }
             { // Get only plat type
                 List<RoomDescriptor> availableRoomsType = availableRooms.FindAll(_room =>
-                    (_room.m_gameRuleType == GameRuleType.Platformer) == m_lastPlatformerRoom >= 3);
+                    (_room.m_gameRuleType == GameRuleType.Platformer) == m_lastPlatformerRoom >= 2);
                 if (availableRoomsType.Count > 0) availableRooms = availableRoomsType;
             }
             { // Get only rpg type
