@@ -10,6 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 548172558517235775}
   - component: {fileID: 7964974795374742290}
+  - component: {fileID: 3961952777153527574}
+  - component: {fileID: 3049828231984059736}
+  - component: {fileID: 5773703969515428563}
   - component: {fileID: 3264482190147596809}
   m_Layer: 0
   m_Name: SoundManager
@@ -45,11 +48,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4cf059538a06de94b8dbb91426cc61cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_platformerController: {fileID: 0}
   sfxMixerGroup: {fileID: -4360494947057514836, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
   jingleMixerGroup: {fileID: 8513592332033094324, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
-  minPitch: 0.9
-  maxPitch: 1.1
+  minRandomPitch: 0.9
+  maxRandomPitch: 1.1
+  activationJingleVolume: 0.3
+  errorClip: {fileID: 8300000, guid: f5eae18f2987e8c429962ff2c2a135e4, type: 3}
   stepClips:
   - {fileID: 8300000, guid: 97f8283662c02b1438ae6bc9525fbe7b, type: 3}
   - {fileID: 8300000, guid: 1a534281424194947a360e42f87fb815, type: 3}
@@ -59,16 +63,53 @@ MonoBehaviour:
   enteringDoorClip: {fileID: 8300000, guid: d7bf07de6e0459141b0ca919a5c96acd, type: 3}
   collectArtifactClip: {fileID: 8300000, guid: 3c05e308c0a99444cbbe492ba0a3fc1f, type: 3}
   sealRoomClip: {fileID: 8300000, guid: 1b3c64b03eb76764d911345d85d081c8, type: 3}
-  deathJingleClip: {fileID: 8300000, guid: 54cc40eed5c821a4492f02eab2d1959d, type: 3}
-  portalJingleClip: {fileID: 8300000, guid: c06044299922ea344bc428d883d31bbb, type: 3}
+  deathJingleClip: {fileID: 8300000, guid: 674d6269155821c408725539fb17c2b4, type: 3}
+  portalJingleClip: {fileID: 8300000, guid: 613ae2d9190480b46a2a5f06289257e8, type: 3}
   projectileSpawnClip: {fileID: 8300000, guid: a9da80c62cfe3cf4da1367b4633f3bd3, type: 3}
-  errorClip: {fileID: 8300000, guid: f5eae18f2987e8c429962ff2c2a135e4, type: 3}
+  projectileHitClip: {fileID: 8300000, guid: e1d869962a6d9e846913151f904abeca, type: 3}
   activateKeyPartClip: {fileID: 8300000, guid: e2e01c2e51ddce64398fd0e0d0da4c9a, type: 3}
+--- !u!114 &3961952777153527574
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036182468195179971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ed2c77b9377437f43b63de7c099c1b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxMixerGroup: {fileID: -4360494947057514836, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  jingleMixerGroup: {fileID: 8513592332033094324, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  minRandomPitch: 0.9
+  maxRandomPitch: 1.1
+  activationJingleVolume: 0.3
+  errorClip: {fileID: 8300000, guid: f5eae18f2987e8c429962ff2c2a135e4, type: 3}
+  m_platformerController: {fileID: 0}
   activatePlatformerClip: {fileID: 8300000, guid: e3d27d1b211d68649ab8a33756bb76c3, type: 3}
   deactivatePlatformerClip: {fileID: 8300000, guid: efa3c36bbc55f4f46baf24b0f6176760, type: 3}
   jumpClip: {fileID: 8300000, guid: 17136a513926fa840bf012730c83d566, type: 3}
   landingClip: {fileID: 8300000, guid: 9b3e01262a39efa46871a7370a8285b6, type: 3}
   collectStrawberryClip: {fileID: 8300000, guid: 1a298b9ae28bb4240a3455ae0a0fc4a2, type: 3}
+--- !u!114 &3049828231984059736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036182468195179971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c71c7b51681601144919154807ae3917, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxMixerGroup: {fileID: -4360494947057514836, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  jingleMixerGroup: {fileID: 8513592332033094324, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  minRandomPitch: 0.9
+  maxRandomPitch: 1.1
+  activationJingleVolume: 0.3
+  errorClip: {fileID: 8300000, guid: f5eae18f2987e8c429962ff2c2a135e4, type: 3}
   activateRpgClip: {fileID: 8300000, guid: f543091a788fb614196a0782abcc0630, type: 3}
   deactivateRpgClip: {fileID: 8300000, guid: 26e548574a588f642aa5e593c6aeaeec, type: 3}
   coinPitchModifier: 0.003
@@ -76,7 +117,24 @@ MonoBehaviour:
   rpgKeyClip: {fileID: 8300000, guid: 2c026fe7f54cc3940adbc31554522c28, type: 3}
   shopBuyClip: {fileID: 8300000, guid: a79e6d43d7c0559429b671681ec8ac40, type: 3}
   openChestClip: {fileID: 8300000, guid: a321fae8746fa194ca44e5e162ff7d70, type: 3}
+--- !u!114 &5773703969515428563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2036182468195179971}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce28b9a2895cb714ea547585beeca8e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sfxMixerGroup: {fileID: -4360494947057514836, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  jingleMixerGroup: {fileID: 8513592332033094324, guid: 173ef08f026a3dd4ba2600a56275220f, type: 2}
+  minRandomPitch: 0.9
+  maxRandomPitch: 1.1
   activationJingleVolume: 0.3
+  errorClip: {fileID: 8300000, guid: f5eae18f2987e8c429962ff2c2a135e4, type: 3}
   activateCardClip: {fileID: 8300000, guid: 299c4d11763c14a4abae5026cda186c8, type: 3}
   deactivateCardClip: {fileID: 8300000, guid: 86c81f7949139e042bdd08d1f503e8a8, type: 3}
   pickupCardClip: {fileID: 8300000, guid: 320f31a758ab414479a2d519d828584b, type: 3}

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using Platformer;
 using TMPro;
 using UnityEngine;
@@ -43,11 +41,11 @@ namespace UI
 
         private void GetStrawberries(int _total, int _number)
         {
-            m_strawberriesText.text = (_total <= 9 ? "0" : "") + _total + " / 10";
+            m_strawberriesText.text = _total + "/5";
         }
         private void Activate()
         {
-            m_strawberriesText.text = "00 / 10";
+            m_strawberriesText.text = "0/5";
             m_animator.SetBool("activate", true);
         }
 

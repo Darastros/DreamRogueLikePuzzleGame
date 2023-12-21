@@ -267,8 +267,20 @@ namespace GameSystems
         private Room GenerateRoom(int _x, int _y, List<RoomDescriptor> _pool)
         {
             GetNeededEntranceConstraints(out var neededEntrances, out var forbiddenEntrances, _x, _y);
-            List<RoomDescriptor> availableRooms = _pool.FindAll(_room =>
-                DoesRoomMeetRequirement(_room, neededEntrances, forbiddenEntrances));
+            List<RoomDescriptor> availableRooms = new List<RoomDescriptor>();
+                
+            availableRooms = _pool.FindAll(_room => DoesRoomMeetRequirement(_room, neededEntrances, forbiddenEntrances));
+
+            { // Remove 4 doors
+                List<RoomDescriptor> availableRoomsExceptFour = availableRooms.FindAll(_room => _room.m_entrances != RoomEntrance.Everything);
+                if (availableRoomsExceptFour.Count > 0) availableRooms = availableRoomsExceptFour;
+            }
+            
+            
+            { // Remove current
+                List<RoomDescriptor> availableRoomsExceptCurrent = availableRooms.FindAll(_room => CurrentRoom.m_roomDescriptor != _room);
+                if (availableRoomsExceptCurrent.Count > 0) availableRooms = availableRoomsExceptCurrent;
+            }
 
             var weightedList = ComputeWeightedList(availableRooms);
 

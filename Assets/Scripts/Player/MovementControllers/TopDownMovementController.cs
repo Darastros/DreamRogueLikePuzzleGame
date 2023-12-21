@@ -1,7 +1,4 @@
-﻿using System;
-using Player;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 
 namespace MovementControllers
 {
@@ -25,6 +22,11 @@ namespace MovementControllers
         {
             if(m_rigidbody2D == null)
                 TryGetComponent(out m_rigidbody2D);
+        }
+
+        private void OnEnable()
+        {
+            m_wantedDirection = Vector2.zero;
         }
         
         public void Move(Vector2 _wantedDirection)

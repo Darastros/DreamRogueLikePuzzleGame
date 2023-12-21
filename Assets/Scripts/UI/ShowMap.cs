@@ -1,6 +1,6 @@
-﻿using System;
-using DG.Tweening;
+﻿using DG.Tweening;
 using GameSystems;
+using Unity.Mathematics;
 using UnityEngine;
 using Utils;
 
@@ -80,6 +80,21 @@ namespace UI
             minimap.DOAnchorMin(startAnchorMin, scaleDownTime).SetEase(easeScaleDown);
             minimap.DOPivot(startPivot, scaleDownTime).SetEase(easeScaleDown);
             minimap.DOMove(startLocalPos, scaleDownTime).SetEase(easeScaleDown);
+        }
+
+        private (Vector2Int, Vector2Int) ComputeMapBounds()
+        {
+            Vector2Int minBox = Vector2Int.zero;
+            Vector2Int maxBox = Vector2Int.zero;
+            foreach (var (coordinates, _) in DungeonRoomSystem.Instance.CurrentRooms)
+            {
+                minBox.x = math.min(coordinates.x, minBox.x);
+                minBox.y = math.min(coordinates.y, minBox.y);
+                
+                maxBox.x = math.max(coordinates.x, maxBox.x);
+                maxBox.y = math.max(coordinates.y, maxBox.y);
+            }
+            return (minBox, maxBox);
         }
     }
 }

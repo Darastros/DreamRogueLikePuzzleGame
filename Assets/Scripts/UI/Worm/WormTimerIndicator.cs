@@ -1,5 +1,4 @@
-﻿using System;
-using GameSystems;
+﻿using GameSystems;
 using TMPro;
 using UnityEngine;
 using Utils;
