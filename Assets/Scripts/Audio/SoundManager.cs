@@ -12,8 +12,6 @@ public abstract class SoundManager : MonoBehaviour
     [SerializeField] protected float activationJingleVolume = 0.3f;
     [SerializeField] private AudioClip errorClip;
 
-    public static float lastJingleTime = 0f;
-
     protected void OnEnable()
     {
         ListenEvent();
@@ -43,7 +41,6 @@ public abstract class SoundManager : MonoBehaviour
     public void PlayJingle(AudioClip clip, float pitch = 1f, float volume = 1f, float delay = 0f)
     {
         PlayAudio(clip, jingleMixerGroup, pitch, volume);
-        lastJingleTime = clip.length / Math.Abs(pitch) + delay;
     }
 
     public void PlaySfx(AudioClip clip, float pitch = 1f, float volume = 1f, float delay = 0f)
